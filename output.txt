@@ -1,0 +1,10 @@
+===Stage1 - full request:===
+Type: text
+        DATA(5)[1_1]: 12345
+===Stage2 - data fragmentation 1 byte===
+Type: text
+        DATA(1)[1_0]: 1
+        DATA(1)[0_0]: 2
+        DATA(1)[0_0]: 3
+        DATA(1)[0_0]: 4
+        DATA(1)[0_1]: 5
