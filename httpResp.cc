@@ -1,3 +1,8 @@
+// ==============================================================
+// Generated using https://www.vsyn.ru/
+// Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
+// ==============================================================
+
 #include "httpResp.h"
 
 inline void httpResp::parse(state_t & state)
