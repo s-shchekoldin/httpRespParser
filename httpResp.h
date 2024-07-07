@@ -17,9 +17,10 @@ struct httpRespResult
     std::string keepAlive;
     std::string transferEncoding;
     std::string type;
-    uint64_t chunklen = 0;
     uint64_t contentLength = 0;
+    uint32_t chunklen = 0;
     bool isContentLen = false;
+
     // Don't forget to declare:
     void resp(__attribute__((unused)) const char * data, __attribute__((unused)) unsigned len, __attribute__((unused)) bool isFirst, __attribute__((unused)) bool isLast);
 };
