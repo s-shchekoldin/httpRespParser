@@ -263,19 +263,14 @@ inline bool httpResp::range_2_1(state_t & state)
 
 inline bool httpResp::text_2_2(state_t & state)
 {
-    const static uint8_t text[] = { 0x2e}; // .
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0X2E) != uint8_t(state.data[0]))
         {
             state.node = node_t::NO_STATE;
-            state.consumed = 0;
             return false;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::RANGE_2_3;
             return true;
         }
@@ -675,19 +670,14 @@ inline bool httpResp::range_2_7(state_t & state)
 
 inline bool httpResp::text_2_8(state_t & state)
 {
-    const static uint8_t text[] = { 0xd}; // \xd
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XD) != uint8_t(state.data[0]))
         {
             state.node = node_t::TEXT_2_9;
-            state.consumed = 0;
             return true;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::TEXT_2_9;
             return true;
         }
@@ -698,19 +688,14 @@ inline bool httpResp::text_2_8(state_t & state)
 
 inline bool httpResp::text_2_9(state_t & state)
 {
-    const static uint8_t text[] = { 0xa}; // \xa
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XA) != uint8_t(state.data[0]))
         {
             state.node = node_t::NO_STATE;
-            state.consumed = 0;
             return false;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::GOTO_2_10;
             return true;
         }
@@ -959,19 +944,14 @@ inline bool httpResp::range_5_1(state_t & state)
 
 inline bool httpResp::text_5_2(state_t & state)
 {
-    const static uint8_t text[] = { 0xd}; // \xd
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XD) != uint8_t(state.data[0]))
         {
             state.node = node_t::TEXT_5_3;
-            state.consumed = 0;
             return true;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::TEXT_5_3;
             return true;
         }
@@ -982,19 +962,14 @@ inline bool httpResp::text_5_2(state_t & state)
 
 inline bool httpResp::text_5_3(state_t & state)
 {
-    const static uint8_t text[] = { 0xa}; // \xa
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XA) != uint8_t(state.data[0]))
         {
             state.node = node_t::RANGE_19_0;
-            state.consumed = 0;
             return false;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::LOOP_4_1;
             return true;
         }
@@ -1198,19 +1173,14 @@ inline bool httpResp::string_6_2(state_t & state)
 
 inline bool httpResp::text_6_3(state_t & state)
 {
-    const static uint8_t text[] = { 0xd}; // \xd
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XD) != uint8_t(state.data[0]))
         {
             state.node = node_t::TEXT_6_4;
-            state.consumed = 0;
             return true;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::TEXT_6_4;
             return true;
         }
@@ -1221,19 +1191,14 @@ inline bool httpResp::text_6_3(state_t & state)
 
 inline bool httpResp::text_6_4(state_t & state)
 {
-    const static uint8_t text[] = { 0xa}; // \xa
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XA) != uint8_t(state.data[0]))
         {
             state.node = node_t::RANGE_19_0;
-            state.consumed = 0;
             return false;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::LOOP_4_1;
             return true;
         }
@@ -1553,19 +1518,14 @@ inline bool httpResp::range_7_5(state_t & state)
 
 inline bool httpResp::text_7_6(state_t & state)
 {
-    const static uint8_t text[] = { 0xd}; // \xd
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XD) != uint8_t(state.data[0]))
         {
             state.node = node_t::TEXT_7_7;
-            state.consumed = 0;
             return true;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::TEXT_7_7;
             return true;
         }
@@ -1576,19 +1536,14 @@ inline bool httpResp::text_7_6(state_t & state)
 
 inline bool httpResp::text_7_7(state_t & state)
 {
-    const static uint8_t text[] = { 0xa}; // \xa
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XA) != uint8_t(state.data[0]))
         {
             state.node = node_t::RANGE_19_0;
-            state.consumed = 0;
             return false;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::LOOP_4_1;
             return true;
         }
@@ -1832,19 +1787,14 @@ inline bool httpResp::func_8_4(state_t & state)
 
 inline bool httpResp::text_8_5(state_t & state)
 {
-    const static uint8_t text[] = { 0xd}; // \xd
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XD) != uint8_t(state.data[0]))
         {
             state.node = node_t::TEXT_8_6;
-            state.consumed = 0;
             return true;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::TEXT_8_6;
             return true;
         }
@@ -1855,19 +1805,14 @@ inline bool httpResp::text_8_5(state_t & state)
 
 inline bool httpResp::text_8_6(state_t & state)
 {
-    const static uint8_t text[] = { 0xa}; // \xa
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XA) != uint8_t(state.data[0]))
         {
             state.node = node_t::RANGE_19_0;
-            state.consumed = 0;
             return false;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::LOOP_4_1;
             return true;
         }
@@ -2111,19 +2056,14 @@ inline bool httpResp::func_9_4(state_t & state)
 
 inline bool httpResp::text_9_5(state_t & state)
 {
-    const static uint8_t text[] = { 0xd}; // \xd
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XD) != uint8_t(state.data[0]))
         {
             state.node = node_t::TEXT_9_6;
-            state.consumed = 0;
             return true;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::TEXT_9_6;
             return true;
         }
@@ -2134,19 +2074,14 @@ inline bool httpResp::text_9_5(state_t & state)
 
 inline bool httpResp::text_9_6(state_t & state)
 {
-    const static uint8_t text[] = { 0xa}; // \xa
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XA) != uint8_t(state.data[0]))
         {
             state.node = node_t::RANGE_19_0;
-            state.consumed = 0;
             return false;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::LOOP_4_1;
             return true;
         }
@@ -2378,19 +2313,14 @@ inline bool httpResp::string_10_3(state_t & state)
 
 inline bool httpResp::text_10_4(state_t & state)
 {
-    const static uint8_t text[] = { 0xd}; // \xd
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XD) != uint8_t(state.data[0]))
         {
             state.node = node_t::TEXT_10_5;
-            state.consumed = 0;
             return true;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::TEXT_10_5;
             return true;
         }
@@ -2401,19 +2331,14 @@ inline bool httpResp::text_10_4(state_t & state)
 
 inline bool httpResp::text_10_5(state_t & state)
 {
-    const static uint8_t text[] = { 0xa}; // \xa
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XA) != uint8_t(state.data[0]))
         {
             state.node = node_t::RANGE_19_0;
-            state.consumed = 0;
             return false;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::LOOP_4_1;
             return true;
         }
@@ -2424,19 +2349,14 @@ inline bool httpResp::text_10_5(state_t & state)
 
 inline bool httpResp::text_11_0(state_t & state)
 {
-    const static uint8_t text[] = { 0xd}; // \xd
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XD) != uint8_t(state.data[0]))
         {
             state.node = node_t::TEXT_11_1;
-            state.consumed = 0;
             return true;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::TEXT_11_1;
             return true;
         }
@@ -2447,19 +2367,14 @@ inline bool httpResp::text_11_0(state_t & state)
 
 inline bool httpResp::text_11_1(state_t & state)
 {
-    const static uint8_t text[] = { 0xa}; // \xa
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XA) != uint8_t(state.data[0]))
         {
             state.node = node_t::RANGE_19_0;
-            state.consumed = 0;
             return false;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::LOOP_11_2;
             return true;
         }
@@ -2718,19 +2633,14 @@ inline bool httpResp::range_14_1(state_t & state)
 
 inline bool httpResp::text_14_2(state_t & state)
 {
-    const static uint8_t text[] = { 0xd}; // \xd
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XD) != uint8_t(state.data[0]))
         {
             state.node = node_t::TEXT_14_3;
-            state.consumed = 0;
             return true;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::TEXT_14_3;
             return true;
         }
@@ -2741,19 +2651,14 @@ inline bool httpResp::text_14_2(state_t & state)
 
 inline bool httpResp::text_14_3(state_t & state)
 {
-    const static uint8_t text[] = { 0xa}; // \xa
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XA) != uint8_t(state.data[0]))
         {
             state.node = node_t::NO_STATE;
-            state.consumed = 0;
             return false;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::CASES_14_4;
             return true;
         }
@@ -2791,19 +2696,14 @@ inline bool httpResp::func_15_0(state_t & state)
 
 inline bool httpResp::text_15_1(state_t & state)
 {
-    const static uint8_t text[] = { 0xd}; // \xd
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XD) != uint8_t(state.data[0]))
         {
             state.node = node_t::TEXT_15_2;
-            state.consumed = 0;
             return true;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::TEXT_15_2;
             return true;
         }
@@ -2814,19 +2714,14 @@ inline bool httpResp::text_15_1(state_t & state)
 
 inline bool httpResp::text_15_2(state_t & state)
 {
-    const static uint8_t text[] = { 0xa}; // \xa
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XA) != uint8_t(state.data[0]))
         {
             state.node = node_t::NO_STATE;
-            state.consumed = 0;
             return false;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::RET_15_3;
             return true;
         }
@@ -2865,19 +2760,14 @@ inline bool httpResp::data_16_0(state_t & state)
 
 inline bool httpResp::text_16_1(state_t & state)
 {
-    const static uint8_t text[] = { 0xd}; // \xd
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XD) != uint8_t(state.data[0]))
         {
             state.node = node_t::TEXT_16_2;
-            state.consumed = 0;
             return true;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::TEXT_16_2;
             return true;
         }
@@ -2888,19 +2778,14 @@ inline bool httpResp::text_16_1(state_t & state)
 
 inline bool httpResp::text_16_2(state_t & state)
 {
-    const static uint8_t text[] = { 0xa}; // \xa
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XA) != uint8_t(state.data[0]))
         {
             state.node = node_t::NO_STATE;
-            state.consumed = 0;
             return false;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::LOOP_13_1;
             return true;
         }
@@ -3020,19 +2905,14 @@ inline bool httpResp::range_19_0(state_t & state)
 
 inline bool httpResp::text_19_1(state_t & state)
 {
-    const static uint8_t text[] = { 0xd}; // \xd
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XD) != uint8_t(state.data[0]))
         {
             state.node = node_t::TEXT_19_2;
-            state.consumed = 0;
             return true;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::TEXT_19_2;
             return true;
         }
@@ -3043,19 +2923,14 @@ inline bool httpResp::text_19_1(state_t & state)
 
 inline bool httpResp::text_19_2(state_t & state)
 {
-    const static uint8_t text[] = { 0xa}; // \xa
-    for(; state.data < state.end; state.data++)
+    if(state.data < state.end)
     {
-        if (text[state.consumed] != uint8_t(state.data[0]))
+        if (uint8_t(0XA) != uint8_t(state.data[0]))
         {
             state.node = node_t::NO_STATE;
-            state.consumed = 0;
             return false;
-        }
-        else if (++state.consumed >= sizeof(text))
-        {
+        } else {
             state.data++;
-            state.consumed = 0;
             state.node = node_t::LOOP_4_1;
             return true;
         }
