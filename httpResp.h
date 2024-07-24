@@ -1,5 +1,6 @@
 // ==============================================================
-// Generated using https://www.vsyn.ru/
+// Date: 2024-07-24 19:59:27 GMT
+// Generated using vProto(2024.07.24)         https://www.vsyn.ru
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // ==============================================================
 
@@ -28,7 +29,7 @@ struct httpRespResult
 struct httpResp : httpRespResult
 {
     bool parse(const char * data, unsigned len);
-    bool parse(const std::string & data) { return parse(data.c_str(), data.length()); }
+    bool parse(const std::string & data) { return parse(data.data(), data.length()); }
     void reset();
     bool empty() const { return mainState.node == node_t::NO_STATE && prlState.empty(); }
 
@@ -76,6 +77,7 @@ private:
         node_t node = node_t::LOOP_1_0;
         unsigned retStackCount = 0;
         node_t retStack[2];
+
         unsigned remainDataLen() const { return (unsigned)(end - data); }
         const char * name() const;
     };
@@ -108,7 +110,7 @@ private:
     bool text_6_0(state_t & state, bool isCaseCall);
     bool range_6_1(state_t & state);
     bool string_6_2(state_t & state);
-    void _string_6_2(const char * data, unsigned len, bool isFirst);
+    void _string_6_2(const char * data, unsigned len, uint64_t consumed);
     bool text_6_3(state_t & state);
     bool text_6_4(state_t & state);
     bool any_7_0(state_t & state);
@@ -118,7 +120,7 @@ private:
     bool func_7_3(state_t & state);
     bool _func_7_3();
     bool uint_7_4(state_t & state);
-    void _uint_7_4(const char * data, unsigned len, bool isFirst);
+    void _uint_7_4(const char * data, unsigned len, uint64_t consumed);
     bool range_7_5(state_t & state);
     bool text_7_6(state_t & state);
     bool text_7_7(state_t & state);
@@ -127,7 +129,7 @@ private:
     bool bang_8_0(state_t & state);
     bool range_8_2(state_t & state);
     bool string_8_3(state_t & state);
-    void _string_8_3(const char * data, unsigned len, bool isFirst);
+    void _string_8_3(const char * data, unsigned len, uint64_t consumed);
     bool func_8_4(state_t & state);
     bool _func_8_4();
     bool text_8_5(state_t & state);
@@ -137,7 +139,7 @@ private:
     bool bang_9_0(state_t & state);
     bool range_9_2(state_t & state);
     bool string_9_3(state_t & state);
-    void _string_9_3(const char * data, unsigned len, bool isFirst);
+    void _string_9_3(const char * data, unsigned len, uint64_t consumed);
     bool func_9_4(state_t & state);
     bool _func_9_4();
     bool text_9_5(state_t & state);
@@ -147,7 +149,7 @@ private:
     bool bang_10_0(state_t & state);
     bool range_10_2(state_t & state);
     bool string_10_3(state_t & state);
-    void _string_10_3(const char * data, unsigned len, bool isFirst);
+    void _string_10_3(const char * data, unsigned len, uint64_t consumed);
     bool text_10_4(state_t & state);
     bool text_10_5(state_t & state);
     bool text_11_0(state_t & state);
@@ -161,7 +163,7 @@ private:
     bool _func_13_0();
     bool loop_13_1(state_t & state);
     bool hex_14_0(state_t & state);
-    void _hex_14_0(const char * data, unsigned len, bool isFirst);
+    void _hex_14_0(const char * data, unsigned len, uint64_t consumed);
     bool range_14_1(state_t & state);
     bool text_14_2(state_t & state);
     bool text_14_3(state_t & state);
@@ -183,6 +185,6 @@ private:
     bool text_19_2(state_t & state);
     bool loop_21_0(state_t & state);
     bool bool_21_0(state_t & state);
-    void _bool_21_0(const char * data, unsigned len, bool isFirst);
+    void _bool_21_0(const char * data, unsigned len, uint64_t consumed);
 };
 #endif

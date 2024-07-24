@@ -1,0 +1,21 @@
+label:start
+    "HTTP/" [0-9]+ "." [0-9]+ [ \t]+ [0-9]+ [ \t]+ [^\r\n]* "\r"? "\n" call:HEADERS reset
+
+label:HEADERS
+    [ \t]+ [^\r\n]* "\r"? "\n"
+    'Transfer-Encoding:' [ \t]+ [^\r\n]->string:transferEncoding "\r"? "\n"
+    <'Content-Length:'> [ \t]+ { isContentLen = true; } u64:contentLength [ \t]* "\r"? "\n"
+    <'Content-Type:'> [ \t]+ [^\r\n]->string:type { printf("Type: %s\n", type.c_str()); } "\r"? "\n"
+    <'Content-Encoding:'> [ \t]+ [^\r\n]->string:encoding { printf("Encoding: %s\n", encoding.c_str()); } "\r"? "\n"
+    <'Connection:'> [ \t]+ [^\r\n]->string:keepAlive "\r"? "\n"
+    "\r"? "\n"
+        { return isContentLen; } data:resp(max=contentLength) return
+        { return transferEncoding.find("chunked") != std::string::npos; }
+            h32:chunklen [ \t]* "\r"? "\n" \
+                { if (chunklen != 0) return false; } "\r"? "\n" return
+                data:resp(max=chunklen) "\r"? "\n"
+        { return keepAlive.find("keep-alive") == std::string::npos; } data:resp
+        return
+    catch: [^\r\n]* "\r"? "\n"
+
+bool:isContentLen
