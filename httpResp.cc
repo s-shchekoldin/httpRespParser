@@ -1,6 +1,6 @@
 // ==============================================================
-// Date: 2024-07-24 19:59:27 GMT
-// Generated using vProto(2024.07.24)         https://www.vsyn.ru
+// Date: 2024-08-06 19:58:59 GMT
+// Generated using vProto(2024.08.06)         https://www.vsyn.ru
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // ==============================================================
 
@@ -113,7 +113,7 @@ inline void httpResp::parse(state_t & state)
             case node_t::NO_STATE:
             default: return;
         }; // switch
-        if (n == state.node && d == state.data)
+        if (d == state.data && n == state.node) [[unlikely]]
             break;
     }
 }
