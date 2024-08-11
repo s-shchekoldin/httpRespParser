@@ -2,7 +2,7 @@ label:start
     "HTTP/" [0-9]+ "." [0-9]+ [ \t]+ [0-9]+ [ \t]+ [^\r\n]* "\r"? "\n" call:HEADERS reset
 
 label:HEADERS
-    [ \t]+ [^\r\n]* "\r"? "\n"
+    [ \t] [^\r\n]* "\r"? "\n"
     'Transfer-Encoding:' [ \t]+ [^\r\n]->string:transferEncoding "\r"? "\n"
     <'Content-Length:'> [ \t]+ { isContentLen = true; } u64:contentLength [ \t]* "\r"? "\n"
     <'Content-Type:'> [ \t]+ [^\r\n]->string:type { printf("Type: %s\n", type.c_str()); } "\r"? "\n"
