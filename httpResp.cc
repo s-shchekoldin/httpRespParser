@@ -1,6 +1,6 @@
 // ==============================================================
-// Date: 2024-08-11 17:27:23 GMT
-// Generated using vProto(2024.08.11)         https://www.vsyn.ru
+// Date: 2024-08-12 19:25:03 GMT
+// Generated using vProto(2024.08.12)         https://www.vsyn.ru
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // ==============================================================
 
@@ -271,11 +271,16 @@ inline bool httpResp::range_2_1(state_t & state)
             state.data++;
             continue;
         }
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::TEXT_2_2 : node_t::NO_STATE;
-        bool ret = (state.node == node_t::TEXT_2_2);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::TEXT_2_2;
+            return true;
+        } else {
+            state.node = node_t::NO_STATE;
+            return false;
+        }
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_2_1;
@@ -383,11 +388,16 @@ inline bool httpResp::range_2_3(state_t & state)
             state.data++;
             continue;
         }
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::RANGE_2_4 : node_t::NO_STATE;
-        bool ret = (state.node == node_t::RANGE_2_4);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::RANGE_2_4;
+            return true;
+        } else {
+            state.node = node_t::NO_STATE;
+            return false;
+        }
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_2_3;
@@ -477,11 +487,16 @@ inline bool httpResp::range_2_4(state_t & state)
             state.data++;
             continue;
         }
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::RANGE_2_5 : node_t::NO_STATE;
-        bool ret = (state.node == node_t::RANGE_2_5);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::RANGE_2_5;
+            return true;
+        } else {
+            state.node = node_t::NO_STATE;
+            return false;
+        }
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_2_4;
@@ -571,11 +586,16 @@ inline bool httpResp::range_2_5(state_t & state)
             state.data++;
             continue;
         }
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::RANGE_2_6 : node_t::NO_STATE;
-        bool ret = (state.node == node_t::RANGE_2_6);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::RANGE_2_6;
+            return true;
+        } else {
+            state.node = node_t::NO_STATE;
+            return false;
+        }
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_2_5;
@@ -665,11 +685,16 @@ inline bool httpResp::range_2_6(state_t & state)
             state.data++;
             continue;
         }
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::RANGE_2_7 : node_t::NO_STATE;
-        bool ret = (state.node == node_t::RANGE_2_7);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::RANGE_2_7;
+            return true;
+        } else {
+            state.node = node_t::NO_STATE;
+            return false;
+        }
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_2_6;
@@ -743,10 +768,9 @@ inline bool httpResp::range_2_7(state_t & state)
             state.data++;
             continue;
         }
-        state.node = node_t::TEXT_2_8;
-        bool ret = (state.node == node_t::TEXT_2_8);
         state.consumed = 0;
-        return ret;
+        state.node = node_t::TEXT_2_8;
+        return true;
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_2_7;
@@ -977,10 +1001,9 @@ inline bool httpResp::range_5_1(state_t & state)
             state.data++;
             continue;
         }
-        state.node = node_t::TEXT_5_2;
-        bool ret = (state.node == node_t::TEXT_5_2);
         state.consumed = 0;
-        return ret;
+        state.node = node_t::TEXT_5_2;
+        return true;
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_5_1;
@@ -1130,11 +1153,16 @@ inline bool httpResp::range_6_1(state_t & state)
             state.data++;
             continue;
         }
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::STRING_6_2 : node_t::RANGE_19_0;
-        bool ret = (state.node == node_t::STRING_6_2);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::STRING_6_2;
+            return true;
+        } else {
+            state.node = node_t::RANGE_19_0;
+            return false;
+        }
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_6_1;
@@ -1234,11 +1262,16 @@ inline bool httpResp::string_6_2(state_t & state)
             continue;
         }
         _string_6_2(beginData, unsigned(state.data - beginData), state.consumed);
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::TEXT_6_3 : node_t::RANGE_19_0;
-        bool ret = (state.node == node_t::TEXT_6_3);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::TEXT_6_3;
+            return true;
+        } else {
+            state.node = node_t::RANGE_19_0;
+            return false;
+        }
     }
     if (beginData < state.data)
         _string_6_2(beginData, unsigned(state.data - beginData), state.consumed);
@@ -1418,11 +1451,16 @@ inline bool httpResp::range_7_2(state_t & state)
             state.data++;
             continue;
         }
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::FUNC_7_3 : node_t::RANGE_19_0;
-        bool ret = (state.node == node_t::FUNC_7_3);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::FUNC_7_3;
+            return true;
+        } else {
+            state.node = node_t::RANGE_19_0;
+            return false;
+        }
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_7_2;
@@ -1533,11 +1571,16 @@ inline bool httpResp::uint_7_4(state_t & state)
             continue;
         }
         _uint_7_4(beginData, unsigned(state.data - beginData), state.consumed);
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::RANGE_7_5 : node_t::RANGE_19_0;
-        bool ret = (state.node == node_t::RANGE_7_5);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::RANGE_7_5;
+            return true;
+        } else {
+            state.node = node_t::RANGE_19_0;
+            return false;
+        }
     }
     if (beginData < state.data)
         _uint_7_4(beginData, unsigned(state.data - beginData), state.consumed);
@@ -1613,10 +1656,9 @@ inline bool httpResp::range_7_5(state_t & state)
             state.data++;
             continue;
         }
-        state.node = node_t::TEXT_7_6;
-        bool ret = (state.node == node_t::TEXT_7_6);
         state.consumed = 0;
-        return ret;
+        state.node = node_t::TEXT_7_6;
+        return true;
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_7_5;
@@ -1794,11 +1836,16 @@ inline bool httpResp::range_8_2(state_t & state)
             state.data++;
             continue;
         }
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::STRING_8_3 : node_t::RANGE_19_0;
-        bool ret = (state.node == node_t::STRING_8_3);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::STRING_8_3;
+            return true;
+        } else {
+            state.node = node_t::RANGE_19_0;
+            return false;
+        }
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_8_2;
@@ -1898,11 +1945,16 @@ inline bool httpResp::string_8_3(state_t & state)
             continue;
         }
         _string_8_3(beginData, unsigned(state.data - beginData), state.consumed);
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::FUNC_8_4 : node_t::RANGE_19_0;
-        bool ret = (state.node == node_t::FUNC_8_4);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::FUNC_8_4;
+            return true;
+        } else {
+            state.node = node_t::RANGE_19_0;
+            return false;
+        }
     }
     if (beginData < state.data)
         _string_8_3(beginData, unsigned(state.data - beginData), state.consumed);
@@ -2094,11 +2146,16 @@ inline bool httpResp::range_9_2(state_t & state)
             state.data++;
             continue;
         }
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::STRING_9_3 : node_t::RANGE_19_0;
-        bool ret = (state.node == node_t::STRING_9_3);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::STRING_9_3;
+            return true;
+        } else {
+            state.node = node_t::RANGE_19_0;
+            return false;
+        }
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_9_2;
@@ -2198,11 +2255,16 @@ inline bool httpResp::string_9_3(state_t & state)
             continue;
         }
         _string_9_3(beginData, unsigned(state.data - beginData), state.consumed);
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::FUNC_9_4 : node_t::RANGE_19_0;
-        bool ret = (state.node == node_t::FUNC_9_4);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::FUNC_9_4;
+            return true;
+        } else {
+            state.node = node_t::RANGE_19_0;
+            return false;
+        }
     }
     if (beginData < state.data)
         _string_9_3(beginData, unsigned(state.data - beginData), state.consumed);
@@ -2394,11 +2456,16 @@ inline bool httpResp::range_10_2(state_t & state)
             state.data++;
             continue;
         }
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::STRING_10_3 : node_t::RANGE_19_0;
-        bool ret = (state.node == node_t::STRING_10_3);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::STRING_10_3;
+            return true;
+        } else {
+            state.node = node_t::RANGE_19_0;
+            return false;
+        }
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_10_2;
@@ -2498,11 +2565,16 @@ inline bool httpResp::string_10_3(state_t & state)
             continue;
         }
         _string_10_3(beginData, unsigned(state.data - beginData), state.consumed);
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::TEXT_10_4 : node_t::RANGE_19_0;
-        bool ret = (state.node == node_t::TEXT_10_4);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::TEXT_10_4;
+            return true;
+        } else {
+            state.node = node_t::RANGE_19_0;
+            return false;
+        }
     }
     if (beginData < state.data)
         _string_10_3(beginData, unsigned(state.data - beginData), state.consumed);
@@ -2739,11 +2811,16 @@ inline bool httpResp::hex_14_0(state_t & state)
             continue;
         }
         _hex_14_0(beginData, unsigned(state.data - beginData), state.consumed);
-        state.consumed += unsigned(state.data - beginData);
-        state.node = (state.consumed >= 1) ? node_t::RANGE_14_1 : node_t::NO_STATE;
-        bool ret = (state.node == node_t::RANGE_14_1);
+        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
         state.consumed = 0;
-        return ret;
+        if (totalConsumed >= 1)
+        {
+            state.node = node_t::RANGE_14_1;
+            return true;
+        } else {
+            state.node = node_t::NO_STATE;
+            return false;
+        }
     }
     if (beginData < state.data)
         _hex_14_0(beginData, unsigned(state.data - beginData), state.consumed);
@@ -2819,10 +2896,9 @@ inline bool httpResp::range_14_1(state_t & state)
             state.data++;
             continue;
         }
-        state.node = node_t::TEXT_14_2;
-        bool ret = (state.node == node_t::TEXT_14_2);
         state.consumed = 0;
-        return ret;
+        state.node = node_t::TEXT_14_2;
+        return true;
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_14_1;
@@ -3089,10 +3165,9 @@ inline bool httpResp::range_19_0(state_t & state)
             state.data++;
             continue;
         }
-        state.node = node_t::TEXT_19_1;
-        bool ret = (state.node == node_t::TEXT_19_1);
         state.consumed = 0;
-        return ret;
+        state.node = node_t::TEXT_19_1;
+        return true;
     }
     state.consumed += unsigned(state.data - beginData);
     state.node = node_t::RANGE_19_0;
