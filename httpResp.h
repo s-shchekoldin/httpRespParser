@@ -1,5 +1,5 @@
 // ==============================================================
-// Date: 2024-08-17 11:00:57 GMT
+// Date: 2024-08-17 12:08:56 GMT
 // Generated using vProto(2024.08.17)         https://www.vsyn.ru
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // ==============================================================
@@ -23,7 +23,7 @@ struct httpRespResult
     bool isContentLen = false;
 
     // Don't forget to declare:
-    void resp(__attribute__((unused)) const char * data, __attribute__((unused)) unsigned len, __attribute__((unused)) bool isFirst, __attribute__((unused)) bool isLast);
+    void resp([[maybe_unused]] const char * data, [[maybe_unused]] unsigned len, [[maybe_unused]] bool isFirst, [[maybe_unused]] bool isLast);
 };
 
 struct httpResp : httpRespResult
