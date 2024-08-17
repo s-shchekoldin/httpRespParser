@@ -1,6 +1,6 @@
 // ==============================================================
-// Date: 2024-08-12 19:25:03 GMT
-// Generated using vProto(2024.08.12)         https://www.vsyn.ru
+// Date: 2024-08-17 11:00:57 GMT
+// Generated using vProto(2024.08.17)         https://www.vsyn.ru
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // ==============================================================
 
@@ -2657,19 +2657,14 @@ inline bool httpResp::text_11_1(state_t & state)
 
 inline bool httpResp::loop_11_2(state_t & state)
 {
-    state_t startState = state;
     if (func_12_0(state)) // case_1
         return true;
-    state = startState;
     if (func_13_0(state)) // case_2
         return true;
-    state = startState;
     if (func_17_0(state)) // case_3
         return true;
-    state = startState;
     if (ret_18_0(state)) // case_4
         return true;
-    state = startState;
     state.node = node_t::NO_STATE;
     return true;
 }
@@ -2945,13 +2940,10 @@ inline bool httpResp::cases_14_4(state_t & state)
 {
     if (state.data == state.end)
         return true;
-    state_t startState = state;
     if (func_15_0(state)) // case_1
         return true;
-    state = startState;
     if (data_16_0(state)) // case_2
         return true;
-    state = startState;
     state.node = node_t::NO_STATE;
     return true;
 }
