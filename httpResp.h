@@ -1,6 +1,6 @@
 // ==============================================================
-// Date: 2024-08-17 12:08:56 GMT
-// Generated using vProto(2024.08.17)         https://www.vsyn.ru
+// Date: 2025-07-20 10:34:01 GMT
+// Generated using vProto(2025.07.20)        https://www.cgen.dev
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // ==============================================================
 
@@ -8,9 +8,9 @@
 #define HTTPRESP_H
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <vector>
-#include <cstdint>
 
 struct httpRespResult
 {
@@ -28,6 +28,7 @@ struct httpRespResult
 
 struct httpResp : httpRespResult
 {
+    template<class... Args> explicit httpResp(Args ... args) : httpRespResult(args ...) {}
     bool parse(const char * data, unsigned len);
     bool parse(const std::string & data) { return parse(data.data(), data.length()); }
     void reset();
