@@ -1,6 +1,6 @@
 // ==============================================================
-// Date: 2025-09-04 06:13:49 GMT
-// Generated using vProto(2025.09.04)        https://www.cgen.dev
+// Date: 2025-09-17 08:30:45 GMT
+// Generated using vProto(2025.09.17)        https://www.cgen.dev
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // autoSSE: 1 cpp98: 0 (SSE4.2: 1 AVX2: 1 SSE2: 1)
 // ==============================================================
@@ -167,7 +167,7 @@ inline bool httpResp::loop_1_0(state_t & state)
 
 inline bool httpResp::text_1_0(state_t & state, bool isCaseCall)
 {
-    const static uint8_t text[] = { 0x48, 0x54, 0x54, 0x50, 0x2f}; // http/
+    const static std::array<uint8_t, 5> text = {0x48, 0x54, 0x54, 0x50, 0x2f}; // http/
     for(; state.data < state.end; state.data++)
     {
         if (text[state.consumed] != uint8_t(state.data[0]))
@@ -177,7 +177,7 @@ inline bool httpResp::text_1_0(state_t & state, bool isCaseCall)
             state.consumed = 0;
             return ret;
         }
-        else if (++state.consumed >= sizeof(text))
+        else if (++state.consumed >= text.size())
         {
             state.data++;
             state.consumed = 0;
@@ -191,7 +191,7 @@ inline bool httpResp::text_1_0(state_t & state, bool isCaseCall)
 
 inline bool httpResp::range_1_1(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -308,7 +308,7 @@ inline bool httpResp::text_1_2(state_t & state)
 
 inline bool httpResp::range_1_3(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -407,7 +407,7 @@ inline bool httpResp::range_1_3(state_t & state)
 
 inline bool httpResp::range_1_4(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -522,7 +522,7 @@ inline bool httpResp::range_1_4(state_t & state)
 
 inline bool httpResp::range_1_5(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -621,7 +621,7 @@ inline bool httpResp::range_1_5(state_t & state)
 
 inline bool httpResp::range_1_6(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
@@ -734,13 +734,13 @@ inline bool httpResp::text_1_8(state_t & state)
 inline bool httpResp::goto_1_9(state_t & state)
 {
     state.node = node_t::LABEL_3_0;
-    if (state.retStackCount < sizeof(state.retStack)/sizeof(state.retStack[0]))
+    if (state.retStackCount < state.retStack.size())
         state.retStack[state.retStackCount++] = node_t::RESET_1_10;
     else
     {
-        for(unsigned i = 1; i < sizeof(state.retStack)/sizeof(state.retStack[0]); i++)
+        for(unsigned i = 1; i < state.retStack.size(); i++)
             state.retStack[i - 1] = state.retStack[i];
-        state.retStack[sizeof(state.retStack)/sizeof(state.retStack[0]) - 1] = node_t::RESET_1_10;
+        state.retStack[state.retStack.size() - 1] = node_t::RESET_1_10;
     }
     return true;
 }
@@ -816,7 +816,7 @@ inline bool httpResp::loop_3_1(state_t & state)
 
 inline bool httpResp::range_4_0(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -899,7 +899,7 @@ inline bool httpResp::range_4_0(state_t & state)
 
 inline bool httpResp::range_4_1(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
@@ -1011,7 +1011,7 @@ inline bool httpResp::text_4_3(state_t & state)
 
 inline bool httpResp::text_5_0(state_t & state, bool isCaseCall)
 {
-    const static uint8_t text[] = { 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x2d, 0x65, 0x6e, 0x63, 0x6f, 0x64, 0x69, 0x6e, 0x67, 0x3a}; // transfer-encoding:
+    const static std::array<uint8_t, 18> text = {0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x2d, 0x65, 0x6e, 0x63, 0x6f, 0x64, 0x69, 0x6e, 0x67, 0x3a}; // transfer-encoding:
     for(; state.data < state.end; state.data++)
     {
         if ((text[state.consumed] ^ uint8_t(state.data[0])) & 0xDF)
@@ -1021,7 +1021,7 @@ inline bool httpResp::text_5_0(state_t & state, bool isCaseCall)
             state.consumed = 0;
             return ret;
         }
-        else if (++state.consumed >= sizeof(text))
+        else if (++state.consumed >= text.size())
         {
             state.data++;
             state.consumed = 0;
@@ -1035,7 +1035,7 @@ inline bool httpResp::text_5_0(state_t & state, bool isCaseCall)
 
 inline bool httpResp::range_5_1(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -1159,7 +1159,7 @@ void httpResp::_string_5_2(const char * data, unsigned len, uint64_t consumed)
 
 inline bool httpResp::string_5_2(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
@@ -1332,7 +1332,7 @@ inline bool httpResp::any_6_0(state_t & state)
 
 inline bool httpResp::text_6_0_0_0(state_t & state)
 {
-    const static uint8_t text[] = { 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x6c, 0x65, 0x6e, 0x67, 0x74, 0x68, 0x3a}; // content-length:
+    const static std::array<uint8_t, 15> text = {0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x6c, 0x65, 0x6e, 0x67, 0x74, 0x68, 0x3a}; // content-length:
     for(; state.data < state.end; state.data++)
     {
         if ((text[state.consumed] ^ uint8_t(state.data[0])) & 0xDF)
@@ -1341,7 +1341,7 @@ inline bool httpResp::text_6_0_0_0(state_t & state)
             state.consumed = 0;
             return false;
         }
-        else if (++state.consumed >= sizeof(text))
+        else if (++state.consumed >= text.size())
         {
             state.data++;
             state.consumed = 0;
@@ -1365,7 +1365,7 @@ inline bool httpResp::bang_6_0(state_t & state)
 
 inline bool httpResp::range_6_2(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -1488,7 +1488,7 @@ void httpResp::_uint_6_3(const char * data, unsigned len, uint64_t consumed)
 
 inline bool httpResp::uint_6_3(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -1641,7 +1641,7 @@ inline bool httpResp::any_7_0(state_t & state)
 
 inline bool httpResp::text_7_0_0_0(state_t & state)
 {
-    const static uint8_t text[] = { 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x74, 0x79, 0x70, 0x65, 0x3a}; // content-type:
+    const static std::array<uint8_t, 13> text = {0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x74, 0x79, 0x70, 0x65, 0x3a}; // content-type:
     for(; state.data < state.end; state.data++)
     {
         if ((text[state.consumed] ^ uint8_t(state.data[0])) & 0xDF)
@@ -1650,7 +1650,7 @@ inline bool httpResp::text_7_0_0_0(state_t & state)
             state.consumed = 0;
             return false;
         }
-        else if (++state.consumed >= sizeof(text))
+        else if (++state.consumed >= text.size())
         {
             state.data++;
             state.consumed = 0;
@@ -1674,7 +1674,7 @@ inline bool httpResp::bang_7_0(state_t & state)
 
 inline bool httpResp::range_7_2(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -1798,7 +1798,7 @@ void httpResp::_string_7_3(const char * data, unsigned len, uint64_t consumed)
 
 inline bool httpResp::string_7_3(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
@@ -1983,7 +1983,7 @@ inline bool httpResp::any_8_0(state_t & state)
 
 inline bool httpResp::text_8_0_0_0(state_t & state)
 {
-    const static uint8_t text[] = { 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x65, 0x6e, 0x63, 0x6f, 0x64, 0x69, 0x6e, 0x67, 0x3a}; // content-encoding:
+    const static std::array<uint8_t, 17> text = {0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x65, 0x6e, 0x63, 0x6f, 0x64, 0x69, 0x6e, 0x67, 0x3a}; // content-encoding:
     for(; state.data < state.end; state.data++)
     {
         if ((text[state.consumed] ^ uint8_t(state.data[0])) & 0xDF)
@@ -1992,7 +1992,7 @@ inline bool httpResp::text_8_0_0_0(state_t & state)
             state.consumed = 0;
             return false;
         }
-        else if (++state.consumed >= sizeof(text))
+        else if (++state.consumed >= text.size())
         {
             state.data++;
             state.consumed = 0;
@@ -2016,7 +2016,7 @@ inline bool httpResp::bang_8_0(state_t & state)
 
 inline bool httpResp::range_8_2(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -2140,7 +2140,7 @@ void httpResp::_string_8_3(const char * data, unsigned len, uint64_t consumed)
 
 inline bool httpResp::string_8_3(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
@@ -2325,7 +2325,7 @@ inline bool httpResp::any_9_0(state_t & state)
 
 inline bool httpResp::text_9_0_0_0(state_t & state)
 {
-    const static uint8_t text[] = { 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x3a}; // connection:
+    const static std::array<uint8_t, 11> text = {0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x3a}; // connection:
     for(; state.data < state.end; state.data++)
     {
         if ((text[state.consumed] ^ uint8_t(state.data[0])) & 0xDF)
@@ -2334,7 +2334,7 @@ inline bool httpResp::text_9_0_0_0(state_t & state)
             state.consumed = 0;
             return false;
         }
-        else if (++state.consumed >= sizeof(text))
+        else if (++state.consumed >= text.size())
         {
             state.data++;
             state.consumed = 0;
@@ -2358,7 +2358,7 @@ inline bool httpResp::bang_9_0(state_t & state)
 
 inline bool httpResp::range_9_2(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -2473,7 +2473,7 @@ inline bool httpResp::range_9_2(state_t & state)
 
 inline bool httpResp::text_9_3(state_t & state)
 {
-    const static uint8_t text[] = { 0x6b, 0x65, 0x65, 0x70, 0x2d, 0x61, 0x6c, 0x69, 0x76, 0x65}; // keep-alive
+    const static std::array<uint8_t, 10> text = {0x6b, 0x65, 0x65, 0x70, 0x2d, 0x61, 0x6c, 0x69, 0x76, 0x65}; // keep-alive
     for(; state.data < state.end; state.data++)
     {
         if ((text[state.consumed] ^ uint8_t(state.data[0])) & 0xDF)
@@ -2482,7 +2482,7 @@ inline bool httpResp::text_9_3(state_t & state)
             state.consumed = 0;
             return false;
         }
-        else if (++state.consumed >= sizeof(text))
+        else if (++state.consumed >= text.size())
         {
             state.data++;
             state.consumed = 0;
@@ -2663,7 +2663,7 @@ void httpResp::_hex_13_0(const char * data, unsigned len, uint64_t consumed)
 
 inline bool httpResp::hex_13_0(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -2749,7 +2749,7 @@ inline bool httpResp::hex_13_0(state_t & state)
 
 inline bool httpResp::range_13_1(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -3015,7 +3015,7 @@ inline bool httpResp::ret_17_0(state_t & state)
 
 inline bool httpResp::range_18_0(state_t & state)
 {
-    const static bool exitSym[256] = {
+    const static std::array<bool, 256> exitSym = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
