@@ -1,5 +1,5 @@
 // ==============================================================
-// Date: 2025-09-17 08:30:45 GMT
+// Date: 2025-09-17 18:46:08 GMT
 // Generated using vProto(2025.09.17)        https://www.cgen.dev
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // autoSSE: 1 cpp98: 0 (SSE4.2: 1 AVX2: 1 SSE2: 1)
@@ -50,8 +50,8 @@ inline void httpResp::parse(state_t & state)
             case node_t::RANGE_1_5: if (!range_1_5(state) || state.node != node_t::RANGE_1_6) break; [[fallthrough]];
             case node_t::RANGE_1_6: if (!range_1_6(state) || state.node != node_t::TEXT_1_7) break; [[fallthrough]];
             case node_t::TEXT_1_7: if (!text_1_7(state) || state.node != node_t::TEXT_1_8) break; [[fallthrough]];
-            case node_t::TEXT_1_8: if (!text_1_8(state) || state.node != node_t::GOTO_1_9) break; [[fallthrough]];
-            case node_t::GOTO_1_9: if (!goto_1_9(state) || state.node != node_t::RESET_1_10) break; [[fallthrough]];
+            case node_t::TEXT_1_8: if (!text_1_8(state) || state.node != node_t::CALL_1_9) break; [[fallthrough]];
+            case node_t::CALL_1_9: if (!call_1_9(state) || state.node != node_t::RESET_1_10) break; [[fallthrough]];
             case node_t::RESET_1_10: reset_1_10(state); break;
             case node_t::LOOP_3_0: loop_3_0(state); break;
             case node_t::LABEL_3_0: if (!label_3_0(state) || state.node != node_t::LOOP_3_1) break; [[fallthrough]];
@@ -100,24 +100,24 @@ inline void httpResp::parse(state_t & state)
             case node_t::TEXT_10_0: if (!text_10_0(state) || state.node != node_t::TEXT_10_1) break; [[fallthrough]];
             case node_t::TEXT_10_1: if (!text_10_1(state) || state.node != node_t::LOOP_10_2) break; [[fallthrough]];
             case node_t::LOOP_10_2: loop_10_2(state); break;
-            case node_t::FUNC_11_0: if (!func_11_0(state) || state.node != node_t::DATA_11_1) break; [[fallthrough]];
+            case node_t::IF_11_0: if (!if_11_0(state) || state.node != node_t::DATA_11_1) break; [[fallthrough]];
             case node_t::DATA_11_1: if (!data_11_1(state) || state.node != node_t::RET_11_2) break; [[fallthrough]];
             case node_t::RET_11_2: ret_11_2(state); break;
-            case node_t::FUNC_12_0: if (!func_12_0(state) || state.node != node_t::LOOP_12_1) break; [[fallthrough]];
+            case node_t::IF_12_0: if (!if_12_0(state) || state.node != node_t::LOOP_12_1) break; [[fallthrough]];
             case node_t::LOOP_12_1: loop_12_1(state); break;
             case node_t::HEX_13_0: if (!hex_13_0(state) || state.node != node_t::RANGE_13_1) break; [[fallthrough]];
             case node_t::RANGE_13_1: if (!range_13_1(state) || state.node != node_t::TEXT_13_2) break; [[fallthrough]];
             case node_t::TEXT_13_2: if (!text_13_2(state) || state.node != node_t::TEXT_13_3) break; [[fallthrough]];
             case node_t::TEXT_13_3: if (!text_13_3(state) || state.node != node_t::CASES_13_4) break; [[fallthrough]];
             case node_t::CASES_13_4: cases_13_4(state); break;
-            case node_t::FUNC_14_0: if (!func_14_0(state) || state.node != node_t::TEXT_14_1) break; [[fallthrough]];
+            case node_t::IF_14_0: if (!if_14_0(state) || state.node != node_t::TEXT_14_1) break; [[fallthrough]];
             case node_t::TEXT_14_1: if (!text_14_1(state) || state.node != node_t::TEXT_14_2) break; [[fallthrough]];
             case node_t::TEXT_14_2: if (!text_14_2(state) || state.node != node_t::RET_14_3) break; [[fallthrough]];
             case node_t::RET_14_3: ret_14_3(state); break;
             case node_t::DATA_15_0: if (!data_15_0(state) || state.node != node_t::TEXT_15_1) break; [[fallthrough]];
             case node_t::TEXT_15_1: if (!text_15_1(state) || state.node != node_t::TEXT_15_2) break; [[fallthrough]];
             case node_t::TEXT_15_2: text_15_2(state); break;
-            case node_t::FUNC_16_0: if (!func_16_0(state) || state.node != node_t::DATA_16_1) break; [[fallthrough]];
+            case node_t::IF_16_0: if (!if_16_0(state) || state.node != node_t::DATA_16_1) break; [[fallthrough]];
             case node_t::DATA_16_1: data_16_1(state); break;
             case node_t::RET_17_0: ret_17_0(state); break;
             case node_t::RANGE_18_0: if (!range_18_0(state) || state.node != node_t::TEXT_18_1) break; [[fallthrough]];
@@ -723,7 +723,7 @@ inline bool httpResp::text_1_8(state_t & state)
             return false;
         } else {
             state.data++;
-            state.node = node_t::GOTO_1_9;
+            state.node = node_t::CALL_1_9;
             return true;
         }
     }
@@ -731,7 +731,7 @@ inline bool httpResp::text_1_8(state_t & state)
     return true;
 }
 
-inline bool httpResp::goto_1_9(state_t & state)
+inline bool httpResp::call_1_9(state_t & state)
 {
     state.node = node_t::LABEL_3_0;
     if (state.retStackCount < state.retStack.size())
@@ -1579,9 +1579,13 @@ inline bool httpResp::_func_6_4()
 }
 inline bool httpResp::func_6_4(state_t & state)
 {
-    bool ret = _func_6_4();
-    state.node = ret ? node_t::TEXT_6_5 : node_t::RANGE_18_0;
-    return ret;
+    if (_func_6_4())
+    {
+        state.node = node_t::TEXT_6_5;
+        return true;
+    }
+    state.node = node_t::RANGE_18_0;
+    return false;
 }
 
 inline bool httpResp::text_6_5(state_t & state)
@@ -1921,9 +1925,13 @@ inline bool httpResp::_func_7_4()
 }
 inline bool httpResp::func_7_4(state_t & state)
 {
-    bool ret = _func_7_4();
-    state.node = ret ? node_t::TEXT_7_5 : node_t::RANGE_18_0;
-    return ret;
+    if (_func_7_4())
+    {
+        state.node = node_t::TEXT_7_5;
+        return true;
+    }
+    state.node = node_t::RANGE_18_0;
+    return false;
 }
 
 inline bool httpResp::text_7_5(state_t & state)
@@ -2263,9 +2271,13 @@ inline bool httpResp::_func_8_4()
 }
 inline bool httpResp::func_8_4(state_t & state)
 {
-    bool ret = _func_8_4();
-    state.node = ret ? node_t::TEXT_8_5 : node_t::RANGE_18_0;
-    return ret;
+    if (_func_8_4())
+    {
+        state.node = node_t::TEXT_8_5;
+        return true;
+    }
+    state.node = node_t::RANGE_18_0;
+    return false;
 }
 
 inline bool httpResp::text_8_5(state_t & state)
@@ -2501,9 +2513,13 @@ inline bool httpResp::_func_9_4()
 }
 inline bool httpResp::func_9_4(state_t & state)
 {
-    bool ret = _func_9_4();
-    state.node = ret ? node_t::TEXT_9_5 : node_t::RANGE_18_0;
-    return ret;
+    if (_func_9_4())
+    {
+        state.node = node_t::TEXT_9_5;
+        return true;
+    }
+    state.node = node_t::RANGE_18_0;
+    return false;
 }
 
 inline bool httpResp::text_9_5(state_t & state)
@@ -2580,11 +2596,11 @@ inline bool httpResp::text_10_1(state_t & state)
 
 inline bool httpResp::loop_10_2(state_t & state)
 {
-    if (func_11_0(state)) // case_1
+    if (if_11_0(state)) // case_1
         return true;
-    if (func_12_0(state)) // case_2
+    if (if_12_0(state)) // case_2
         return true;
-    if (func_16_0(state)) // case_3
+    if (if_16_0(state)) // case_3
         return true;
     if (ret_17_0(state)) // case_4
         return true;
@@ -2592,16 +2608,15 @@ inline bool httpResp::loop_10_2(state_t & state)
     return true;
 }
 
-inline bool httpResp::_func_11_0()
+inline bool httpResp::if_11_0(state_t & state)
 {
-     return isContentLen; 
-    return true;
-}
-inline bool httpResp::func_11_0(state_t & state)
-{
-    bool ret = _func_11_0();
-    state.node = ret ? node_t::DATA_11_1 : node_t::NO_STATE;
-    return ret;
+    if (isContentLen)
+    {
+        state.node = node_t::DATA_11_1;
+        return true;
+    }
+    state.node = node_t::NO_STATE;
+    return false;
 }
 
 inline bool httpResp::data_11_1(state_t & state)
@@ -2631,16 +2646,15 @@ inline bool httpResp::ret_11_2(state_t & state)
     return state.node != node_t::NO_STATE;
 }
 
-inline bool httpResp::_func_12_0()
+inline bool httpResp::if_12_0(state_t & state)
 {
-     return transferEncoding.find("chunked") != std::string::npos; 
-    return true;
-}
-inline bool httpResp::func_12_0(state_t & state)
-{
-    bool ret = _func_12_0();
-    state.node = ret ? node_t::LOOP_12_1 : node_t::NO_STATE;
-    return ret;
+    if (transferEncoding.find("chunked") != std::string::npos)
+    {
+        state.node = node_t::LOOP_12_1;
+        return true;
+    }
+    state.node = node_t::NO_STATE;
+    return false;
 }
 
 inline bool httpResp::loop_12_1(state_t & state)
@@ -2863,7 +2877,7 @@ inline bool httpResp::cases_13_4(state_t & state)
 {
     if (state.data == state.end)
         return true;
-    if (func_14_0(state)) // case_1
+    if (if_14_0(state)) // case_1
         return true;
     if (data_15_0(state)) // case_2
         return true;
@@ -2871,16 +2885,15 @@ inline bool httpResp::cases_13_4(state_t & state)
     return true;
 }
 
-inline bool httpResp::_func_14_0()
+inline bool httpResp::if_14_0(state_t & state)
 {
-     return !chunklen; 
-    return true;
-}
-inline bool httpResp::func_14_0(state_t & state)
-{
-    bool ret = _func_14_0();
-    state.node = ret ? node_t::TEXT_14_1 : node_t::NO_STATE;
-    return ret;
+    if (!chunklen)
+    {
+        state.node = node_t::TEXT_14_1;
+        return true;
+    }
+    state.node = node_t::NO_STATE;
+    return false;
 }
 
 inline bool httpResp::text_14_1(state_t & state)
@@ -2982,16 +2995,15 @@ inline bool httpResp::text_15_2(state_t & state)
     return true;
 }
 
-inline bool httpResp::_func_16_0()
+inline bool httpResp::if_16_0(state_t & state)
 {
-     return !isKeepAlive; 
-    return true;
-}
-inline bool httpResp::func_16_0(state_t & state)
-{
-    bool ret = _func_16_0();
-    state.node = ret ? node_t::DATA_16_1 : node_t::NO_STATE;
-    return ret;
+    if (!isKeepAlive)
+    {
+        state.node = node_t::DATA_16_1;
+        return true;
+    }
+    state.node = node_t::NO_STATE;
+    return false;
 }
 
 inline bool httpResp::data_16_1(state_t & state)
@@ -3222,7 +3234,7 @@ const char * httpResp::state_t::name() const
         case node_t::RANGE_1_6: return "RANGE_1_6";
         case node_t::TEXT_1_7: return "TEXT_1_7";
         case node_t::TEXT_1_8: return "TEXT_1_8";
-        case node_t::GOTO_1_9: return "GOTO_1_9";
+        case node_t::CALL_1_9: return "CALL_1_9";
         case node_t::RESET_1_10: return "RESET_1_10";
         case node_t::LOOP_3_0: return "LOOP_3_0";
         case node_t::LABEL_3_0: return "LABEL_3_0";
@@ -3271,24 +3283,24 @@ const char * httpResp::state_t::name() const
         case node_t::TEXT_10_0: return "TEXT_10_0";
         case node_t::TEXT_10_1: return "TEXT_10_1";
         case node_t::LOOP_10_2: return "LOOP_10_2";
-        case node_t::FUNC_11_0: return "FUNC_11_0";
+        case node_t::IF_11_0: return "IF_11_0";
         case node_t::DATA_11_1: return "DATA_11_1";
         case node_t::RET_11_2: return "RET_11_2";
-        case node_t::FUNC_12_0: return "FUNC_12_0";
+        case node_t::IF_12_0: return "IF_12_0";
         case node_t::LOOP_12_1: return "LOOP_12_1";
         case node_t::HEX_13_0: return "HEX_13_0";
         case node_t::RANGE_13_1: return "RANGE_13_1";
         case node_t::TEXT_13_2: return "TEXT_13_2";
         case node_t::TEXT_13_3: return "TEXT_13_3";
         case node_t::CASES_13_4: return "CASES_13_4";
-        case node_t::FUNC_14_0: return "FUNC_14_0";
+        case node_t::IF_14_0: return "IF_14_0";
         case node_t::TEXT_14_1: return "TEXT_14_1";
         case node_t::TEXT_14_2: return "TEXT_14_2";
         case node_t::RET_14_3: return "RET_14_3";
         case node_t::DATA_15_0: return "DATA_15_0";
         case node_t::TEXT_15_1: return "TEXT_15_1";
         case node_t::TEXT_15_2: return "TEXT_15_2";
-        case node_t::FUNC_16_0: return "FUNC_16_0";
+        case node_t::IF_16_0: return "IF_16_0";
         case node_t::DATA_16_1: return "DATA_16_1";
         case node_t::RET_17_0: return "RET_17_0";
         case node_t::RANGE_18_0: return "RANGE_18_0";

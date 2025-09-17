@@ -1,5 +1,5 @@
 // ==============================================================
-// Date: 2025-09-17 08:30:45 GMT
+// Date: 2025-09-17 18:46:08 GMT
 // Generated using vProto(2025.09.17)        https://www.cgen.dev
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // ==============================================================
@@ -40,7 +40,7 @@ private:
     enum class node_t
     {
         LOOP_1_0, // line_1
-            TEXT_1_0, RANGE_1_1, TEXT_1_2, RANGE_1_3, RANGE_1_4, RANGE_1_5, RANGE_1_6, TEXT_1_7, TEXT_1_8, GOTO_1_9, RESET_1_10, 
+            TEXT_1_0, RANGE_1_1, TEXT_1_2, RANGE_1_3, RANGE_1_4, RANGE_1_5, RANGE_1_6, TEXT_1_7, TEXT_1_8, CALL_1_9, RESET_1_10, 
         LOOP_3_0, // line_3
             LABEL_3_0, LOOP_3_1,
                 RANGE_4_0, RANGE_4_1, TEXT_4_2, TEXT_4_3, 
@@ -58,12 +58,12 @@ private:
                     TEXT_9_0_0_0, 
                         BANG_9_0, RANGE_9_2, TEXT_9_3, FUNC_9_4, TEXT_9_5, TEXT_9_6, 
                 TEXT_10_0, TEXT_10_1, LOOP_10_2,
-                    FUNC_11_0, DATA_11_1, RET_11_2, 
-                    FUNC_12_0, LOOP_12_1,
+                    IF_11_0, DATA_11_1, RET_11_2, 
+                    IF_12_0, LOOP_12_1,
                         HEX_13_0, RANGE_13_1, TEXT_13_2, TEXT_13_3, CASES_13_4,
-                            FUNC_14_0, TEXT_14_1, TEXT_14_2, RET_14_3, 
+                            IF_14_0, TEXT_14_1, TEXT_14_2, RET_14_3, 
                             DATA_15_0, TEXT_15_1, TEXT_15_2, 
-                    FUNC_16_0, DATA_16_1, 
+                    IF_16_0, DATA_16_1, 
                     RET_17_0, 
                  // catch:
                 RANGE_18_0, TEXT_18_1, TEXT_18_2, 
@@ -98,7 +98,7 @@ private:
     bool range_1_6(state_t & state);
     bool text_1_7(state_t & state);
     bool text_1_8(state_t & state);
-    bool goto_1_9(state_t & state);
+    bool call_1_9(state_t & state);
     bool reset_1_10(state_t & state);
     bool loop_3_0(state_t & state);
     bool label_3_0(state_t & state);
@@ -155,12 +155,10 @@ private:
     bool text_10_0(state_t & state);
     bool text_10_1(state_t & state);
     bool loop_10_2(state_t & state);
-    bool func_11_0(state_t & state);
-    bool _func_11_0();
+    bool if_11_0(state_t & state);
     bool data_11_1(state_t & state);
     bool ret_11_2(state_t & state);
-    bool func_12_0(state_t & state);
-    bool _func_12_0();
+    bool if_12_0(state_t & state);
     bool loop_12_1(state_t & state);
     bool hex_13_0(state_t & state);
     void _hex_13_0(const char * data, unsigned len, uint64_t consumed);
@@ -168,16 +166,14 @@ private:
     bool text_13_2(state_t & state);
     bool text_13_3(state_t & state);
     bool cases_13_4(state_t & state);
-    bool func_14_0(state_t & state);
-    bool _func_14_0();
+    bool if_14_0(state_t & state);
     bool text_14_1(state_t & state);
     bool text_14_2(state_t & state);
     bool ret_14_3(state_t & state);
     bool data_15_0(state_t & state);
     bool text_15_1(state_t & state);
     bool text_15_2(state_t & state);
-    bool func_16_0(state_t & state);
-    bool _func_16_0();
+    bool if_16_0(state_t & state);
     bool data_16_1(state_t & state);
     bool ret_17_0(state_t & state);
     bool range_18_0(state_t & state);

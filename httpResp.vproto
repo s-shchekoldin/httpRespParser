@@ -8,12 +8,12 @@ label:HEADERS
     <'Content-Encoding:'> [ \t]+ [^\r\n]->string:encoding { printf("Encoding: %s\n", encoding.c_str()); } "\r"? "\n"
     <'Connection:'>       [ \t]+ 'keep-alive'             { isKeepAlive = true; }                         "\r"? "\n"
     "\r"? "\n"
-        { return isContentLen; } data:resp(max=contentLength) return
-        { return transferEncoding.find("chunked") != std::string::npos; }
+        if {isContentLen} data:resp(max=contentLength) return
+        if {transferEncoding.find("chunked") != std::string::npos}
             h32:chunklen [ \t]* "\r"? "\n" \
-                { return !chunklen; }   "\r"? "\n" return
+                if {!chunklen} "\r"? "\n" return
                 data:resp(max=chunklen) "\r"? "\n"
-        { return !isKeepAlive; } data:resp
+        if {!isKeepAlive} data:resp
         return
     catch: [^\r\n]* "\r"? "\n"
 
