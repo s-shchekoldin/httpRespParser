@@ -1,6 +1,6 @@
 // ==============================================================
-// Date: 2025-09-17 18:46:08 GMT
-// Generated using vProto(2025.09.17)        https://www.cgen.dev
+// Date: 2025-09-22 18:01:21 GMT
+// Generated using vProto(2025.09.22)        https://www.cgen.dev
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // autoSSE: 1 cpp98: 0 (SSE4.2: 1 AVX2: 1 SSE2: 1)
 // ==============================================================
@@ -160,12 +160,12 @@ bool httpResp::parse(const char * data, unsigned len)
     return mainState.node != node_t::NO_STATE || !prlState.empty();
 }
 
-inline bool httpResp::loop_1_0(state_t & state)
+inline bool httpResp::loop_1_0(state_t & state) const
 {
     return text_1_0(state, false);
 }
 
-inline bool httpResp::text_1_0(state_t & state, bool isCaseCall)
+inline bool httpResp::text_1_0(state_t & state, bool isCaseCall) const
 {
     const static std::array<uint8_t, 5> text = {0x48, 0x54, 0x54, 0x50, 0x2f}; // http/
     for(; state.data < state.end; state.data++)
@@ -189,7 +189,7 @@ inline bool httpResp::text_1_0(state_t & state, bool isCaseCall)
     return true;
 }
 
-inline bool httpResp::range_1_1(state_t & state)
+inline bool httpResp::range_1_1(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -288,7 +288,7 @@ inline bool httpResp::range_1_1(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_1_2(state_t & state)
+inline bool httpResp::text_1_2(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -306,7 +306,7 @@ inline bool httpResp::text_1_2(state_t & state)
     return true;
 }
 
-inline bool httpResp::range_1_3(state_t & state)
+inline bool httpResp::range_1_3(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -405,7 +405,7 @@ inline bool httpResp::range_1_3(state_t & state)
     return true;
 }
 
-inline bool httpResp::range_1_4(state_t & state)
+inline bool httpResp::range_1_4(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
@@ -520,7 +520,7 @@ inline bool httpResp::range_1_4(state_t & state)
     return true;
 }
 
-inline bool httpResp::range_1_5(state_t & state)
+inline bool httpResp::range_1_5(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -619,7 +619,7 @@ inline bool httpResp::range_1_5(state_t & state)
     return true;
 }
 
-inline bool httpResp::range_1_6(state_t & state)
+inline bool httpResp::range_1_6(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
@@ -695,7 +695,7 @@ inline bool httpResp::range_1_6(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_1_7(state_t & state)
+inline bool httpResp::text_1_7(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -713,7 +713,7 @@ inline bool httpResp::text_1_7(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_1_8(state_t & state)
+inline bool httpResp::text_1_8(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -731,7 +731,7 @@ inline bool httpResp::text_1_8(state_t & state)
     return true;
 }
 
-inline bool httpResp::call_1_9(state_t & state)
+inline bool httpResp::call_1_9(state_t & state) const
 {
     state.node = node_t::LABEL_3_0;
     if (state.retStackCount < state.retStack.size())
@@ -765,12 +765,12 @@ inline bool httpResp::reset_1_10(state_t & state)
     return true;
 }
 
-inline bool httpResp::loop_3_0(state_t & state)
+inline bool httpResp::loop_3_0(state_t & state) const
 {
     return label_3_0(state);
 }
 
-inline bool httpResp::label_3_0(state_t & state)
+inline bool httpResp::label_3_0(state_t & state) const
 {
     state.node = node_t::LOOP_3_1;
     return true;
@@ -814,7 +814,7 @@ inline bool httpResp::loop_3_1(state_t & state)
     return true;
 }
 
-inline bool httpResp::range_4_0(state_t & state)
+inline bool httpResp::range_4_0(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
@@ -897,7 +897,7 @@ inline bool httpResp::range_4_0(state_t & state)
     return true;
 }
 
-inline bool httpResp::range_4_1(state_t & state)
+inline bool httpResp::range_4_1(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
@@ -973,7 +973,7 @@ inline bool httpResp::range_4_1(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_4_2(state_t & state)
+inline bool httpResp::text_4_2(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -991,7 +991,7 @@ inline bool httpResp::text_4_2(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_4_3(state_t & state)
+inline bool httpResp::text_4_3(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -1009,7 +1009,7 @@ inline bool httpResp::text_4_3(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_5_0(state_t & state, bool isCaseCall)
+inline bool httpResp::text_5_0(state_t & state, bool isCaseCall) const
 {
     const static std::array<uint8_t, 18> text = {0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x2d, 0x65, 0x6e, 0x63, 0x6f, 0x64, 0x69, 0x6e, 0x67, 0x3a}; // transfer-encoding:
     for(; state.data < state.end; state.data++)
@@ -1033,7 +1033,7 @@ inline bool httpResp::text_5_0(state_t & state, bool isCaseCall)
     return true;
 }
 
-inline bool httpResp::range_5_1(state_t & state)
+inline bool httpResp::range_5_1(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
@@ -1275,7 +1275,7 @@ inline bool httpResp::string_5_2(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_5_3(state_t & state)
+inline bool httpResp::text_5_3(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -1293,7 +1293,7 @@ inline bool httpResp::text_5_3(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_5_4(state_t & state)
+inline bool httpResp::text_5_4(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -1330,7 +1330,7 @@ inline bool httpResp::any_6_0(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_6_0_0_0(state_t & state)
+inline bool httpResp::text_6_0_0_0(state_t & state) const
 {
     const static std::array<uint8_t, 15> text = {0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x6c, 0x65, 0x6e, 0x67, 0x74, 0x68, 0x3a}; // content-length:
     for(; state.data < state.end; state.data++)
@@ -1363,7 +1363,7 @@ inline bool httpResp::bang_6_0(state_t & state)
     return true;
 }
 
-inline bool httpResp::range_6_2(state_t & state)
+inline bool httpResp::range_6_2(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
@@ -1588,7 +1588,7 @@ inline bool httpResp::func_6_4(state_t & state)
     return false;
 }
 
-inline bool httpResp::text_6_5(state_t & state)
+inline bool httpResp::text_6_5(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -1606,7 +1606,7 @@ inline bool httpResp::text_6_5(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_6_6(state_t & state)
+inline bool httpResp::text_6_6(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -1643,7 +1643,7 @@ inline bool httpResp::any_7_0(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_7_0_0_0(state_t & state)
+inline bool httpResp::text_7_0_0_0(state_t & state) const
 {
     const static std::array<uint8_t, 13> text = {0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x74, 0x79, 0x70, 0x65, 0x3a}; // content-type:
     for(; state.data < state.end; state.data++)
@@ -1676,7 +1676,7 @@ inline bool httpResp::bang_7_0(state_t & state)
     return true;
 }
 
-inline bool httpResp::range_7_2(state_t & state)
+inline bool httpResp::range_7_2(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
@@ -1934,7 +1934,7 @@ inline bool httpResp::func_7_4(state_t & state)
     return false;
 }
 
-inline bool httpResp::text_7_5(state_t & state)
+inline bool httpResp::text_7_5(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -1952,7 +1952,7 @@ inline bool httpResp::text_7_5(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_7_6(state_t & state)
+inline bool httpResp::text_7_6(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -1989,7 +1989,7 @@ inline bool httpResp::any_8_0(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_8_0_0_0(state_t & state)
+inline bool httpResp::text_8_0_0_0(state_t & state) const
 {
     const static std::array<uint8_t, 17> text = {0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x65, 0x6e, 0x63, 0x6f, 0x64, 0x69, 0x6e, 0x67, 0x3a}; // content-encoding:
     for(; state.data < state.end; state.data++)
@@ -2022,7 +2022,7 @@ inline bool httpResp::bang_8_0(state_t & state)
     return true;
 }
 
-inline bool httpResp::range_8_2(state_t & state)
+inline bool httpResp::range_8_2(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
@@ -2280,7 +2280,7 @@ inline bool httpResp::func_8_4(state_t & state)
     return false;
 }
 
-inline bool httpResp::text_8_5(state_t & state)
+inline bool httpResp::text_8_5(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -2298,7 +2298,7 @@ inline bool httpResp::text_8_5(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_8_6(state_t & state)
+inline bool httpResp::text_8_6(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -2335,7 +2335,7 @@ inline bool httpResp::any_9_0(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_9_0_0_0(state_t & state)
+inline bool httpResp::text_9_0_0_0(state_t & state) const
 {
     const static std::array<uint8_t, 11> text = {0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x3a}; // connection:
     for(; state.data < state.end; state.data++)
@@ -2368,7 +2368,7 @@ inline bool httpResp::bang_9_0(state_t & state)
     return true;
 }
 
-inline bool httpResp::range_9_2(state_t & state)
+inline bool httpResp::range_9_2(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
@@ -2483,7 +2483,7 @@ inline bool httpResp::range_9_2(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_9_3(state_t & state)
+inline bool httpResp::text_9_3(state_t & state) const
 {
     const static std::array<uint8_t, 10> text = {0x6b, 0x65, 0x65, 0x70, 0x2d, 0x61, 0x6c, 0x69, 0x76, 0x65}; // keep-alive
     for(; state.data < state.end; state.data++)
@@ -2522,7 +2522,7 @@ inline bool httpResp::func_9_4(state_t & state)
     return false;
 }
 
-inline bool httpResp::text_9_5(state_t & state)
+inline bool httpResp::text_9_5(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -2540,7 +2540,7 @@ inline bool httpResp::text_9_5(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_9_6(state_t & state)
+inline bool httpResp::text_9_6(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -2558,7 +2558,7 @@ inline bool httpResp::text_9_6(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_10_0(state_t & state)
+inline bool httpResp::text_10_0(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -2576,7 +2576,7 @@ inline bool httpResp::text_10_0(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_10_1(state_t & state)
+inline bool httpResp::text_10_1(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -2594,7 +2594,7 @@ inline bool httpResp::text_10_1(state_t & state)
     return true;
 }
 
-inline bool httpResp::loop_10_2(state_t & state)
+inline bool httpResp::loop_10_2(state_t & state) const
 {
     if (if_11_0(state)) // case_1
         return true;
@@ -2608,7 +2608,7 @@ inline bool httpResp::loop_10_2(state_t & state)
     return true;
 }
 
-inline bool httpResp::if_11_0(state_t & state)
+inline bool httpResp::if_11_0(state_t & state) const
 {
     if (isContentLen)
     {
@@ -2640,13 +2640,13 @@ inline bool httpResp::data_11_1(state_t & state)
     return true;
 }
 
-inline bool httpResp::ret_11_2(state_t & state)
+inline bool httpResp::ret_11_2(state_t & state) const
 {
     state.node = state.retStackCount ? state.retStack[--state.retStackCount] : node_t::NO_STATE;
     return state.node != node_t::NO_STATE;
 }
 
-inline bool httpResp::if_12_0(state_t & state)
+inline bool httpResp::if_12_0(state_t & state) const
 {
     if (transferEncoding.find("chunked") != std::string::npos)
     {
@@ -2761,7 +2761,7 @@ inline bool httpResp::hex_13_0(state_t & state)
     return true;
 }
 
-inline bool httpResp::range_13_1(state_t & state)
+inline bool httpResp::range_13_1(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
@@ -2837,7 +2837,7 @@ inline bool httpResp::range_13_1(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_13_2(state_t & state)
+inline bool httpResp::text_13_2(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -2855,7 +2855,7 @@ inline bool httpResp::text_13_2(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_13_3(state_t & state)
+inline bool httpResp::text_13_3(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -2885,7 +2885,7 @@ inline bool httpResp::cases_13_4(state_t & state)
     return true;
 }
 
-inline bool httpResp::if_14_0(state_t & state)
+inline bool httpResp::if_14_0(state_t & state) const
 {
     if (!chunklen)
     {
@@ -2896,7 +2896,7 @@ inline bool httpResp::if_14_0(state_t & state)
     return false;
 }
 
-inline bool httpResp::text_14_1(state_t & state)
+inline bool httpResp::text_14_1(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -2914,7 +2914,7 @@ inline bool httpResp::text_14_1(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_14_2(state_t & state)
+inline bool httpResp::text_14_2(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -2932,7 +2932,7 @@ inline bool httpResp::text_14_2(state_t & state)
     return true;
 }
 
-inline bool httpResp::ret_14_3(state_t & state)
+inline bool httpResp::ret_14_3(state_t & state) const
 {
     state.node = state.retStackCount ? state.retStack[--state.retStackCount] : node_t::NO_STATE;
     return state.node != node_t::NO_STATE;
@@ -2959,7 +2959,7 @@ inline bool httpResp::data_15_0(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_15_1(state_t & state)
+inline bool httpResp::text_15_1(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -2977,7 +2977,7 @@ inline bool httpResp::text_15_1(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_15_2(state_t & state)
+inline bool httpResp::text_15_2(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -2995,7 +2995,7 @@ inline bool httpResp::text_15_2(state_t & state)
     return true;
 }
 
-inline bool httpResp::if_16_0(state_t & state)
+inline bool httpResp::if_16_0(state_t & state) const
 {
     if (!isKeepAlive)
     {
@@ -3019,13 +3019,13 @@ inline bool httpResp::data_16_1(state_t & state)
     return true;
 }
 
-inline bool httpResp::ret_17_0(state_t & state)
+inline bool httpResp::ret_17_0(state_t & state) const
 {
     state.node = state.retStackCount ? state.retStack[--state.retStackCount] : node_t::NO_STATE;
     return state.node != node_t::NO_STATE;
 }
 
-inline bool httpResp::range_18_0(state_t & state)
+inline bool httpResp::range_18_0(state_t & state) const
 {
     const static std::array<bool, 256> exitSym = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
@@ -3101,7 +3101,7 @@ inline bool httpResp::range_18_0(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_18_1(state_t & state)
+inline bool httpResp::text_18_1(state_t & state) const
 {
     if(state.data < state.end)
     {
@@ -3119,7 +3119,7 @@ inline bool httpResp::text_18_1(state_t & state)
     return true;
 }
 
-inline bool httpResp::text_18_2(state_t & state)
+inline bool httpResp::text_18_2(state_t & state) const
 {
     if(state.data < state.end)
     {
