@@ -1,6 +1,6 @@
 // ==============================================================
-// Date: 2025-11-11 05:24:04 GMT
-// Generated using vProto(2025.11.11)        https://www.cgen.dev
+// Date: 2025-11-16 07:23:23 GMT
+// Generated using vProto(2025.11.16)        https://www.cgen.dev
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // ==============================================================
 
@@ -40,36 +40,36 @@ private:
     enum class node_t
     {
         LOOP_1_0, // line_1
-            TEXT_1_0, RANGE_1_1, TEXT_1_2, RANGE_1_3, RANGE_1_4, RANGE_1_5, RANGE_1_6, TEXT_1_7, TEXT_1_8, CALL_1_9, RESET_1_10, 
+            TEXT_1_0, RANGE_1_1, TEXT_1_2, RANGE_1_3, RANGE_1_4, RANGE_1_5, RANGE_1_6, TEXT_1_7, TEXT_1_8, CALL_1_9, RESET_1_10,
         LOOP_3_0, // line_3
             LABEL_3_0, LOOP_3_1,
-                RANGE_4_0, RANGE_4_1, TEXT_4_2, TEXT_4_3, 
-                TEXT_5_0, RANGE_5_1, STRING_5_2, TEXT_5_3, TEXT_5_4, 
+                RANGE_4_0, RANGE_4_1, TEXT_4_2, TEXT_4_3,
+                TEXT_5_0, RANGE_5_1, STRING_5_2, TEXT_5_3, TEXT_5_4,
                 ANY_6_0,
-                    TEXT_6_0_0_0, 
-                        BANG_6_0, RANGE_6_2, UINT_6_3, FUNC_6_4, TEXT_6_5, TEXT_6_6, 
+                    TEXT_6_0_0_0,
+                        BANG_6_0, RANGE_6_2, UINT_6_3, FUNC_6_4, TEXT_6_5, TEXT_6_6,
                 ANY_7_0,
-                    TEXT_7_0_0_0, 
-                        BANG_7_0, RANGE_7_2, STRING_7_3, FUNC_7_4, TEXT_7_5, TEXT_7_6, 
+                    TEXT_7_0_0_0,
+                        BANG_7_0, RANGE_7_2, STRING_7_3, FUNC_7_4, TEXT_7_5, TEXT_7_6,
                 ANY_8_0,
-                    TEXT_8_0_0_0, 
-                        BANG_8_0, RANGE_8_2, STRING_8_3, FUNC_8_4, TEXT_8_5, TEXT_8_6, 
+                    TEXT_8_0_0_0,
+                        BANG_8_0, RANGE_8_2, STRING_8_3, FUNC_8_4, TEXT_8_5, TEXT_8_6,
                 ANY_9_0,
-                    TEXT_9_0_0_0, 
-                        BANG_9_0, RANGE_9_2, TEXT_9_3, FUNC_9_4, TEXT_9_5, TEXT_9_6, 
+                    TEXT_9_0_0_0,
+                        BANG_9_0, RANGE_9_2, TEXT_9_3, FUNC_9_4, TEXT_9_5, TEXT_9_6,
                 TEXT_10_0, TEXT_10_1, LOOP_10_2,
-                    IF_11_0, DATA_11_1, RET_11_2, 
+                    IF_11_0, DATA_11_1, RET_11_2,
                     IF_12_0, LOOP_12_1,
                         HEX_13_0, RANGE_13_1, TEXT_13_2, TEXT_13_3, CASES_13_4,
-                            IF_14_0, TEXT_14_1, TEXT_14_2, RET_14_3, 
-                            DATA_15_0, TEXT_15_1, TEXT_15_2, 
-                    IF_16_0, DATA_16_1, 
-                    RET_17_0, 
+                            IF_14_0, TEXT_14_1, TEXT_14_2, RET_14_3,
+                            DATA_15_0, TEXT_15_1, TEXT_15_2,
+                    IF_16_0, DATA_16_1,
+                    RET_17_0,
                  // catch:
-                RANGE_18_0, TEXT_18_1, TEXT_18_2, 
+                RANGE_18_0, TEXT_18_1, TEXT_18_2,
         LOOP_20_0, // line_20
-            BOOL_20_0, 
-            BOOL_21_0, 
+            BOOL_20_0,
+            BOOL_21_0,
         NO_STATE
     };
     struct state_t
