@@ -1,6 +1,6 @@
 // ==============================================================
-// Date: 2025-11-16 07:24:00 GMT
-// Generated using vProto(2025.11.16)        https://www.cgen.dev
+// Date: 2026-01-21 18:12:37 GMT
+// Generated using vProto(2026.01.21)        https://www.cgen.dev
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // autoSSE: 1 cpp98: 0 (SSE4.2: 1 AVX2: 1 SSE2: 1)
 // ==============================================================
@@ -24,12 +24,12 @@ inline unsigned __ctz32(uint32_t x) { return _tzcnt_u32(x); }
 inline unsigned __ctz32(uint32_t x) { return __builtin_ctz(x); }
 #endif
 
-inline void httpResp::parse(state_t & state)
+inline void httpResp::parse(StateT & state)
 {
     while(true)
     {
 #ifdef DEBUG_MODE
-        printf("State%s: %s data: [%x, %x, %x, %x, %x]=%.*s\n", &state == &mainState ? "" : "*", state.name(),
+        printf("State%s: %s data: [%x, %x, %x, %x, %x]=%.*s\n", &state == &mstate ? "" : "*", state.name(),
             uint8_t(&state.data[0] < state.end ? state.data[0] : 0),
             uint8_t(&state.data[1] < state.end ? state.data[1] : 0),
             uint8_t(&state.data[2] < state.end ? state.data[2] : 0),
@@ -37,96 +37,96 @@ inline void httpResp::parse(state_t & state)
             uint8_t(&state.data[4] < state.end ? state.data[4] : 0),
             10, state.data);
 #endif
-        node_t n = state.node;
+        NodeT n = state.node;
         const char * d = state.data;
         switch(state.node)
         {
-            case node_t::LOOP_1_0: loop_1_0(state); break;
-            case node_t::TEXT_1_0: if (!text_1_0(state, false) || state.node != node_t::RANGE_1_1) break; [[fallthrough]];
-            case node_t::RANGE_1_1: if (!range_1_1(state) || state.node != node_t::TEXT_1_2) break; [[fallthrough]];
-            case node_t::TEXT_1_2: if (!text_1_2(state) || state.node != node_t::RANGE_1_3) break; [[fallthrough]];
-            case node_t::RANGE_1_3: if (!range_1_3(state) || state.node != node_t::RANGE_1_4) break; [[fallthrough]];
-            case node_t::RANGE_1_4: if (!range_1_4(state) || state.node != node_t::RANGE_1_5) break; [[fallthrough]];
-            case node_t::RANGE_1_5: if (!range_1_5(state) || state.node != node_t::RANGE_1_6) break; [[fallthrough]];
-            case node_t::RANGE_1_6: if (!range_1_6(state) || state.node != node_t::TEXT_1_7) break; [[fallthrough]];
-            case node_t::TEXT_1_7: if (!text_1_7(state) || state.node != node_t::TEXT_1_8) break; [[fallthrough]];
-            case node_t::TEXT_1_8: if (!text_1_8(state) || state.node != node_t::CALL_1_9) break; [[fallthrough]];
-            case node_t::CALL_1_9: if (!call_1_9(state) || state.node != node_t::RESET_1_10) break; [[fallthrough]];
-            case node_t::RESET_1_10: reset_1_10(state); break;
-            case node_t::LOOP_3_0: loop_3_0(state); break;
-            case node_t::LABEL_3_0: if (!label_3_0(state) || state.node != node_t::LOOP_3_1) break; [[fallthrough]];
-            case node_t::LOOP_3_1: loop_3_1(state); break;
-            case node_t::RANGE_4_0: if (!range_4_0(state) || state.node != node_t::RANGE_4_1) break; [[fallthrough]];
-            case node_t::RANGE_4_1: if (!range_4_1(state) || state.node != node_t::TEXT_4_2) break; [[fallthrough]];
-            case node_t::TEXT_4_2: if (!text_4_2(state) || state.node != node_t::TEXT_4_3) break; [[fallthrough]];
-            case node_t::TEXT_4_3: text_4_3(state); break;
-            case node_t::TEXT_5_0: if (!text_5_0(state, false) || state.node != node_t::RANGE_5_1) break; [[fallthrough]];
-            case node_t::RANGE_5_1: if (!range_5_1(state) || state.node != node_t::STRING_5_2) break; [[fallthrough]];
-            case node_t::STRING_5_2: if (!string_5_2(state) || state.node != node_t::TEXT_5_3) break; [[fallthrough]];
-            case node_t::TEXT_5_3: if (!text_5_3(state) || state.node != node_t::TEXT_5_4) break; [[fallthrough]];
-            case node_t::TEXT_5_4: text_5_4(state); break;
-            case node_t::ANY_6_0: any_6_0(state); break;
-            case node_t::TEXT_6_0_0_0: if (!text_6_0_0_0(state) || state.node != node_t::BANG_6_0) break; [[fallthrough]];
-            case node_t::BANG_6_0: if (!bang_6_0(state) || state.node != node_t::RANGE_6_2) break; [[fallthrough]];
-            case node_t::RANGE_6_2: if (!range_6_2(state) || state.node != node_t::UINT_6_3) break; [[fallthrough]];
-            case node_t::UINT_6_3: if (!uint_6_3(state) || state.node != node_t::FUNC_6_4) break; [[fallthrough]];
-            case node_t::FUNC_6_4: if (!func_6_4(state) || state.node != node_t::TEXT_6_5) break; [[fallthrough]];
-            case node_t::TEXT_6_5: if (!text_6_5(state) || state.node != node_t::TEXT_6_6) break; [[fallthrough]];
-            case node_t::TEXT_6_6: text_6_6(state); break;
-            case node_t::ANY_7_0: any_7_0(state); break;
-            case node_t::TEXT_7_0_0_0: if (!text_7_0_0_0(state) || state.node != node_t::BANG_7_0) break; [[fallthrough]];
-            case node_t::BANG_7_0: if (!bang_7_0(state) || state.node != node_t::RANGE_7_2) break; [[fallthrough]];
-            case node_t::RANGE_7_2: if (!range_7_2(state) || state.node != node_t::STRING_7_3) break; [[fallthrough]];
-            case node_t::STRING_7_3: if (!string_7_3(state) || state.node != node_t::FUNC_7_4) break; [[fallthrough]];
-            case node_t::FUNC_7_4: if (!func_7_4(state) || state.node != node_t::TEXT_7_5) break; [[fallthrough]];
-            case node_t::TEXT_7_5: if (!text_7_5(state) || state.node != node_t::TEXT_7_6) break; [[fallthrough]];
-            case node_t::TEXT_7_6: text_7_6(state); break;
-            case node_t::ANY_8_0: any_8_0(state); break;
-            case node_t::TEXT_8_0_0_0: if (!text_8_0_0_0(state) || state.node != node_t::BANG_8_0) break; [[fallthrough]];
-            case node_t::BANG_8_0: if (!bang_8_0(state) || state.node != node_t::RANGE_8_2) break; [[fallthrough]];
-            case node_t::RANGE_8_2: if (!range_8_2(state) || state.node != node_t::STRING_8_3) break; [[fallthrough]];
-            case node_t::STRING_8_3: if (!string_8_3(state) || state.node != node_t::FUNC_8_4) break; [[fallthrough]];
-            case node_t::FUNC_8_4: if (!func_8_4(state) || state.node != node_t::TEXT_8_5) break; [[fallthrough]];
-            case node_t::TEXT_8_5: if (!text_8_5(state) || state.node != node_t::TEXT_8_6) break; [[fallthrough]];
-            case node_t::TEXT_8_6: text_8_6(state); break;
-            case node_t::ANY_9_0: any_9_0(state); break;
-            case node_t::TEXT_9_0_0_0: if (!text_9_0_0_0(state) || state.node != node_t::BANG_9_0) break; [[fallthrough]];
-            case node_t::BANG_9_0: if (!bang_9_0(state) || state.node != node_t::RANGE_9_2) break; [[fallthrough]];
-            case node_t::RANGE_9_2: if (!range_9_2(state) || state.node != node_t::TEXT_9_3) break; [[fallthrough]];
-            case node_t::TEXT_9_3: if (!text_9_3(state) || state.node != node_t::FUNC_9_4) break; [[fallthrough]];
-            case node_t::FUNC_9_4: if (!func_9_4(state) || state.node != node_t::TEXT_9_5) break; [[fallthrough]];
-            case node_t::TEXT_9_5: if (!text_9_5(state) || state.node != node_t::TEXT_9_6) break; [[fallthrough]];
-            case node_t::TEXT_9_6: text_9_6(state); break;
-            case node_t::TEXT_10_0: if (!text_10_0(state) || state.node != node_t::TEXT_10_1) break; [[fallthrough]];
-            case node_t::TEXT_10_1: if (!text_10_1(state) || state.node != node_t::LOOP_10_2) break; [[fallthrough]];
-            case node_t::LOOP_10_2: loop_10_2(state); break;
-            case node_t::IF_11_0: if (!if_11_0(state) || state.node != node_t::DATA_11_1) break; [[fallthrough]];
-            case node_t::DATA_11_1: if (!data_11_1(state) || state.node != node_t::RET_11_2) break; [[fallthrough]];
-            case node_t::RET_11_2: ret_11_2(state); break;
-            case node_t::IF_12_0: if (!if_12_0(state) || state.node != node_t::LOOP_12_1) break; [[fallthrough]];
-            case node_t::LOOP_12_1: loop_12_1(state); break;
-            case node_t::HEX_13_0: if (!hex_13_0(state) || state.node != node_t::RANGE_13_1) break; [[fallthrough]];
-            case node_t::RANGE_13_1: if (!range_13_1(state) || state.node != node_t::TEXT_13_2) break; [[fallthrough]];
-            case node_t::TEXT_13_2: if (!text_13_2(state) || state.node != node_t::TEXT_13_3) break; [[fallthrough]];
-            case node_t::TEXT_13_3: if (!text_13_3(state) || state.node != node_t::CASES_13_4) break; [[fallthrough]];
-            case node_t::CASES_13_4: cases_13_4(state); break;
-            case node_t::IF_14_0: if (!if_14_0(state) || state.node != node_t::TEXT_14_1) break; [[fallthrough]];
-            case node_t::TEXT_14_1: if (!text_14_1(state) || state.node != node_t::TEXT_14_2) break; [[fallthrough]];
-            case node_t::TEXT_14_2: if (!text_14_2(state) || state.node != node_t::RET_14_3) break; [[fallthrough]];
-            case node_t::RET_14_3: ret_14_3(state); break;
-            case node_t::DATA_15_0: if (!data_15_0(state) || state.node != node_t::TEXT_15_1) break; [[fallthrough]];
-            case node_t::TEXT_15_1: if (!text_15_1(state) || state.node != node_t::TEXT_15_2) break; [[fallthrough]];
-            case node_t::TEXT_15_2: text_15_2(state); break;
-            case node_t::IF_16_0: if (!if_16_0(state) || state.node != node_t::DATA_16_1) break; [[fallthrough]];
-            case node_t::DATA_16_1: data_16_1(state); break;
-            case node_t::RET_17_0: ret_17_0(state); break;
-            case node_t::RANGE_18_0: if (!range_18_0(state) || state.node != node_t::TEXT_18_1) break; [[fallthrough]];
-            case node_t::TEXT_18_1: if (!text_18_1(state) || state.node != node_t::TEXT_18_2) break; [[fallthrough]];
-            case node_t::TEXT_18_2: text_18_2(state); break;
-            case node_t::LOOP_20_0: loop_20_0(state); break;
-            case node_t::BOOL_20_0: bool_20_0(state); break;
-            case node_t::BOOL_21_0: bool_21_0(state); break;
-            case node_t::NO_STATE:
+            case NodeT::Loop1_0: loop1_0(state); break;
+            case NodeT::Text1_0: if (!text1_0(state, false) || state.node != NodeT::Range1_1) break; [[fallthrough]];
+            case NodeT::Range1_1: if (!range1_1(state) || state.node != NodeT::Text1_2) break; [[fallthrough]];
+            case NodeT::Text1_2: if (!text1_2(state) || state.node != NodeT::Range1_3) break; [[fallthrough]];
+            case NodeT::Range1_3: if (!range1_3(state) || state.node != NodeT::Range1_4) break; [[fallthrough]];
+            case NodeT::Range1_4: if (!range1_4(state) || state.node != NodeT::Range1_5) break; [[fallthrough]];
+            case NodeT::Range1_5: if (!range1_5(state) || state.node != NodeT::Range1_6) break; [[fallthrough]];
+            case NodeT::Range1_6: if (!range1_6(state) || state.node != NodeT::Text1_7) break; [[fallthrough]];
+            case NodeT::Text1_7: if (!text1_7(state) || state.node != NodeT::Text1_8) break; [[fallthrough]];
+            case NodeT::Text1_8: if (!text1_8(state) || state.node != NodeT::Call1_9) break; [[fallthrough]];
+            case NodeT::Call1_9: if (!call1_9(state) || state.node != NodeT::Reset1_10) break; [[fallthrough]];
+            case NodeT::Reset1_10: reset1_10(state); break;
+            case NodeT::Loop3_0: loop3_0(state); break;
+            case NodeT::Label3_0: if (!label3_0(state) || state.node != NodeT::Loop3_1) break; [[fallthrough]];
+            case NodeT::Loop3_1: loop3_1(state); break;
+            case NodeT::Range4_0: if (!range4_0(state) || state.node != NodeT::Range4_1) break; [[fallthrough]];
+            case NodeT::Range4_1: if (!range4_1(state) || state.node != NodeT::Text4_2) break; [[fallthrough]];
+            case NodeT::Text4_2: if (!text4_2(state) || state.node != NodeT::Text4_3) break; [[fallthrough]];
+            case NodeT::Text4_3: text4_3(state); break;
+            case NodeT::Text5_0: if (!text5_0(state, false) || state.node != NodeT::Range5_1) break; [[fallthrough]];
+            case NodeT::Range5_1: if (!range5_1(state) || state.node != NodeT::String5_2) break; [[fallthrough]];
+            case NodeT::String5_2: if (!string5_2(state) || state.node != NodeT::Text5_3) break; [[fallthrough]];
+            case NodeT::Text5_3: if (!text5_3(state) || state.node != NodeT::Text5_4) break; [[fallthrough]];
+            case NodeT::Text5_4: text5_4(state); break;
+            case NodeT::Any6_0: any6_0(state); break;
+            case NodeT::Text6_0_0_0: if (!text6_0_0_0(state) || state.node != NodeT::Bang6_0) break; [[fallthrough]];
+            case NodeT::Bang6_0: if (!bang6_0(state) || state.node != NodeT::Range6_2) break; [[fallthrough]];
+            case NodeT::Range6_2: if (!range6_2(state) || state.node != NodeT::Uint6_3) break; [[fallthrough]];
+            case NodeT::Uint6_3: if (!uint6_3(state) || state.node != NodeT::Func6_4) break; [[fallthrough]];
+            case NodeT::Func6_4: if (!func6_4(state) || state.node != NodeT::Text6_5) break; [[fallthrough]];
+            case NodeT::Text6_5: if (!text6_5(state) || state.node != NodeT::Text6_6) break; [[fallthrough]];
+            case NodeT::Text6_6: text6_6(state); break;
+            case NodeT::Any7_0: any7_0(state); break;
+            case NodeT::Text7_0_0_0: if (!text7_0_0_0(state) || state.node != NodeT::Bang7_0) break; [[fallthrough]];
+            case NodeT::Bang7_0: if (!bang7_0(state) || state.node != NodeT::Range7_2) break; [[fallthrough]];
+            case NodeT::Range7_2: if (!range7_2(state) || state.node != NodeT::String7_3) break; [[fallthrough]];
+            case NodeT::String7_3: if (!string7_3(state) || state.node != NodeT::Func7_4) break; [[fallthrough]];
+            case NodeT::Func7_4: if (!func7_4(state) || state.node != NodeT::Text7_5) break; [[fallthrough]];
+            case NodeT::Text7_5: if (!text7_5(state) || state.node != NodeT::Text7_6) break; [[fallthrough]];
+            case NodeT::Text7_6: text7_6(state); break;
+            case NodeT::Any8_0: any8_0(state); break;
+            case NodeT::Text8_0_0_0: if (!text8_0_0_0(state) || state.node != NodeT::Bang8_0) break; [[fallthrough]];
+            case NodeT::Bang8_0: if (!bang8_0(state) || state.node != NodeT::Range8_2) break; [[fallthrough]];
+            case NodeT::Range8_2: if (!range8_2(state) || state.node != NodeT::String8_3) break; [[fallthrough]];
+            case NodeT::String8_3: if (!string8_3(state) || state.node != NodeT::Func8_4) break; [[fallthrough]];
+            case NodeT::Func8_4: if (!func8_4(state) || state.node != NodeT::Text8_5) break; [[fallthrough]];
+            case NodeT::Text8_5: if (!text8_5(state) || state.node != NodeT::Text8_6) break; [[fallthrough]];
+            case NodeT::Text8_6: text8_6(state); break;
+            case NodeT::Any9_0: any9_0(state); break;
+            case NodeT::Text9_0_0_0: if (!text9_0_0_0(state) || state.node != NodeT::Bang9_0) break; [[fallthrough]];
+            case NodeT::Bang9_0: if (!bang9_0(state) || state.node != NodeT::Range9_2) break; [[fallthrough]];
+            case NodeT::Range9_2: if (!range9_2(state) || state.node != NodeT::Text9_3) break; [[fallthrough]];
+            case NodeT::Text9_3: if (!text9_3(state) || state.node != NodeT::Func9_4) break; [[fallthrough]];
+            case NodeT::Func9_4: if (!func9_4(state) || state.node != NodeT::Text9_5) break; [[fallthrough]];
+            case NodeT::Text9_5: if (!text9_5(state) || state.node != NodeT::Text9_6) break; [[fallthrough]];
+            case NodeT::Text9_6: text9_6(state); break;
+            case NodeT::Text10_0: if (!text10_0(state) || state.node != NodeT::Text10_1) break; [[fallthrough]];
+            case NodeT::Text10_1: if (!text10_1(state) || state.node != NodeT::Loop10_2) break; [[fallthrough]];
+            case NodeT::Loop10_2: loop10_2(state); break;
+            case NodeT::If11_0: if (!if11_0(state) || state.node != NodeT::Data11_1) break; [[fallthrough]];
+            case NodeT::Data11_1: if (!data11_1(state) || state.node != NodeT::Ret11_2) break; [[fallthrough]];
+            case NodeT::Ret11_2: ret11_2(state); break;
+            case NodeT::If12_0: if (!if12_0(state) || state.node != NodeT::Loop12_1) break; [[fallthrough]];
+            case NodeT::Loop12_1: loop12_1(state); break;
+            case NodeT::Hex13_0: if (!hex13_0(state) || state.node != NodeT::Range13_1) break; [[fallthrough]];
+            case NodeT::Range13_1: if (!range13_1(state) || state.node != NodeT::Text13_2) break; [[fallthrough]];
+            case NodeT::Text13_2: if (!text13_2(state) || state.node != NodeT::Text13_3) break; [[fallthrough]];
+            case NodeT::Text13_3: if (!text13_3(state) || state.node != NodeT::Cases13_4) break; [[fallthrough]];
+            case NodeT::Cases13_4: cases13_4(state); break;
+            case NodeT::If14_0: if (!if14_0(state) || state.node != NodeT::Text14_1) break; [[fallthrough]];
+            case NodeT::Text14_1: if (!text14_1(state) || state.node != NodeT::Text14_2) break; [[fallthrough]];
+            case NodeT::Text14_2: if (!text14_2(state) || state.node != NodeT::Ret14_3) break; [[fallthrough]];
+            case NodeT::Ret14_3: ret14_3(state); break;
+            case NodeT::Data15_0: if (!data15_0(state) || state.node != NodeT::Text15_1) break; [[fallthrough]];
+            case NodeT::Text15_1: if (!text15_1(state) || state.node != NodeT::Text15_2) break; [[fallthrough]];
+            case NodeT::Text15_2: text15_2(state); break;
+            case NodeT::If16_0: if (!if16_0(state) || state.node != NodeT::Data16_1) break; [[fallthrough]];
+            case NodeT::Data16_1: data16_1(state); break;
+            case NodeT::Ret17_0: ret17_0(state); break;
+            case NodeT::Range18_0: if (!range18_0(state) || state.node != NodeT::Text18_1) break; [[fallthrough]];
+            case NodeT::Text18_1: if (!text18_1(state) || state.node != NodeT::Text18_2) break; [[fallthrough]];
+            case NodeT::Text18_2: text18_2(state); break;
+            case NodeT::Loop20_0: loop20_0(state); break;
+            case NodeT::Bool20_0: bool20_0(state); break;
+            case NodeT::Bool21_0: bool21_0(state); break;
+            case NodeT::NoState:
             default: return;
         }; // switch
         if (d == state.data && n == state.node) [[unlikely]]
@@ -136,54 +136,54 @@ inline void httpResp::parse(state_t & state)
 
 bool httpResp::parse(const char * data, unsigned len)
 {
-    mainState.data = data;
-    mainState.end = &data[len];
-    for(auto & p : prlState)
+    mstate.data = data;
+    mstate.end = &data[len];
+    for(auto & p : pstate)
     {
         p.data = data;
         p.end = &data[len];
     }
-    for(bool repeatParse = true; repeatParse; )
+    for(bool reparse = true; reparse; )
     {
-        repeatParse = false;
-        unsigned oNum = 0;;
-        for(unsigned i = 0; i < prlState.size(); i++)
+        reparse = false;
+        unsigned outflow = 0;;
+        for(unsigned i = 0; i < pstate.size(); i++)
         {
-            if (prlState[i].remainDataLen())
+            if (pstate[i].remain())
             {
-                state_t state = prlState[i];
+                StateT state = pstate[i];
                 parse(state);
-                if (state.node == node_t::NO_STATE)
+                if (state.node == NodeT::NoState)
                     continue;
-                repeatParse = true;
-                prlState[oNum] = state;
+                reparse = true;
+                pstate[outflow] = state;
             }
-            else if (i != oNum)
-                prlState[oNum] = prlState[i];
-            oNum++;
+            else if (i != outflow)
+                pstate[outflow] = pstate[i];
+            outflow++;
         }
-        prlState.resize(oNum);
-        parse(mainState);
-        if (mainState.node != node_t::NO_STATE && mainState.remainDataLen())
-            repeatParse = true;
+        pstate.resize(outflow);
+        parse(mstate);
+        if (mstate.node != NodeT::NoState && mstate.remain())
+            reparse = true;
     }
-    return mainState.node != node_t::NO_STATE || !prlState.empty();
+    return mstate.node != NodeT::NoState || !pstate.empty();
 }
 
-inline bool httpResp::loop_1_0(state_t & state) const
+inline bool httpResp::loop1_0(StateT & state) const
 {
-    return text_1_0(state, false);
+    return text1_0(state, false);
 }
 
-inline bool httpResp::text_1_0(state_t & state, bool isCaseCall) const
+inline bool httpResp::text1_0(StateT & state, bool is_branch) const
 {
     const static std::array<uint8_t, 5> text = {0x48, 0x54, 0x54, 0x50, 0x2f}; // http/
     for(; state.data < state.end; state.data++)
     {
         if (text[state.consumed] != uint8_t(state.data[0]))
         {
-            state.node = node_t::NO_STATE;
-            bool ret = isCaseCall && state.consumed;
+            state.node = NodeT::NoState;
+            bool ret = is_branch && state.consumed;
             state.consumed = 0;
             return ret;
         }
@@ -191,17 +191,17 @@ inline bool httpResp::text_1_0(state_t & state, bool isCaseCall) const
         {
             state.data++;
             state.consumed = 0;
-            state.node = node_t::RANGE_1_1;
+            state.node = NodeT::Range1_1;
             return true;
         }
     }
-    state.node = node_t::TEXT_1_0;
+    state.node = NodeT::Text1_0;
     return true;
 }
 
-inline bool httpResp::range_1_1(state_t & state) const
+inline bool httpResp::range1_1(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -218,7 +218,7 @@ inline bool httpResp::range_1_1(state_t & state) const
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true}; // [0-9]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
 #if defined(__SSE4_2__)
@@ -238,37 +238,37 @@ inline bool httpResp::range_1_1(state_t & state) const
 #else
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -277,48 +277,48 @@ inline bool httpResp::range_1_1(state_t & state) const
             }
         }
 #endif
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::TEXT_1_2;
+            state.node = NodeT::Text1_2;
             return true;
         } else {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             return false;
         }
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_1_1;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range1_1;
     return true;
 }
 
-inline bool httpResp::text_1_2(state_t & state) const
+inline bool httpResp::text1_2(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x2E) != uint8_t(state.data[0]))
         {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             return false;
         } else {
             state.data++;
-            state.node = node_t::RANGE_1_3;
+            state.node = NodeT::Range1_3;
             return true;
         }
     }
-    state.node = node_t::TEXT_1_2;
+    state.node = NodeT::Text1_2;
     return true;
 }
 
-inline bool httpResp::range_1_3(state_t & state) const
+inline bool httpResp::range1_3(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -335,7 +335,7 @@ inline bool httpResp::range_1_3(state_t & state) const
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true}; // [0-9]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
 #if defined(__SSE4_2__)
@@ -355,37 +355,37 @@ inline bool httpResp::range_1_3(state_t & state) const
 #else
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -394,30 +394,30 @@ inline bool httpResp::range_1_3(state_t & state) const
             }
         }
 #endif
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::RANGE_1_4;
+            state.node = NodeT::Range1_4;
             return true;
         } else {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             return false;
         }
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_1_3;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range1_3;
     return true;
 }
 
-inline bool httpResp::range_1_4(state_t & state) const
+inline bool httpResp::range1_4(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -434,7 +434,7 @@ inline bool httpResp::range_1_4(state_t & state) const
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true}; // [0x9][0x20]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
 #if defined(__AVX2__)
@@ -470,37 +470,37 @@ inline bool httpResp::range_1_4(state_t & state) const
 #else
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -509,30 +509,30 @@ inline bool httpResp::range_1_4(state_t & state) const
             }
         }
 #endif
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::RANGE_1_5;
+            state.node = NodeT::Range1_5;
             return true;
         } else {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             return false;
         }
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_1_4;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range1_4;
     return true;
 }
 
-inline bool httpResp::range_1_5(state_t & state) const
+inline bool httpResp::range1_5(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -549,7 +549,7 @@ inline bool httpResp::range_1_5(state_t & state) const
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true}; // [0-9]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
 #if defined(__SSE4_2__)
@@ -569,37 +569,37 @@ inline bool httpResp::range_1_5(state_t & state) const
 #else
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -608,30 +608,30 @@ inline bool httpResp::range_1_5(state_t & state) const
             }
         }
 #endif
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::RANGE_1_6;
+            state.node = NodeT::Range1_6;
             return true;
         } else {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             return false;
         }
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_1_5;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range1_5;
     return true;
 }
 
-inline bool httpResp::range_1_6(state_t & state) const
+inline bool httpResp::range1_6(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
@@ -648,42 +648,42 @@ inline bool httpResp::range_1_6(state_t & state) const
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}; // ^[0xa][0xd]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -691,123 +691,123 @@ inline bool httpResp::range_1_6(state_t & state) const
                 continue;
             }
         }
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
         state.consumed = 0;
-        state.node = node_t::TEXT_1_7;
+        state.node = NodeT::Text1_7;
         return true;
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_1_6;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range1_6;
     return true;
 }
 
-inline bool httpResp::text_1_7(state_t & state) const
+inline bool httpResp::text1_7(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0D) != uint8_t(state.data[0]))
         {
-            state.node = node_t::TEXT_1_8;
+            state.node = NodeT::Text1_8;
             return true;
         } else {
             state.data++;
-            state.node = node_t::TEXT_1_8;
+            state.node = NodeT::Text1_8;
             return true;
         }
     }
-    state.node = node_t::TEXT_1_7;
+    state.node = NodeT::Text1_7;
     return true;
 }
 
-inline bool httpResp::text_1_8(state_t & state) const
+inline bool httpResp::text1_8(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0A) != uint8_t(state.data[0]))
         {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             return false;
         } else {
             state.data++;
-            state.node = node_t::CALL_1_9;
+            state.node = NodeT::Call1_9;
             return true;
         }
     }
-    state.node = node_t::TEXT_1_8;
+    state.node = NodeT::Text1_8;
     return true;
 }
 
-inline bool httpResp::call_1_9(state_t & state) const
+inline bool httpResp::call1_9(StateT & state) const
 {
-    state.node = node_t::LABEL_3_0;
-    if (state.retStackCount < state.retStack.size())
-        state.retStack[state.retStackCount++] = node_t::RESET_1_10;
+    state.node = NodeT::Label3_0;
+    if (state.rcount < state.rstack.size())
+        state.rstack[state.rcount++] = NodeT::Reset1_10;
     else
     {
-        for(unsigned i = 1; i < state.retStack.size(); i++)
-            state.retStack[i - 1] = state.retStack[i];
-        state.retStack[state.retStack.size() - 1] = node_t::RESET_1_10;
+        for(unsigned i = 1; i < state.rstack.size(); i++)
+            state.rstack[i - 1] = state.rstack[i];
+        state.rstack[state.rstack.size() - 1] = NodeT::Reset1_10;
     }
     return true;
 }
 
-inline bool httpResp::reset_1_10(state_t & state)
+inline bool httpResp::reset1_10(StateT & state)
 {
     const char * d = state.data;
     const char * e = state.end;
-    if (&mainState != &state)
-        state.node = node_t::NO_STATE;
+    if (&mstate != &state)
+        state.node = NodeT::NoState;
     httpResp::reset();
-    mainState.data = d;
-    mainState.end = e;
+    mstate.data = d;
+    mstate.end = e;
     return true;
 }
 
-inline bool httpResp::loop_3_0(state_t & state) const
+inline bool httpResp::loop3_0(StateT & state) const
 {
-    return label_3_0(state);
+    return label3_0(state);
 }
 
-inline bool httpResp::label_3_0(state_t & state) const
+inline bool httpResp::label3_0(StateT & state) const
 {
-    state.node = node_t::LOOP_3_1;
+    state.node = NodeT::Loop3_1;
     return true;
 }
 
-inline bool httpResp::loop_3_1(state_t & state)
+inline bool httpResp::loop3_1(StateT & state)
 {
     if (state.data == state.end)
         return true;
-    if (range_4_0(state)) // case_1
+    if (range4_0(state)) // case_1
         return true;
-    if (text_5_0(state, true)) // case_2
+    if (text5_0(state, true)) // case_2
         return true;
-    state_t startState = state;
-    if (any_6_0(state)) // case_3
+    StateT istate = state;
+    if (any6_0(state)) // case_3
         return true;
-    state = startState;
-    if (any_7_0(state)) // case_4
+    state = istate;
+    if (any7_0(state)) // case_4
         return true;
-    state = startState;
-    if (any_8_0(state)) // case_5
+    state = istate;
+    if (any8_0(state)) // case_5
         return true;
-    state = startState;
-    if (any_9_0(state)) // case_6
+    state = istate;
+    if (any9_0(state)) // case_6
         return true;
-    state = startState;
-    if (text_10_0(state)) // case_7
+    state = istate;
+    if (text10_0(state)) // case_7
         return true;
-    state.node = node_t::RANGE_18_0;
+    state.node = NodeT::Range18_0;
     return true;
 }
 
-inline bool httpResp::range_4_0(state_t & state) const
+inline bool httpResp::range4_0(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -824,42 +824,42 @@ inline bool httpResp::range_4_0(state_t & state) const
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true}; // [0x9][0x20]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -867,30 +867,30 @@ inline bool httpResp::range_4_0(state_t & state) const
                 continue;
             }
         }
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::RANGE_4_1;
+            state.node = NodeT::Range4_1;
             return true;
         } else {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         }
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_4_0;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range4_0;
     return true;
 }
 
-inline bool httpResp::range_4_1(state_t & state) const
+inline bool httpResp::range4_1(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
@@ -907,42 +907,42 @@ inline bool httpResp::range_4_1(state_t & state) const
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}; // ^[0xa][0xd]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -950,65 +950,65 @@ inline bool httpResp::range_4_1(state_t & state) const
                 continue;
             }
         }
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
         state.consumed = 0;
-        state.node = node_t::TEXT_4_2;
+        state.node = NodeT::Text4_2;
         return true;
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_4_1;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range4_1;
     return true;
 }
 
-inline bool httpResp::text_4_2(state_t & state) const
+inline bool httpResp::text4_2(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0D) != uint8_t(state.data[0]))
         {
-            state.node = node_t::TEXT_4_3;
+            state.node = NodeT::Text4_3;
             return true;
         } else {
             state.data++;
-            state.node = node_t::TEXT_4_3;
+            state.node = NodeT::Text4_3;
             return true;
         }
     }
-    state.node = node_t::TEXT_4_2;
+    state.node = NodeT::Text4_2;
     return true;
 }
 
-inline bool httpResp::text_4_3(state_t & state) const
+inline bool httpResp::text4_3(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0A) != uint8_t(state.data[0]))
         {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         } else {
             state.data++;
-            state.node = node_t::LOOP_3_1;
+            state.node = NodeT::Loop3_1;
             return true;
         }
     }
-    state.node = node_t::TEXT_4_3;
+    state.node = NodeT::Text4_3;
     return true;
 }
 
-inline bool httpResp::text_5_0(state_t & state, bool isCaseCall) const
+inline bool httpResp::text5_0(StateT & state, bool is_branch) const
 {
     const static std::array<uint8_t, 18> text = {0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x2d, 0x65, 0x6e, 0x63, 0x6f, 0x64, 0x69, 0x6e, 0x67, 0x3a}; // transfer-encoding:
     for(; state.data < state.end; state.data++)
     {
         if ((text[state.consumed] ^ uint8_t(state.data[0])) & 0xDF)
         {
-            state.node = node_t::RANGE_18_0;
-            bool ret = isCaseCall && state.consumed;
+            state.node = NodeT::Range18_0;
+            bool ret = is_branch && state.consumed;
             state.consumed = 0;
             return ret;
         }
@@ -1016,17 +1016,17 @@ inline bool httpResp::text_5_0(state_t & state, bool isCaseCall) const
         {
             state.data++;
             state.consumed = 0;
-            state.node = node_t::RANGE_5_1;
+            state.node = NodeT::Range5_1;
             return true;
         }
     }
-    state.node = node_t::TEXT_5_0;
+    state.node = NodeT::Text5_0;
     return true;
 }
 
-inline bool httpResp::range_5_1(state_t & state) const
+inline bool httpResp::range5_1(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -1043,7 +1043,7 @@ inline bool httpResp::range_5_1(state_t & state) const
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true}; // [0x9][0x20]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
 #if defined(__AVX2__)
@@ -1079,37 +1079,37 @@ inline bool httpResp::range_5_1(state_t & state) const
 #else
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -1118,28 +1118,28 @@ inline bool httpResp::range_5_1(state_t & state) const
             }
         }
 #endif
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::STRING_5_2;
+            state.node = NodeT::String5_2;
             return true;
         } else {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         }
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_5_1;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range5_1;
     return true;
 }
 
-void httpResp::_string_5_2(const char * data, unsigned len, uint64_t consumed)
+void httpResp::string5_2(const char * data, unsigned len, uint64_t consumed)
 {
     if (!consumed)
         httpRespResult::transferEncoding.clear();
@@ -1148,9 +1148,9 @@ void httpResp::_string_5_2(const char * data, unsigned len, uint64_t consumed)
     httpRespResult::transferEncoding.append(data, len);
 }
 
-inline bool httpResp::string_5_2(state_t & state)
+inline bool httpResp::string5_2(StateT & state)
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
@@ -1167,7 +1167,7 @@ inline bool httpResp::string_5_2(state_t & state)
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}; // ^[0xa][0xd]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
 #if defined(__AVX2__)
@@ -1203,37 +1203,37 @@ inline bool httpResp::string_5_2(state_t & state)
 #else
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -1242,87 +1242,87 @@ inline bool httpResp::string_5_2(state_t & state)
             }
         }
 #endif
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        _string_5_2(beginData, unsigned(state.data - beginData), state.consumed);
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        string5_2(datastart, unsigned(state.data - datastart), state.consumed);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::TEXT_5_3;
+            state.node = NodeT::Text5_3;
             return true;
         } else {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         }
     }
-    if (beginData < state.data)
-        _string_5_2(beginData, unsigned(state.data - beginData), state.consumed);
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::STRING_5_2;
+    if (datastart < state.data)
+        string5_2(datastart, unsigned(state.data - datastart), state.consumed);
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::String5_2;
     return true;
 }
 
-inline bool httpResp::text_5_3(state_t & state) const
+inline bool httpResp::text5_3(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0D) != uint8_t(state.data[0]))
         {
-            state.node = node_t::TEXT_5_4;
+            state.node = NodeT::Text5_4;
             return true;
         } else {
             state.data++;
-            state.node = node_t::TEXT_5_4;
+            state.node = NodeT::Text5_4;
             return true;
         }
     }
-    state.node = node_t::TEXT_5_3;
+    state.node = NodeT::Text5_3;
     return true;
 }
 
-inline bool httpResp::text_5_4(state_t & state) const
+inline bool httpResp::text5_4(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0A) != uint8_t(state.data[0]))
         {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         } else {
             state.data++;
-            state.node = node_t::LOOP_3_1;
+            state.node = NodeT::Loop3_1;
             return true;
         }
     }
-    state.node = node_t::TEXT_5_4;
+    state.node = NodeT::Text5_4;
     return true;
 }
 
-inline bool httpResp::any_6_0(state_t & state)
+inline bool httpResp::any6_0(StateT & state)
 {
     if (state.data == state.end)
         return true;
-    // case_1: TEXT_6_0_0_0
-    if (text_6_0_0_0(state) && state.node == node_t::BANG_6_0)
+    // case_1: Text6_0_0_0
+    if (text6_0_0_0(state) && state.node == NodeT::Bang6_0)
         return true;
-    else if (state.node != node_t::NO_STATE)
-        prlState.push_back(state);
-    state.node = node_t::RANGE_18_0;
+    else if (state.node != NodeT::NoState)
+        pstate.push_back(state);
+    state.node = NodeT::Range18_0;
     return false;
 }
 
-inline bool httpResp::text_6_0_0_0(state_t & state) const
+inline bool httpResp::text6_0_0_0(StateT & state) const
 {
     const static std::array<uint8_t, 15> text = {0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x6c, 0x65, 0x6e, 0x67, 0x74, 0x68, 0x3a}; // content-length:
     for(; state.data < state.end; state.data++)
     {
         if ((text[state.consumed] ^ uint8_t(state.data[0])) & 0xDF)
         {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             state.consumed = 0;
             return false;
         }
@@ -1330,29 +1330,29 @@ inline bool httpResp::text_6_0_0_0(state_t & state) const
         {
             state.data++;
             state.consumed = 0;
-            state.node = node_t::BANG_6_0;
+            state.node = NodeT::Bang6_0;
             return true;
         }
     }
-    state.node = node_t::TEXT_6_0_0_0;
+    state.node = NodeT::Text6_0_0_0;
     return true;
 }
 
-inline bool httpResp::bang_6_0(state_t & state)
+inline bool httpResp::bang6_0(StateT & state)
 {
-    state.node = node_t::RANGE_6_2;
-    if (&mainState != &state)
+    state.node = NodeT::Range6_2;
+    if (&mstate != &state)
     {
-        mainState = state;
-        state.node = node_t::NO_STATE;
+        mstate = state;
+        state.node = NodeT::NoState;
     }
-    prlState.clear();
+    pstate.clear();
     return true;
 }
 
-inline bool httpResp::range_6_2(state_t & state) const
+inline bool httpResp::range6_2(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -1369,7 +1369,7 @@ inline bool httpResp::range_6_2(state_t & state) const
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true}; // [0x9][0x20]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
 #if defined(__AVX2__)
@@ -1405,37 +1405,37 @@ inline bool httpResp::range_6_2(state_t & state) const
 #else
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -1444,28 +1444,28 @@ inline bool httpResp::range_6_2(state_t & state) const
             }
         }
 #endif
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::UINT_6_3;
+            state.node = NodeT::Uint6_3;
             return true;
         } else {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         }
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_6_2;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range6_2;
     return true;
 }
 
-void httpResp::_uint_6_3(const char * data, unsigned len, uint64_t consumed)
+void httpResp::uint6_3(const char * data, unsigned len, uint64_t consumed)
 {
     if (!consumed)
         httpRespResult::contentLength = 0;
@@ -1473,9 +1473,9 @@ void httpResp::_uint_6_3(const char * data, unsigned len, uint64_t consumed)
         httpRespResult::contentLength = httpRespResult::contentLength*10 + *data - '0';
 }
 
-inline bool httpResp::uint_6_3(state_t & state)
+inline bool httpResp::uint6_3(StateT & state)
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -1492,42 +1492,42 @@ inline bool httpResp::uint_6_3(state_t & state)
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true}; // [0-9]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -1535,103 +1535,103 @@ inline bool httpResp::uint_6_3(state_t & state)
                 continue;
             }
         }
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        _uint_6_3(beginData, unsigned(state.data - beginData), state.consumed);
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        uint6_3(datastart, unsigned(state.data - datastart), state.consumed);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::FUNC_6_4;
+            state.node = NodeT::Func6_4;
             return true;
         } else {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         }
     }
-    if (beginData < state.data)
-        _uint_6_3(beginData, unsigned(state.data - beginData), state.consumed);
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::UINT_6_3;
+    if (datastart < state.data)
+        uint6_3(datastart, unsigned(state.data - datastart), state.consumed);
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Uint6_3;
     return true;
 }
 
-inline bool httpResp::_func_6_4()
+inline bool httpResp::func6_4()
 {
      isContentLen = true; 
     return true;
 }
-inline bool httpResp::func_6_4(state_t & state)
+inline bool httpResp::func6_4(StateT & state)
 {
-    if (_func_6_4())
+    if (func6_4())
     {
-        state.node = node_t::TEXT_6_5;
+        state.node = NodeT::Text6_5;
         return true;
     }
-    state.node = node_t::RANGE_18_0;
+    state.node = NodeT::Range18_0;
     return false;
 }
 
-inline bool httpResp::text_6_5(state_t & state) const
+inline bool httpResp::text6_5(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0D) != uint8_t(state.data[0]))
         {
-            state.node = node_t::TEXT_6_6;
+            state.node = NodeT::Text6_6;
             return true;
         } else {
             state.data++;
-            state.node = node_t::TEXT_6_6;
+            state.node = NodeT::Text6_6;
             return true;
         }
     }
-    state.node = node_t::TEXT_6_5;
+    state.node = NodeT::Text6_5;
     return true;
 }
 
-inline bool httpResp::text_6_6(state_t & state) const
+inline bool httpResp::text6_6(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0A) != uint8_t(state.data[0]))
         {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         } else {
             state.data++;
-            state.node = node_t::LOOP_3_1;
+            state.node = NodeT::Loop3_1;
             return true;
         }
     }
-    state.node = node_t::TEXT_6_6;
+    state.node = NodeT::Text6_6;
     return true;
 }
 
-inline bool httpResp::any_7_0(state_t & state)
+inline bool httpResp::any7_0(StateT & state)
 {
     if (state.data == state.end)
         return true;
-    // case_1: TEXT_7_0_0_0
-    if (text_7_0_0_0(state) && state.node == node_t::BANG_7_0)
+    // case_1: Text7_0_0_0
+    if (text7_0_0_0(state) && state.node == NodeT::Bang7_0)
         return true;
-    else if (state.node != node_t::NO_STATE)
-        prlState.push_back(state);
-    state.node = node_t::RANGE_18_0;
+    else if (state.node != NodeT::NoState)
+        pstate.push_back(state);
+    state.node = NodeT::Range18_0;
     return false;
 }
 
-inline bool httpResp::text_7_0_0_0(state_t & state) const
+inline bool httpResp::text7_0_0_0(StateT & state) const
 {
     const static std::array<uint8_t, 13> text = {0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x74, 0x79, 0x70, 0x65, 0x3a}; // content-type:
     for(; state.data < state.end; state.data++)
     {
         if ((text[state.consumed] ^ uint8_t(state.data[0])) & 0xDF)
         {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             state.consumed = 0;
             return false;
         }
@@ -1639,29 +1639,29 @@ inline bool httpResp::text_7_0_0_0(state_t & state) const
         {
             state.data++;
             state.consumed = 0;
-            state.node = node_t::BANG_7_0;
+            state.node = NodeT::Bang7_0;
             return true;
         }
     }
-    state.node = node_t::TEXT_7_0_0_0;
+    state.node = NodeT::Text7_0_0_0;
     return true;
 }
 
-inline bool httpResp::bang_7_0(state_t & state)
+inline bool httpResp::bang7_0(StateT & state)
 {
-    state.node = node_t::RANGE_7_2;
-    if (&mainState != &state)
+    state.node = NodeT::Range7_2;
+    if (&mstate != &state)
     {
-        mainState = state;
-        state.node = node_t::NO_STATE;
+        mstate = state;
+        state.node = NodeT::NoState;
     }
-    prlState.clear();
+    pstate.clear();
     return true;
 }
 
-inline bool httpResp::range_7_2(state_t & state) const
+inline bool httpResp::range7_2(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -1678,7 +1678,7 @@ inline bool httpResp::range_7_2(state_t & state) const
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true}; // [0x9][0x20]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
 #if defined(__AVX2__)
@@ -1714,37 +1714,37 @@ inline bool httpResp::range_7_2(state_t & state) const
 #else
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -1753,28 +1753,28 @@ inline bool httpResp::range_7_2(state_t & state) const
             }
         }
 #endif
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::STRING_7_3;
+            state.node = NodeT::String7_3;
             return true;
         } else {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         }
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_7_2;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range7_2;
     return true;
 }
 
-void httpResp::_string_7_3(const char * data, unsigned len, uint64_t consumed)
+void httpResp::string7_3(const char * data, unsigned len, uint64_t consumed)
 {
     if (!consumed)
         httpRespResult::type.clear();
@@ -1783,9 +1783,9 @@ void httpResp::_string_7_3(const char * data, unsigned len, uint64_t consumed)
     httpRespResult::type.append(data, len);
 }
 
-inline bool httpResp::string_7_3(state_t & state)
+inline bool httpResp::string7_3(StateT & state)
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
@@ -1802,7 +1802,7 @@ inline bool httpResp::string_7_3(state_t & state)
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}; // ^[0xa][0xd]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
 #if defined(__AVX2__)
@@ -1838,37 +1838,37 @@ inline bool httpResp::string_7_3(state_t & state)
 #else
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -1877,103 +1877,103 @@ inline bool httpResp::string_7_3(state_t & state)
             }
         }
 #endif
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        _string_7_3(beginData, unsigned(state.data - beginData), state.consumed);
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        string7_3(datastart, unsigned(state.data - datastart), state.consumed);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::FUNC_7_4;
+            state.node = NodeT::Func7_4;
             return true;
         } else {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         }
     }
-    if (beginData < state.data)
-        _string_7_3(beginData, unsigned(state.data - beginData), state.consumed);
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::STRING_7_3;
+    if (datastart < state.data)
+        string7_3(datastart, unsigned(state.data - datastart), state.consumed);
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::String7_3;
     return true;
 }
 
-inline bool httpResp::_func_7_4()
+inline bool httpResp::func7_4()
 {
      printf("Type: %s\n", type.c_str()); 
     return true;
 }
-inline bool httpResp::func_7_4(state_t & state)
+inline bool httpResp::func7_4(StateT & state)
 {
-    if (_func_7_4())
+    if (func7_4())
     {
-        state.node = node_t::TEXT_7_5;
+        state.node = NodeT::Text7_5;
         return true;
     }
-    state.node = node_t::RANGE_18_0;
+    state.node = NodeT::Range18_0;
     return false;
 }
 
-inline bool httpResp::text_7_5(state_t & state) const
+inline bool httpResp::text7_5(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0D) != uint8_t(state.data[0]))
         {
-            state.node = node_t::TEXT_7_6;
+            state.node = NodeT::Text7_6;
             return true;
         } else {
             state.data++;
-            state.node = node_t::TEXT_7_6;
+            state.node = NodeT::Text7_6;
             return true;
         }
     }
-    state.node = node_t::TEXT_7_5;
+    state.node = NodeT::Text7_5;
     return true;
 }
 
-inline bool httpResp::text_7_6(state_t & state) const
+inline bool httpResp::text7_6(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0A) != uint8_t(state.data[0]))
         {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         } else {
             state.data++;
-            state.node = node_t::LOOP_3_1;
+            state.node = NodeT::Loop3_1;
             return true;
         }
     }
-    state.node = node_t::TEXT_7_6;
+    state.node = NodeT::Text7_6;
     return true;
 }
 
-inline bool httpResp::any_8_0(state_t & state)
+inline bool httpResp::any8_0(StateT & state)
 {
     if (state.data == state.end)
         return true;
-    // case_1: TEXT_8_0_0_0
-    if (text_8_0_0_0(state) && state.node == node_t::BANG_8_0)
+    // case_1: Text8_0_0_0
+    if (text8_0_0_0(state) && state.node == NodeT::Bang8_0)
         return true;
-    else if (state.node != node_t::NO_STATE)
-        prlState.push_back(state);
-    state.node = node_t::RANGE_18_0;
+    else if (state.node != NodeT::NoState)
+        pstate.push_back(state);
+    state.node = NodeT::Range18_0;
     return false;
 }
 
-inline bool httpResp::text_8_0_0_0(state_t & state) const
+inline bool httpResp::text8_0_0_0(StateT & state) const
 {
     const static std::array<uint8_t, 17> text = {0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x65, 0x6e, 0x63, 0x6f, 0x64, 0x69, 0x6e, 0x67, 0x3a}; // content-encoding:
     for(; state.data < state.end; state.data++)
     {
         if ((text[state.consumed] ^ uint8_t(state.data[0])) & 0xDF)
         {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             state.consumed = 0;
             return false;
         }
@@ -1981,29 +1981,29 @@ inline bool httpResp::text_8_0_0_0(state_t & state) const
         {
             state.data++;
             state.consumed = 0;
-            state.node = node_t::BANG_8_0;
+            state.node = NodeT::Bang8_0;
             return true;
         }
     }
-    state.node = node_t::TEXT_8_0_0_0;
+    state.node = NodeT::Text8_0_0_0;
     return true;
 }
 
-inline bool httpResp::bang_8_0(state_t & state)
+inline bool httpResp::bang8_0(StateT & state)
 {
-    state.node = node_t::RANGE_8_2;
-    if (&mainState != &state)
+    state.node = NodeT::Range8_2;
+    if (&mstate != &state)
     {
-        mainState = state;
-        state.node = node_t::NO_STATE;
+        mstate = state;
+        state.node = NodeT::NoState;
     }
-    prlState.clear();
+    pstate.clear();
     return true;
 }
 
-inline bool httpResp::range_8_2(state_t & state) const
+inline bool httpResp::range8_2(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -2020,7 +2020,7 @@ inline bool httpResp::range_8_2(state_t & state) const
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true}; // [0x9][0x20]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
 #if defined(__AVX2__)
@@ -2056,37 +2056,37 @@ inline bool httpResp::range_8_2(state_t & state) const
 #else
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -2095,28 +2095,28 @@ inline bool httpResp::range_8_2(state_t & state) const
             }
         }
 #endif
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::STRING_8_3;
+            state.node = NodeT::String8_3;
             return true;
         } else {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         }
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_8_2;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range8_2;
     return true;
 }
 
-void httpResp::_string_8_3(const char * data, unsigned len, uint64_t consumed)
+void httpResp::string8_3(const char * data, unsigned len, uint64_t consumed)
 {
     if (!consumed)
         httpRespResult::encoding.clear();
@@ -2125,9 +2125,9 @@ void httpResp::_string_8_3(const char * data, unsigned len, uint64_t consumed)
     httpRespResult::encoding.append(data, len);
 }
 
-inline bool httpResp::string_8_3(state_t & state)
+inline bool httpResp::string8_3(StateT & state)
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
@@ -2144,7 +2144,7 @@ inline bool httpResp::string_8_3(state_t & state)
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}; // ^[0xa][0xd]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
 #if defined(__AVX2__)
@@ -2180,37 +2180,37 @@ inline bool httpResp::string_8_3(state_t & state)
 #else
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -2219,103 +2219,103 @@ inline bool httpResp::string_8_3(state_t & state)
             }
         }
 #endif
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        _string_8_3(beginData, unsigned(state.data - beginData), state.consumed);
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        string8_3(datastart, unsigned(state.data - datastart), state.consumed);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::FUNC_8_4;
+            state.node = NodeT::Func8_4;
             return true;
         } else {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         }
     }
-    if (beginData < state.data)
-        _string_8_3(beginData, unsigned(state.data - beginData), state.consumed);
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::STRING_8_3;
+    if (datastart < state.data)
+        string8_3(datastart, unsigned(state.data - datastart), state.consumed);
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::String8_3;
     return true;
 }
 
-inline bool httpResp::_func_8_4()
+inline bool httpResp::func8_4()
 {
      printf("Encoding: %s\n", encoding.c_str()); 
     return true;
 }
-inline bool httpResp::func_8_4(state_t & state)
+inline bool httpResp::func8_4(StateT & state)
 {
-    if (_func_8_4())
+    if (func8_4())
     {
-        state.node = node_t::TEXT_8_5;
+        state.node = NodeT::Text8_5;
         return true;
     }
-    state.node = node_t::RANGE_18_0;
+    state.node = NodeT::Range18_0;
     return false;
 }
 
-inline bool httpResp::text_8_5(state_t & state) const
+inline bool httpResp::text8_5(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0D) != uint8_t(state.data[0]))
         {
-            state.node = node_t::TEXT_8_6;
+            state.node = NodeT::Text8_6;
             return true;
         } else {
             state.data++;
-            state.node = node_t::TEXT_8_6;
+            state.node = NodeT::Text8_6;
             return true;
         }
     }
-    state.node = node_t::TEXT_8_5;
+    state.node = NodeT::Text8_5;
     return true;
 }
 
-inline bool httpResp::text_8_6(state_t & state) const
+inline bool httpResp::text8_6(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0A) != uint8_t(state.data[0]))
         {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         } else {
             state.data++;
-            state.node = node_t::LOOP_3_1;
+            state.node = NodeT::Loop3_1;
             return true;
         }
     }
-    state.node = node_t::TEXT_8_6;
+    state.node = NodeT::Text8_6;
     return true;
 }
 
-inline bool httpResp::any_9_0(state_t & state)
+inline bool httpResp::any9_0(StateT & state)
 {
     if (state.data == state.end)
         return true;
-    // case_1: TEXT_9_0_0_0
-    if (text_9_0_0_0(state) && state.node == node_t::BANG_9_0)
+    // case_1: Text9_0_0_0
+    if (text9_0_0_0(state) && state.node == NodeT::Bang9_0)
         return true;
-    else if (state.node != node_t::NO_STATE)
-        prlState.push_back(state);
-    state.node = node_t::RANGE_18_0;
+    else if (state.node != NodeT::NoState)
+        pstate.push_back(state);
+    state.node = NodeT::Range18_0;
     return false;
 }
 
-inline bool httpResp::text_9_0_0_0(state_t & state) const
+inline bool httpResp::text9_0_0_0(StateT & state) const
 {
     const static std::array<uint8_t, 11> text = {0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x3a}; // connection:
     for(; state.data < state.end; state.data++)
     {
         if ((text[state.consumed] ^ uint8_t(state.data[0])) & 0xDF)
         {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             state.consumed = 0;
             return false;
         }
@@ -2323,29 +2323,29 @@ inline bool httpResp::text_9_0_0_0(state_t & state) const
         {
             state.data++;
             state.consumed = 0;
-            state.node = node_t::BANG_9_0;
+            state.node = NodeT::Bang9_0;
             return true;
         }
     }
-    state.node = node_t::TEXT_9_0_0_0;
+    state.node = NodeT::Text9_0_0_0;
     return true;
 }
 
-inline bool httpResp::bang_9_0(state_t & state)
+inline bool httpResp::bang9_0(StateT & state)
 {
-    state.node = node_t::RANGE_9_2;
-    if (&mainState != &state)
+    state.node = NodeT::Range9_2;
+    if (&mstate != &state)
     {
-        mainState = state;
-        state.node = node_t::NO_STATE;
+        mstate = state;
+        state.node = NodeT::NoState;
     }
-    prlState.clear();
+    pstate.clear();
     return true;
 }
 
-inline bool httpResp::range_9_2(state_t & state) const
+inline bool httpResp::range9_2(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -2362,7 +2362,7 @@ inline bool httpResp::range_9_2(state_t & state) const
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true}; // [0x9][0x20]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
 #if defined(__AVX2__)
@@ -2398,37 +2398,37 @@ inline bool httpResp::range_9_2(state_t & state) const
 #else
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -2437,35 +2437,35 @@ inline bool httpResp::range_9_2(state_t & state) const
             }
         }
 #endif
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::TEXT_9_3;
+            state.node = NodeT::Text9_3;
             return true;
         } else {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         }
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_9_2;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range9_2;
     return true;
 }
 
-inline bool httpResp::text_9_3(state_t & state) const
+inline bool httpResp::text9_3(StateT & state) const
 {
     const static std::array<uint8_t, 10> text = {0x6b, 0x65, 0x65, 0x70, 0x2d, 0x61, 0x6c, 0x69, 0x76, 0x65}; // keep-alive
     for(; state.data < state.end; state.data++)
     {
         if ((text[state.consumed] ^ uint8_t(state.data[0])) & 0xDF)
         {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             state.consumed = 0;
             return false;
         }
@@ -2473,171 +2473,171 @@ inline bool httpResp::text_9_3(state_t & state) const
         {
             state.data++;
             state.consumed = 0;
-            state.node = node_t::FUNC_9_4;
+            state.node = NodeT::Func9_4;
             return true;
         }
     }
-    state.node = node_t::TEXT_9_3;
+    state.node = NodeT::Text9_3;
     return true;
 }
 
-inline bool httpResp::_func_9_4()
+inline bool httpResp::func9_4()
 {
      isKeepAlive = true; 
     return true;
 }
-inline bool httpResp::func_9_4(state_t & state)
+inline bool httpResp::func9_4(StateT & state)
 {
-    if (_func_9_4())
+    if (func9_4())
     {
-        state.node = node_t::TEXT_9_5;
+        state.node = NodeT::Text9_5;
         return true;
     }
-    state.node = node_t::RANGE_18_0;
+    state.node = NodeT::Range18_0;
     return false;
 }
 
-inline bool httpResp::text_9_5(state_t & state) const
+inline bool httpResp::text9_5(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0D) != uint8_t(state.data[0]))
         {
-            state.node = node_t::TEXT_9_6;
+            state.node = NodeT::Text9_6;
             return true;
         } else {
             state.data++;
-            state.node = node_t::TEXT_9_6;
+            state.node = NodeT::Text9_6;
             return true;
         }
     }
-    state.node = node_t::TEXT_9_5;
+    state.node = NodeT::Text9_5;
     return true;
 }
 
-inline bool httpResp::text_9_6(state_t & state) const
+inline bool httpResp::text9_6(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0A) != uint8_t(state.data[0]))
         {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         } else {
             state.data++;
-            state.node = node_t::LOOP_3_1;
+            state.node = NodeT::Loop3_1;
             return true;
         }
     }
-    state.node = node_t::TEXT_9_6;
+    state.node = NodeT::Text9_6;
     return true;
 }
 
-inline bool httpResp::text_10_0(state_t & state) const
+inline bool httpResp::text10_0(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0D) != uint8_t(state.data[0]))
         {
-            state.node = node_t::TEXT_10_1;
+            state.node = NodeT::Text10_1;
             return true;
         } else {
             state.data++;
-            state.node = node_t::TEXT_10_1;
+            state.node = NodeT::Text10_1;
             return true;
         }
     }
-    state.node = node_t::TEXT_10_0;
+    state.node = NodeT::Text10_0;
     return true;
 }
 
-inline bool httpResp::text_10_1(state_t & state) const
+inline bool httpResp::text10_1(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0A) != uint8_t(state.data[0]))
         {
-            state.node = node_t::RANGE_18_0;
+            state.node = NodeT::Range18_0;
             return false;
         } else {
             state.data++;
-            state.node = node_t::LOOP_10_2;
+            state.node = NodeT::Loop10_2;
             return true;
         }
     }
-    state.node = node_t::TEXT_10_1;
+    state.node = NodeT::Text10_1;
     return true;
 }
 
-inline bool httpResp::loop_10_2(state_t & state) const
+inline bool httpResp::loop10_2(StateT & state) const
 {
-    if (if_11_0(state)) // case_1
+    if (if11_0(state)) // case_1
         return true;
-    if (if_12_0(state)) // case_2
+    if (if12_0(state)) // case_2
         return true;
-    if (if_16_0(state)) // case_3
+    if (if16_0(state)) // case_3
         return true;
-    if (ret_17_0(state)) // case_4
+    if (ret17_0(state)) // case_4
         return true;
-    state.node = node_t::NO_STATE;
+    state.node = NodeT::NoState;
     return true;
 }
 
-inline bool httpResp::if_11_0(state_t & state) const
+inline bool httpResp::if11_0(StateT & state) const
 {
     if (isContentLen)
     {
-        state.node = node_t::DATA_11_1;
+        state.node = NodeT::Data11_1;
         return true;
     }
-    state.node = node_t::NO_STATE;
+    state.node = NodeT::NoState;
     return false;
 }
 
-inline bool httpResp::data_11_1(state_t & state)
+inline bool httpResp::data11_1(StateT & state)
 {
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     if (!state.consumed)
-        state.node = node_t::DATA_11_1;
+        state.node = NodeT::Data11_1;
     if (state.data == state.end)
         return true;
-    else if (int64_t(state.consumed + state.remainDataLen()) >= int64_t(contentLength))
+    else if (int64_t(state.consumed + state.remain()) >= int64_t(contentLength))
     {
         state.data += (contentLength - state.consumed);
-        httpRespResult::resp(beginData, unsigned(state.data - beginData), !state.consumed, true);
+        httpRespResult::resp(datastart, unsigned(state.data - datastart), !state.consumed, true);
         state.consumed = 0;
-        state.node = node_t::RET_11_2;
+        state.node = NodeT::Ret11_2;
     } else {
         state.data = state.end;
-        httpRespResult::resp(beginData, unsigned(state.data - beginData), !state.consumed, false);
-        state.consumed += unsigned(state.data - beginData);
+        httpRespResult::resp(datastart, unsigned(state.data - datastart), !state.consumed, false);
+        state.consumed += unsigned(state.data - datastart);
     }
     return true;
 }
 
-inline bool httpResp::ret_11_2(state_t & state) const
+inline bool httpResp::ret11_2(StateT & state) const
 {
-    state.node = state.retStackCount ? state.retStack[--state.retStackCount] : node_t::NO_STATE;
-    return state.node != node_t::NO_STATE;
+    state.node = state.rcount ? state.rstack[--state.rcount] : NodeT::NoState;
+    return state.node != NodeT::NoState;
 }
 
-inline bool httpResp::if_12_0(state_t & state) const
+inline bool httpResp::if12_0(StateT & state) const
 {
     if (transferEncoding.find("chunked") != std::string::npos)
     {
-        state.node = node_t::LOOP_12_1;
+        state.node = NodeT::Loop12_1;
         return true;
     }
-    state.node = node_t::NO_STATE;
+    state.node = NodeT::NoState;
     return false;
 }
 
-inline bool httpResp::loop_12_1(state_t & state)
+inline bool httpResp::loop12_1(StateT & state)
 {
-    return hex_13_0(state);
+    return hex13_0(state);
 }
 
-void httpResp::_hex_13_0(const char * data, unsigned len, uint64_t consumed)
+void httpResp::hex13_0(const char * data, unsigned len, uint64_t consumed)
 {
     if (!consumed)
         httpRespResult::chunklen = 0;
@@ -2650,9 +2650,9 @@ void httpResp::_hex_13_0(const char * data, unsigned len, uint64_t consumed)
         httpRespResult::chunklen = (httpRespResult::chunklen << 4) | uint8_t(*data - '0');
 }
 
-inline bool httpResp::hex_13_0(state_t & state)
+inline bool httpResp::hex13_0(StateT & state)
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -2669,42 +2669,42 @@ inline bool httpResp::hex_13_0(state_t & state)
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true}; // [0-9][A-F][a-f]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -2712,33 +2712,33 @@ inline bool httpResp::hex_13_0(state_t & state)
                 continue;
             }
         }
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
-        _hex_13_0(beginData, unsigned(state.data - beginData), state.consumed);
-        uint64_t totalConsumed = state.consumed + unsigned(state.data - beginData);
+        hex13_0(datastart, unsigned(state.data - datastart), state.consumed);
+        uint64_t total = state.consumed + unsigned(state.data - datastart);
         state.consumed = 0;
-        if (totalConsumed >= 1)
+        if (total >= 1)
         {
-            state.node = node_t::RANGE_13_1;
+            state.node = NodeT::Range13_1;
             return true;
         } else {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             return false;
         }
     }
-    if (beginData < state.data)
-        _hex_13_0(beginData, unsigned(state.data - beginData), state.consumed);
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::HEX_13_0;
+    if (datastart < state.data)
+        hex13_0(datastart, unsigned(state.data - datastart), state.consumed);
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Hex13_0;
     return true;
 }
 
-inline bool httpResp::range_13_1(state_t & state) const
+inline bool httpResp::range13_1(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
          true,  true,  true,  true,  true,  true,  true,  true,  true, false,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
         false,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
@@ -2755,42 +2755,42 @@ inline bool httpResp::range_13_1(state_t & state) const
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
          true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true}; // [0x9][0x20]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -2798,211 +2798,211 @@ inline bool httpResp::range_13_1(state_t & state) const
                 continue;
             }
         }
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
         state.consumed = 0;
-        state.node = node_t::TEXT_13_2;
+        state.node = NodeT::Text13_2;
         return true;
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_13_1;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range13_1;
     return true;
 }
 
-inline bool httpResp::text_13_2(state_t & state) const
+inline bool httpResp::text13_2(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0D) != uint8_t(state.data[0]))
         {
-            state.node = node_t::TEXT_13_3;
+            state.node = NodeT::Text13_3;
             return true;
         } else {
             state.data++;
-            state.node = node_t::TEXT_13_3;
+            state.node = NodeT::Text13_3;
             return true;
         }
     }
-    state.node = node_t::TEXT_13_2;
+    state.node = NodeT::Text13_2;
     return true;
 }
 
-inline bool httpResp::text_13_3(state_t & state) const
+inline bool httpResp::text13_3(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0A) != uint8_t(state.data[0]))
         {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             return false;
         } else {
             state.data++;
-            state.node = node_t::CASES_13_4;
+            state.node = NodeT::Cases13_4;
             return true;
         }
     }
-    state.node = node_t::TEXT_13_3;
+    state.node = NodeT::Text13_3;
     return true;
 }
 
-inline bool httpResp::cases_13_4(state_t & state)
+inline bool httpResp::cases13_4(StateT & state)
 {
     if (state.data == state.end)
         return true;
-    if (if_14_0(state)) // case_1
+    if (if14_0(state)) // case_1
         return true;
-    if (data_15_0(state)) // case_2
+    if (data15_0(state)) // case_2
         return true;
-    state.node = node_t::NO_STATE;
+    state.node = NodeT::NoState;
     return true;
 }
 
-inline bool httpResp::if_14_0(state_t & state) const
+inline bool httpResp::if14_0(StateT & state) const
 {
     if (!chunklen)
     {
-        state.node = node_t::TEXT_14_1;
+        state.node = NodeT::Text14_1;
         return true;
     }
-    state.node = node_t::NO_STATE;
+    state.node = NodeT::NoState;
     return false;
 }
 
-inline bool httpResp::text_14_1(state_t & state) const
+inline bool httpResp::text14_1(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0D) != uint8_t(state.data[0]))
         {
-            state.node = node_t::TEXT_14_2;
+            state.node = NodeT::Text14_2;
             return true;
         } else {
             state.data++;
-            state.node = node_t::TEXT_14_2;
+            state.node = NodeT::Text14_2;
             return true;
         }
     }
-    state.node = node_t::TEXT_14_1;
+    state.node = NodeT::Text14_1;
     return true;
 }
 
-inline bool httpResp::text_14_2(state_t & state) const
+inline bool httpResp::text14_2(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0A) != uint8_t(state.data[0]))
         {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             return false;
         } else {
             state.data++;
-            state.node = node_t::RET_14_3;
+            state.node = NodeT::Ret14_3;
             return true;
         }
     }
-    state.node = node_t::TEXT_14_2;
+    state.node = NodeT::Text14_2;
     return true;
 }
 
-inline bool httpResp::ret_14_3(state_t & state) const
+inline bool httpResp::ret14_3(StateT & state) const
 {
-    state.node = state.retStackCount ? state.retStack[--state.retStackCount] : node_t::NO_STATE;
-    return state.node != node_t::NO_STATE;
+    state.node = state.rcount ? state.rstack[--state.rcount] : NodeT::NoState;
+    return state.node != NodeT::NoState;
 }
 
-inline bool httpResp::data_15_0(state_t & state)
+inline bool httpResp::data15_0(StateT & state)
 {
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     if (!state.consumed)
-        state.node = node_t::DATA_15_0;
+        state.node = NodeT::Data15_0;
     if (state.data == state.end)
         return true;
-    else if (int64_t(state.consumed + state.remainDataLen()) >= int64_t(chunklen))
+    else if (int64_t(state.consumed + state.remain()) >= int64_t(chunklen))
     {
         state.data += (chunklen - state.consumed);
-        httpRespResult::resp(beginData, unsigned(state.data - beginData), !state.consumed, true);
+        httpRespResult::resp(datastart, unsigned(state.data - datastart), !state.consumed, true);
         state.consumed = 0;
-        state.node = node_t::TEXT_15_1;
+        state.node = NodeT::Text15_1;
     } else {
         state.data = state.end;
-        httpRespResult::resp(beginData, unsigned(state.data - beginData), !state.consumed, false);
-        state.consumed += unsigned(state.data - beginData);
+        httpRespResult::resp(datastart, unsigned(state.data - datastart), !state.consumed, false);
+        state.consumed += unsigned(state.data - datastart);
     }
     return true;
 }
 
-inline bool httpResp::text_15_1(state_t & state) const
+inline bool httpResp::text15_1(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0D) != uint8_t(state.data[0]))
         {
-            state.node = node_t::TEXT_15_2;
+            state.node = NodeT::Text15_2;
             return true;
         } else {
             state.data++;
-            state.node = node_t::TEXT_15_2;
+            state.node = NodeT::Text15_2;
             return true;
         }
     }
-    state.node = node_t::TEXT_15_1;
+    state.node = NodeT::Text15_1;
     return true;
 }
 
-inline bool httpResp::text_15_2(state_t & state) const
+inline bool httpResp::text15_2(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0A) != uint8_t(state.data[0]))
         {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             return false;
         } else {
             state.data++;
-            state.node = node_t::LOOP_12_1;
+            state.node = NodeT::Loop12_1;
             return true;
         }
     }
-    state.node = node_t::TEXT_15_2;
+    state.node = NodeT::Text15_2;
     return true;
 }
 
-inline bool httpResp::if_16_0(state_t & state) const
+inline bool httpResp::if16_0(StateT & state) const
 {
     if (!isKeepAlive)
     {
-        state.node = node_t::DATA_16_1;
+        state.node = NodeT::Data16_1;
         return true;
     }
-    state.node = node_t::NO_STATE;
+    state.node = NodeT::NoState;
     return false;
 }
 
-inline bool httpResp::data_16_1(state_t & state)
+inline bool httpResp::data16_1(StateT & state)
 {
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     if (!state.consumed)
-        state.node = node_t::DATA_16_1;
+        state.node = NodeT::Data16_1;
     if (state.data == state.end)
         return true;
     state.data = state.end;
-    httpRespResult::resp(beginData, unsigned(state.data - beginData), !state.consumed, false);
-    state.consumed += unsigned(state.data - beginData);
+    httpRespResult::resp(datastart, unsigned(state.data - datastart), !state.consumed, false);
+    state.consumed += unsigned(state.data - datastart);
     return true;
 }
 
-inline bool httpResp::ret_17_0(state_t & state) const
+inline bool httpResp::ret17_0(StateT & state) const
 {
-    state.node = state.retStackCount ? state.retStack[--state.retStackCount] : node_t::NO_STATE;
-    return state.node != node_t::NO_STATE;
+    state.node = state.rcount ? state.rstack[--state.rcount] : NodeT::NoState;
+    return state.node != NodeT::NoState;
 }
 
-inline bool httpResp::range_18_0(state_t & state) const
+inline bool httpResp::range18_0(StateT & state) const
 {
-    const static std::array<bool, 256> exitSym = {
+    const static std::array<bool, 256> terminator = {
         false, false, false, false, false, false, false, false, false, false,  true, false, false,  true, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
@@ -3019,42 +3019,42 @@ inline bool httpResp::range_18_0(state_t & state) const
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
         false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}; // ^[0xa][0xd]
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     while(state.data < state.end) [[likely]]
     {
         if(&state.data[16] <= state.end)
         {
-            if (exitSym[uint8_t(state.data[0])]) [[unlikely]]
+            if (terminator[uint8_t(state.data[0])]) [[unlikely]]
                 state.data += 0;
-            else if (exitSym[uint8_t(state.data[1])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[1])]) [[unlikely]]
                 state.data += 1;
-            else if (exitSym[uint8_t(state.data[2])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[2])]) [[unlikely]]
                 state.data += 2;
-            else if (exitSym[uint8_t(state.data[3])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[3])]) [[unlikely]]
                 state.data += 3;
-            else if (exitSym[uint8_t(state.data[4])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[4])]) [[unlikely]]
                 state.data += 4;
-            else if (exitSym[uint8_t(state.data[5])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[5])]) [[unlikely]]
                 state.data += 5;
-            else if (exitSym[uint8_t(state.data[6])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[6])]) [[unlikely]]
                 state.data += 6;
-            else if (exitSym[uint8_t(state.data[7])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[7])]) [[unlikely]]
                 state.data += 7;
-            else if (exitSym[uint8_t(state.data[8])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[8])]) [[unlikely]]
                 state.data += 8;
-            else if (exitSym[uint8_t(state.data[9])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[9])]) [[unlikely]]
                 state.data += 9;
-            else if (exitSym[uint8_t(state.data[10])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[10])]) [[unlikely]]
                 state.data += 10;
-            else if (exitSym[uint8_t(state.data[11])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[11])]) [[unlikely]]
                 state.data += 11;
-            else if (exitSym[uint8_t(state.data[12])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[12])]) [[unlikely]]
                 state.data += 12;
-            else if (exitSym[uint8_t(state.data[13])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[13])]) [[unlikely]]
                 state.data += 13;
-            else if (exitSym[uint8_t(state.data[14])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[14])]) [[unlikely]]
                 state.data += 14;
-            else if (exitSym[uint8_t(state.data[15])]) [[unlikely]]
+            else if (terminator[uint8_t(state.data[15])]) [[unlikely]]
                 state.data += 15;
             else
             {
@@ -3062,69 +3062,69 @@ inline bool httpResp::range_18_0(state_t & state) const
                 continue;
             }
         }
-        else if (!(exitSym[uint8_t(state.data[0])])) [[unlikely]]
+        else if (!(terminator[uint8_t(state.data[0])])) [[unlikely]]
         {
             state.data++;
             continue;
         }
         state.consumed = 0;
-        state.node = node_t::TEXT_18_1;
+        state.node = NodeT::Text18_1;
         return true;
     }
-    state.consumed += unsigned(state.data - beginData);
-    state.node = node_t::RANGE_18_0;
+    state.consumed += unsigned(state.data - datastart);
+    state.node = NodeT::Range18_0;
     return true;
 }
 
-inline bool httpResp::text_18_1(state_t & state) const
+inline bool httpResp::text18_1(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0D) != uint8_t(state.data[0]))
         {
-            state.node = node_t::TEXT_18_2;
+            state.node = NodeT::Text18_2;
             return true;
         } else {
             state.data++;
-            state.node = node_t::TEXT_18_2;
+            state.node = NodeT::Text18_2;
             return true;
         }
     }
-    state.node = node_t::TEXT_18_1;
+    state.node = NodeT::Text18_1;
     return true;
 }
 
-inline bool httpResp::text_18_2(state_t & state) const
+inline bool httpResp::text18_2(StateT & state) const
 {
     if(state.data < state.end)
     {
         if (uint8_t(0x0A) != uint8_t(state.data[0]))
         {
-            state.node = node_t::NO_STATE;
+            state.node = NodeT::NoState;
             return false;
         } else {
             state.data++;
-            state.node = node_t::LOOP_3_1;
+            state.node = NodeT::Loop3_1;
             return true;
         }
     }
-    state.node = node_t::TEXT_18_2;
+    state.node = NodeT::Text18_2;
     return true;
 }
 
-inline bool httpResp::loop_20_0(state_t & state)
+inline bool httpResp::loop20_0(StateT & state)
 {
     if (state.data == state.end)
         return true;
-    if (bool_20_0(state)) // case_1
+    if (bool20_0(state)) // case_1
         return true;
-    if (bool_21_0(state)) // case_2
+    if (bool21_0(state)) // case_2
         return true;
-    state.node = node_t::NO_STATE;
+    state.node = NodeT::NoState;
     return true;
 }
 
-void httpResp::_bool_20_0(const char * data, unsigned len, uint64_t consumed)
+void httpResp::bool20_0(const char * data, unsigned len, uint64_t consumed)
 {
     if (len)
         httpRespResult::isContentLen = (*data != 0);
@@ -3132,28 +3132,28 @@ void httpResp::_bool_20_0(const char * data, unsigned len, uint64_t consumed)
         httpRespResult::isContentLen = false;
 }
 
-inline bool httpResp::bool_20_0(state_t & state)
+inline bool httpResp::bool20_0(StateT & state)
 {
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     if (!state.consumed)
-        state.node = node_t::BOOL_20_0;
+        state.node = NodeT::Bool20_0;
     if (state.data == state.end)
         return true;
-    else if (int64_t(state.consumed + state.remainDataLen()) >= int64_t(1))
+    else if (int64_t(state.consumed + state.remain()) >= int64_t(1))
     {
         state.data += (1 - state.consumed);
-        _bool_20_0(beginData, unsigned(state.data - beginData), state.consumed);
+        bool20_0(datastart, unsigned(state.data - datastart), state.consumed);
         state.consumed = 0;
-        state.node = node_t::LOOP_20_0;
+        state.node = NodeT::Loop20_0;
     } else {
         state.data = state.end;
-        _bool_20_0(beginData, unsigned(state.data - beginData), state.consumed);
-        state.consumed += unsigned(state.data - beginData);
+        bool20_0(datastart, unsigned(state.data - datastart), state.consumed);
+        state.consumed += unsigned(state.data - datastart);
     }
     return true;
 }
 
-void httpResp::_bool_21_0(const char * data, unsigned len, uint64_t consumed)
+void httpResp::bool21_0(const char * data, unsigned len, uint64_t consumed)
 {
     if (len)
         httpRespResult::isKeepAlive = (*data != 0);
@@ -3161,23 +3161,23 @@ void httpResp::_bool_21_0(const char * data, unsigned len, uint64_t consumed)
         httpRespResult::isKeepAlive = false;
 }
 
-inline bool httpResp::bool_21_0(state_t & state)
+inline bool httpResp::bool21_0(StateT & state)
 {
-    const char * beginData = state.data;
+    const char * datastart = state.data;
     if (!state.consumed)
-        state.node = node_t::BOOL_21_0;
+        state.node = NodeT::Bool21_0;
     if (state.data == state.end)
         return true;
-    else if (int64_t(state.consumed + state.remainDataLen()) >= int64_t(1))
+    else if (int64_t(state.consumed + state.remain()) >= int64_t(1))
     {
         state.data += (1 - state.consumed);
-        _bool_21_0(beginData, unsigned(state.data - beginData), state.consumed);
+        bool21_0(datastart, unsigned(state.data - datastart), state.consumed);
         state.consumed = 0;
-        state.node = node_t::LOOP_20_0;
+        state.node = NodeT::Loop20_0;
     } else {
         state.data = state.end;
-        _bool_21_0(beginData, unsigned(state.data - beginData), state.consumed);
-        state.consumed += unsigned(state.data - beginData);
+        bool21_0(datastart, unsigned(state.data - datastart), state.consumed);
+        state.consumed += unsigned(state.data - datastart);
     }
     return true;
 }
@@ -3191,100 +3191,100 @@ void httpResp::reset()
     httpRespResult::isKeepAlive = false;
     httpRespResult::transferEncoding.clear();
     httpRespResult::type.clear();
-    httpResp::mainState = httpResp::state_t();
-    httpResp::prlState.clear();
+    httpResp::mstate = httpResp::StateT();
+    httpResp::pstate.clear();
 }
 
-const char * httpResp::state_t::name() const
+const char * httpResp::StateT::name() const
 {
     switch(node)
     {
-        case node_t::LOOP_1_0: return "LOOP_1_0";
-        case node_t::TEXT_1_0: return "TEXT_1_0";
-        case node_t::RANGE_1_1: return "RANGE_1_1";
-        case node_t::TEXT_1_2: return "TEXT_1_2";
-        case node_t::RANGE_1_3: return "RANGE_1_3";
-        case node_t::RANGE_1_4: return "RANGE_1_4";
-        case node_t::RANGE_1_5: return "RANGE_1_5";
-        case node_t::RANGE_1_6: return "RANGE_1_6";
-        case node_t::TEXT_1_7: return "TEXT_1_7";
-        case node_t::TEXT_1_8: return "TEXT_1_8";
-        case node_t::CALL_1_9: return "CALL_1_9";
-        case node_t::RESET_1_10: return "RESET_1_10";
-        case node_t::LOOP_3_0: return "LOOP_3_0";
-        case node_t::LABEL_3_0: return "LABEL_3_0";
-        case node_t::LOOP_3_1: return "LOOP_3_1";
-        case node_t::RANGE_4_0: return "RANGE_4_0";
-        case node_t::RANGE_4_1: return "RANGE_4_1";
-        case node_t::TEXT_4_2: return "TEXT_4_2";
-        case node_t::TEXT_4_3: return "TEXT_4_3";
-        case node_t::TEXT_5_0: return "TEXT_5_0";
-        case node_t::RANGE_5_1: return "RANGE_5_1";
-        case node_t::STRING_5_2: return "STRING_5_2";
-        case node_t::TEXT_5_3: return "TEXT_5_3";
-        case node_t::TEXT_5_4: return "TEXT_5_4";
-        case node_t::ANY_6_0: return "ANY_6_0";
-        case node_t::TEXT_6_0_0_0: return "TEXT_6_0_0_0";
-        case node_t::BANG_6_0: return "BANG_6_0";
-        case node_t::RANGE_6_2: return "RANGE_6_2";
-        case node_t::UINT_6_3: return "UINT_6_3";
-        case node_t::FUNC_6_4: return "FUNC_6_4";
-        case node_t::TEXT_6_5: return "TEXT_6_5";
-        case node_t::TEXT_6_6: return "TEXT_6_6";
-        case node_t::ANY_7_0: return "ANY_7_0";
-        case node_t::TEXT_7_0_0_0: return "TEXT_7_0_0_0";
-        case node_t::BANG_7_0: return "BANG_7_0";
-        case node_t::RANGE_7_2: return "RANGE_7_2";
-        case node_t::STRING_7_3: return "STRING_7_3";
-        case node_t::FUNC_7_4: return "FUNC_7_4";
-        case node_t::TEXT_7_5: return "TEXT_7_5";
-        case node_t::TEXT_7_6: return "TEXT_7_6";
-        case node_t::ANY_8_0: return "ANY_8_0";
-        case node_t::TEXT_8_0_0_0: return "TEXT_8_0_0_0";
-        case node_t::BANG_8_0: return "BANG_8_0";
-        case node_t::RANGE_8_2: return "RANGE_8_2";
-        case node_t::STRING_8_3: return "STRING_8_3";
-        case node_t::FUNC_8_4: return "FUNC_8_4";
-        case node_t::TEXT_8_5: return "TEXT_8_5";
-        case node_t::TEXT_8_6: return "TEXT_8_6";
-        case node_t::ANY_9_0: return "ANY_9_0";
-        case node_t::TEXT_9_0_0_0: return "TEXT_9_0_0_0";
-        case node_t::BANG_9_0: return "BANG_9_0";
-        case node_t::RANGE_9_2: return "RANGE_9_2";
-        case node_t::TEXT_9_3: return "TEXT_9_3";
-        case node_t::FUNC_9_4: return "FUNC_9_4";
-        case node_t::TEXT_9_5: return "TEXT_9_5";
-        case node_t::TEXT_9_6: return "TEXT_9_6";
-        case node_t::TEXT_10_0: return "TEXT_10_0";
-        case node_t::TEXT_10_1: return "TEXT_10_1";
-        case node_t::LOOP_10_2: return "LOOP_10_2";
-        case node_t::IF_11_0: return "IF_11_0";
-        case node_t::DATA_11_1: return "DATA_11_1";
-        case node_t::RET_11_2: return "RET_11_2";
-        case node_t::IF_12_0: return "IF_12_0";
-        case node_t::LOOP_12_1: return "LOOP_12_1";
-        case node_t::HEX_13_0: return "HEX_13_0";
-        case node_t::RANGE_13_1: return "RANGE_13_1";
-        case node_t::TEXT_13_2: return "TEXT_13_2";
-        case node_t::TEXT_13_3: return "TEXT_13_3";
-        case node_t::CASES_13_4: return "CASES_13_4";
-        case node_t::IF_14_0: return "IF_14_0";
-        case node_t::TEXT_14_1: return "TEXT_14_1";
-        case node_t::TEXT_14_2: return "TEXT_14_2";
-        case node_t::RET_14_3: return "RET_14_3";
-        case node_t::DATA_15_0: return "DATA_15_0";
-        case node_t::TEXT_15_1: return "TEXT_15_1";
-        case node_t::TEXT_15_2: return "TEXT_15_2";
-        case node_t::IF_16_0: return "IF_16_0";
-        case node_t::DATA_16_1: return "DATA_16_1";
-        case node_t::RET_17_0: return "RET_17_0";
-        case node_t::RANGE_18_0: return "RANGE_18_0";
-        case node_t::TEXT_18_1: return "TEXT_18_1";
-        case node_t::TEXT_18_2: return "TEXT_18_2";
-        case node_t::LOOP_20_0: return "LOOP_20_0";
-        case node_t::BOOL_20_0: return "BOOL_20_0";
-        case node_t::BOOL_21_0: return "BOOL_21_0";
-        case node_t::NO_STATE: return "NO_STATE";
+        case NodeT::Loop1_0: return "Loop1_0";
+        case NodeT::Text1_0: return "Text1_0";
+        case NodeT::Range1_1: return "Range1_1";
+        case NodeT::Text1_2: return "Text1_2";
+        case NodeT::Range1_3: return "Range1_3";
+        case NodeT::Range1_4: return "Range1_4";
+        case NodeT::Range1_5: return "Range1_5";
+        case NodeT::Range1_6: return "Range1_6";
+        case NodeT::Text1_7: return "Text1_7";
+        case NodeT::Text1_8: return "Text1_8";
+        case NodeT::Call1_9: return "Call1_9";
+        case NodeT::Reset1_10: return "Reset1_10";
+        case NodeT::Loop3_0: return "Loop3_0";
+        case NodeT::Label3_0: return "Label3_0";
+        case NodeT::Loop3_1: return "Loop3_1";
+        case NodeT::Range4_0: return "Range4_0";
+        case NodeT::Range4_1: return "Range4_1";
+        case NodeT::Text4_2: return "Text4_2";
+        case NodeT::Text4_3: return "Text4_3";
+        case NodeT::Text5_0: return "Text5_0";
+        case NodeT::Range5_1: return "Range5_1";
+        case NodeT::String5_2: return "String5_2";
+        case NodeT::Text5_3: return "Text5_3";
+        case NodeT::Text5_4: return "Text5_4";
+        case NodeT::Any6_0: return "Any6_0";
+        case NodeT::Text6_0_0_0: return "Text6_0_0_0";
+        case NodeT::Bang6_0: return "Bang6_0";
+        case NodeT::Range6_2: return "Range6_2";
+        case NodeT::Uint6_3: return "Uint6_3";
+        case NodeT::Func6_4: return "Func6_4";
+        case NodeT::Text6_5: return "Text6_5";
+        case NodeT::Text6_6: return "Text6_6";
+        case NodeT::Any7_0: return "Any7_0";
+        case NodeT::Text7_0_0_0: return "Text7_0_0_0";
+        case NodeT::Bang7_0: return "Bang7_0";
+        case NodeT::Range7_2: return "Range7_2";
+        case NodeT::String7_3: return "String7_3";
+        case NodeT::Func7_4: return "Func7_4";
+        case NodeT::Text7_5: return "Text7_5";
+        case NodeT::Text7_6: return "Text7_6";
+        case NodeT::Any8_0: return "Any8_0";
+        case NodeT::Text8_0_0_0: return "Text8_0_0_0";
+        case NodeT::Bang8_0: return "Bang8_0";
+        case NodeT::Range8_2: return "Range8_2";
+        case NodeT::String8_3: return "String8_3";
+        case NodeT::Func8_4: return "Func8_4";
+        case NodeT::Text8_5: return "Text8_5";
+        case NodeT::Text8_6: return "Text8_6";
+        case NodeT::Any9_0: return "Any9_0";
+        case NodeT::Text9_0_0_0: return "Text9_0_0_0";
+        case NodeT::Bang9_0: return "Bang9_0";
+        case NodeT::Range9_2: return "Range9_2";
+        case NodeT::Text9_3: return "Text9_3";
+        case NodeT::Func9_4: return "Func9_4";
+        case NodeT::Text9_5: return "Text9_5";
+        case NodeT::Text9_6: return "Text9_6";
+        case NodeT::Text10_0: return "Text10_0";
+        case NodeT::Text10_1: return "Text10_1";
+        case NodeT::Loop10_2: return "Loop10_2";
+        case NodeT::If11_0: return "If11_0";
+        case NodeT::Data11_1: return "Data11_1";
+        case NodeT::Ret11_2: return "Ret11_2";
+        case NodeT::If12_0: return "If12_0";
+        case NodeT::Loop12_1: return "Loop12_1";
+        case NodeT::Hex13_0: return "Hex13_0";
+        case NodeT::Range13_1: return "Range13_1";
+        case NodeT::Text13_2: return "Text13_2";
+        case NodeT::Text13_3: return "Text13_3";
+        case NodeT::Cases13_4: return "Cases13_4";
+        case NodeT::If14_0: return "If14_0";
+        case NodeT::Text14_1: return "Text14_1";
+        case NodeT::Text14_2: return "Text14_2";
+        case NodeT::Ret14_3: return "Ret14_3";
+        case NodeT::Data15_0: return "Data15_0";
+        case NodeT::Text15_1: return "Text15_1";
+        case NodeT::Text15_2: return "Text15_2";
+        case NodeT::If16_0: return "If16_0";
+        case NodeT::Data16_1: return "Data16_1";
+        case NodeT::Ret17_0: return "Ret17_0";
+        case NodeT::Range18_0: return "Range18_0";
+        case NodeT::Text18_1: return "Text18_1";
+        case NodeT::Text18_2: return "Text18_2";
+        case NodeT::Loop20_0: return "Loop20_0";
+        case NodeT::Bool20_0: return "Bool20_0";
+        case NodeT::Bool21_0: return "Bool21_0";
+        case NodeT::NoState: return "NoState";
         default: return "unknown";
     };
 }
