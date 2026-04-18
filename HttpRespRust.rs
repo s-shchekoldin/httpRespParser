@@ -1,6 +1,6 @@
 // ==============================================================
-// Date: 2026-04-15 19:12:27 GMT
-// Generated using vProto(2026.04.15)        https://www.cgen.dev
+// Date: 2026-04-18 16:47:36 GMT
+// Generated using vProto(2026.04.18)        https://www.cgen.dev
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // ==============================================================
 
@@ -315,8 +315,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -328,13 +328,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -386,8 +398,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -399,13 +411,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -443,8 +467,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -456,13 +480,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -500,8 +536,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -513,13 +549,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -557,8 +605,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]; // ^[0xa][0xd]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -570,13 +618,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -699,8 +759,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -712,13 +772,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -756,8 +828,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]; // ^[0xa][0xd]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -769,13 +841,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -855,8 +939,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -868,13 +952,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -919,8 +1015,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]; // ^[0xa][0xd]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -932,13 +1028,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -1050,8 +1158,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -1063,13 +1171,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -1115,8 +1235,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -1128,13 +1248,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -1260,8 +1392,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -1273,13 +1405,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -1324,8 +1468,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]; // ^[0xa][0xd]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -1337,13 +1481,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -1469,8 +1625,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -1482,13 +1638,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -1533,8 +1701,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]; // ^[0xa][0xd]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -1546,13 +1714,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -1678,8 +1858,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -1691,13 +1871,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -1919,8 +2111,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9][A-F][a-f]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -1932,13 +2124,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -1982,8 +2186,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -1995,13 +2199,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
@@ -2213,8 +2429,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]; // ^[0xa][0xd]
         let datastart = state.left;
         while state.left < state.right {
-            if (state.left + 4) <= state.right {
-                if TERMINATOR[usize::from(data[state.left + 0])] {
+            if (state.left + 8) <= state.right {
+                if TERMINATOR[usize::from(data[state.left])] {
                     state.left += 0;
                 }
                 else if TERMINATOR[usize::from(data[state.left + 1])] {
@@ -2226,13 +2442,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 else if TERMINATOR[usize::from(data[state.left + 3])] {
                     state.left += 3;
                 }
+                else if TERMINATOR[usize::from(data[state.left + 4])] {
+                    state.left += 4;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 5])] {
+                    state.left += 5;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 6])] {
+                    state.left += 6;
+                }
+                else if TERMINATOR[usize::from(data[state.left + 7])] {
+                    state.left += 7;
+                }
                 else
                 {
-                    state.left += 4;
+                    state.left += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left + 0])]) {
+            else if !(TERMINATOR[usize::from(data[state.left])]) {
                 state.left += 1;
                 continue;
             }
