@@ -1,13 +1,13 @@
 // ==============================================================
-// Date: 2026-04-18 16:57:42 GMT
-// Generated using vProto(2026.04.18)        https://www.cgen.dev
+// Date: 2026-04-28 17:05:32 GMT
+// Generated using vProto(2026.04.28)        https://www.cgen.dev
 // Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
 // ==============================================================
 
 // Example usage:
 // let mut m = crate::HttpRespRust::HttpRespRust::<HttpRespRust::HttpRespRustExample>::new();
 // m.parse(&byte_slice);
-// If necessary, override HttpRespRust::HttpRespRustExample and its trait as well
+// Also, you can redefine HttpRespRustTrait implementation for interacting with the HttpRespRust module.
 
 
 #[cfg(target_arch = "x86_64")]
@@ -74,8 +74,10 @@ impl std::fmt::Display for StateT {
     }
 }
 
+#[allow(unreachable_code)]
 pub trait HttpRespRustTrait {
     fn new() -> Self;
+
     // field accessors:
     fn chunklen(&mut self) -> &mut u32;
     fn contentLength(&mut self) -> &mut u64;
@@ -84,8 +86,21 @@ pub trait HttpRespRustTrait {
     fn isContentLen(&mut self) -> &mut bool;
     fn isKeepAlive(&mut self) -> &mut bool;
     fn transferEncoding(&mut self) -> &mut String;
+
     // callbacks to be implemented by the user:
-    fn resp(&mut self, data: &[u8], is_first: bool, is_last: bool);
+    fn resp(&mut self, data: &[u8], is_first: bool, is_last: bool) { println!("resp({}:{})={:X?}", is_first, is_last, data); }
+
+    // private functions:
+    fn _func6_4(&mut self) -> bool {  *self.isContentLen() = true;  return true; }
+    fn _func7_4(&mut self) -> bool {  println!("CType: {}\n", self.ctype());  return true; }
+    fn _func8_4(&mut self) -> bool {  println!("Encoding: {}\n", self.encoding());  return true; }
+    fn _func9_4(&mut self) -> bool {  *self.isKeepAlive() = true;  return true; }
+    fn _if11_0(&mut self) -> bool { *self.isContentLen() }
+    fn _if12_0(&mut self) -> bool { self.transferEncoding().contains("chunked") }
+    fn _if14_0(&mut self) -> bool { *self.chunklen() == 0 }
+    fn _if16_0(&mut self) -> bool { *self.isKeepAlive() == false }
+    fn _max_data11_1(&mut self) -> usize { (*self.contentLength()) as usize }
+    fn _max_data15_0(&mut self) -> usize { (*self.chunklen()) as usize }
 }
 
 pub struct HttpRespRustExample
@@ -107,7 +122,6 @@ impl HttpRespRustTrait for HttpRespRustExample {
     fn encoding(&mut self) -> &mut String { &mut self.encoding }
     fn isContentLen(&mut self) -> &mut bool { &mut self.isContentLen }
     fn isKeepAlive(&mut self) -> &mut bool { &mut self.isKeepAlive }
-    fn resp(&mut self, data: &[u8], is_first: bool, is_last: bool) { println!("resp({}:{})={:X?}", is_first, is_last, data); }
     fn transferEncoding(&mut self) -> &mut String { &mut self.transferEncoding }
 }
 
@@ -1455,14 +1469,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         state.node = NodeT::Uint6_3;
         return true;
     }
-    #[allow(unused_variables)]
-    #[allow(unreachable_code)]
-    fn _func6_4(this : &mut T) -> bool {
-         *this.isContentLen() = true; 
-        return true;
-    }
     fn func6_4(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if Self::_func6_4(&mut self.output) {
+        if self.output._func6_4() {
             state.node = NodeT::Text6_5;
             return true;
         }
@@ -1748,14 +1756,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         state.node = NodeT::String7_3;
         return true;
     }
-    #[allow(unused_variables)]
-    #[allow(unreachable_code)]
-    fn _func7_4(this : &mut T) -> bool {
-         println!("CType: {}\n", this.ctype()); 
-        return true;
-    }
     fn func7_4(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if Self::_func7_4(&mut self.output) {
+        if self.output._func7_4() {
             state.node = NodeT::Text7_5;
             return true;
         }
@@ -2041,14 +2043,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         state.node = NodeT::String8_3;
         return true;
     }
-    #[allow(unused_variables)]
-    #[allow(unreachable_code)]
-    fn _func8_4(this : &mut T) -> bool {
-         println!("Encoding: {}\n", this.encoding()); 
-        return true;
-    }
     fn func8_4(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if Self::_func8_4(&mut self.output) {
+        if self.output._func8_4() {
             state.node = NodeT::Text8_5;
             return true;
         }
@@ -2241,14 +2237,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         state.node = NodeT::Text9_3;
         return true;
     }
-    #[allow(unused_variables)]
-    #[allow(unreachable_code)]
-    fn _func9_4(this : &mut T) -> bool {
-         *this.isKeepAlive() = true; 
-        return true;
-    }
     fn func9_4(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if Self::_func9_4(&mut self.output) {
+        if self.output._func9_4() {
             state.node = NodeT::Text9_5;
             return true;
         }
@@ -2327,22 +2317,14 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         state.node = NodeT::NoState;
         return true;
     }
-    #[allow(unused_variables)]
-    #[allow(unreachable_code)]
-    fn _if11_0(this : &mut T) -> bool {
-        *this.isContentLen()
-    }
     fn if11_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if Self::_if11_0(&mut self.output) {
+        if self.output._if11_0() {
             state.node = NodeT::Data11_1;
             return true;
         }
         state.node = NodeT::NoState;
         return false;
     }
-    #[allow(unused_variables)]
-    #[allow(unreachable_code)]
-    fn max_data11_1(this : &mut T) -> usize { let x = *this.contentLength(); x as usize }
     fn data11_1(&mut self, state: &mut StateT, data: &[u8]) -> bool {
         let datastart = state.left;
         if state.consumed == 0 {
@@ -2351,8 +2333,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         if state.left == state.right {
             return true;
         }
-        else if (state.consumed + state.remain()) >= Self::max_data11_1(&mut self.output) {
-            state.left += Self::max_data11_1(&mut self.output) - state.consumed;
+        else if (state.consumed + state.remain()) >= self.output._max_data11_1() {
+            state.left += self.output._max_data11_1() - state.consumed;
             let left = state.left;
             self.output.resp(&data[datastart .. left], state.consumed == 0, true);
             state.consumed = 0;
@@ -2374,13 +2356,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         }
         return state.node != NodeT::NoState;
     }
-    #[allow(unused_variables)]
-    #[allow(unreachable_code)]
-    fn _if12_0(this : &mut T) -> bool {
-        this.transferEncoding().contains("chunked")
-    }
     fn if12_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if Self::_if12_0(&mut self.output) {
+        if self.output._if12_0() {
             state.node = NodeT::Loop12_1;
             return true;
         }
@@ -2585,13 +2562,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         state.node = NodeT::NoState;
         return true;
     }
-    #[allow(unused_variables)]
-    #[allow(unreachable_code)]
-    fn _if14_0(this : &mut T) -> bool {
-        *this.chunklen() == 0
-    }
     fn if14_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if Self::_if14_0(&mut self.output) {
+        if self.output._if14_0() {
             state.node = NodeT::Text14_1;
             return true;
         }
@@ -2635,9 +2607,6 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         }
         return state.node != NodeT::NoState;
     }
-    #[allow(unused_variables)]
-    #[allow(unreachable_code)]
-    fn max_data15_0(this : &mut T) -> usize { let x = *this.chunklen(); x as usize }
     fn data15_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
         let datastart = state.left;
         if state.consumed == 0 {
@@ -2646,8 +2615,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         if state.left == state.right {
             return true;
         }
-        else if (state.consumed + state.remain()) >= Self::max_data15_0(&mut self.output) {
-            state.left += Self::max_data15_0(&mut self.output) - state.consumed;
+        else if (state.consumed + state.remain()) >= self.output._max_data15_0() {
+            state.left += self.output._max_data15_0() - state.consumed;
             let left = state.left;
             self.output.resp(&data[datastart .. left], state.consumed == 0, true);
             state.consumed = 0;
@@ -2688,13 +2657,8 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         state.node = NodeT::Text15_2;
         return true;
     }
-    #[allow(unused_variables)]
-    #[allow(unreachable_code)]
-    fn _if16_0(this : &mut T) -> bool {
-        *this.isKeepAlive() == false
-    }
     fn if16_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if Self::_if16_0(&mut self.output) {
+        if self.output._if16_0() {
             state.node = NodeT::Data16_1;
             return true;
         }
