@@ -1,7 +1,7 @@
 // ==============================================================
-// Date: 2026-04-28 17:05:32 GMT
-// Generated using vProto(2026.04.28)        https://www.cgen.dev
-// Author: Sergey V. Shchekoldin     Email: shchekoldin@gmail.com
+// Date: 2026-04-30 17:15:32 GMT
+// Generated using vProto(2026.04.30)        https://www.cgen.dev
+// Author: Sergey Shchekoldin        Email: shchekoldin@gmail.com
 // ==============================================================
 
 // Example usage:
@@ -57,20 +57,18 @@ impl std::fmt::Display for NodeT {
 
 #[derive(Debug, Copy, Clone)]
 pub struct StateT {
-    node: NodeT,
-    left: usize,
-    right: usize,
+    pos: usize,
     consumed: usize,
     rcount: usize,
-    rstack: [NodeT; 2],
+    node: NodeT,
+    rstack: [NodeT; 2]
 }
 impl StateT {
-    pub fn new() -> Self { Self{ node: NodeT::Loop1_0, left: 0, right: 0, consumed: 0, rcount: 0, rstack: [NodeT::NoState; 2] } }
-    pub fn remain(&self) -> usize { self.right - self.left }
+    pub fn new() -> Self { Self{ pos: 0, consumed: 0, rcount: 0,  node: NodeT::Loop1_0, rstack: [NodeT::NoState; 2] } }
 }
 impl std::fmt::Display for StateT {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} remain:{}({}->{}) consumed:{}", self.node, self.remain(), self.left, self.right, self.consumed)
+        write!(f, "{} pos:{} consumed:{}", self.node, self.pos, self.consumed)
     }
 }
 
@@ -149,8 +147,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
     }
     pub fn parse(&mut self, data : &[u8]) -> bool {
         for v in & mut self.vstate {
-            v.left = 0;
-            v.right = data.len();
+            v.pos = 0;
         }
         let mut reparse = true;
         while reparse {
@@ -160,7 +157,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
             while s_flow < self.vstate.len() {
                 if self.vstate[s_flow].node == NodeT::NoState {
                     s_flow += 1;
-                } else if self.vstate[s_flow].remain() == 0 {
+                } else if self.vstate[s_flow].pos == data.len() {
                     if s_flow != d_flow {
                         self.vstate[d_flow] = self.vstate[s_flow];
                     }
@@ -187,14 +184,14 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         loop {
             if cfg!(debug_assertions) {
                 println!("State: {} data: [{:#04X}, {:#04X}, {:#04X}, {:#04X}, {:#04X}]", state.node,
-                    if state.remain() > 0 { data[state.left+0] } else { 0 },
-                    if state.remain() > 1 { data[state.left+1] } else { 0 },
-                    if state.remain() > 2 { data[state.left+2] } else { 0 },
-                    if state.remain() > 3 { data[state.left+3] } else { 0 },
-                    if state.remain() > 4 { data[state.left+4] } else { 0 });
+                    if state.pos+0 < data.len() { data[state.pos+0] } else { 0 },
+                    if state.pos+1 < data.len() { data[state.pos+1] } else { 0 },
+                    if state.pos+2 < data.len() { data[state.pos+2] } else { 0 },
+                    if state.pos+3 < data.len() { data[state.pos+3] } else { 0 },
+                    if state.pos+4 < data.len() { data[state.pos+4] } else { 0 });
             }
             let n = state.node;
-            let d = state.left;
+            let d = state.pos;
             match state.node {
                 NodeT::Loop1_0 => { self.loop1_0(state, data); }
                 NodeT::Text1_0 => { self.text1_0(state, data, false); }
@@ -284,7 +281,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 NodeT::Loop22_0 => { self.loop22_0(state, data); }
                 NodeT::NoState => { break; }
             }; // match
-            if d == state.left && n == state.node {
+            if d == state.pos && n == state.node {
                 break;
             }
         } // loop
@@ -294,20 +291,20 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
     }
     fn text1_0(&mut self, state: &mut StateT, data: &[u8], is_branch: bool) -> bool {
         static TEXT:[u8;5] = [0x48, 0x54, 0x54, 0x50, 0x2f]; // http/
-        while state.left < state.right {
-            if TEXT[state.consumed] != data[state.left] {
+        while state.pos < data.len() {
+            if TEXT[state.consumed] != data[state.pos] {
                 state.node = NodeT::NoState;
                 let ret = is_branch && state.consumed != 0;
                 state.consumed = 0;
                 return ret;
             }
             else if {state.consumed += 1; state.consumed >= TEXT.len()} {
-                state.left += 1;
+                state.pos += 1;
                 state.consumed = 0;
                 state.node = NodeT::Range1_1;
                 return true;
             }
-            state.left += 1;
+            state.pos += 1;
         }
         state.node = NodeT::Text1_0;
         return true;
@@ -330,58 +327,58 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9]
-        let datastart = state.left;
+        let datastart = state.pos;
         let is_sse42 = is_x86_feature_detected!("sse4.2");
-        while state.left < state.right {
-            if is_sse42 && (state.left+16) <= state.right {
+        while state.pos < data.len() {
+            if is_sse42 && (state.pos+16) <= data.len() {
                 unsafe {
-                    let d = _mm_loadu_si128(data.as_ptr().add(state.left) as *const __m128i);
+                    let d = _mm_loadu_si128(data.as_ptr().add(state.pos) as *const __m128i);
                     let s0 = _mm_setr_epi8(0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
                     let r = _mm_cmpestri(s0, 10, d, 16, _SIDD_UBYTE_OPS | _SIDD_LEAST_SIGNIFICANT | _SIDD_CMP_EQUAL_ANY | _SIDD_NEGATIVE_POLARITY);
                     if r < 16 {
-                        state.left += r as usize;
+                        state.pos += r as usize;
                     } else {
-                        state.left += 16;
+                        state.pos += 16;
                         continue;
                     }
                 }
             }
-            else if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+            else if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let total = state.consumed + state.left - datastart;
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::Text1_2;
@@ -391,17 +388,17 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range1_1;
         return true;
     }
     fn text1_2(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x2E != data[state.left] {
+        if state.pos < data.len() {
+            if 0x2E != data[state.pos] {
                 state.node = NodeT::NoState;
                 return false;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Range1_3;
                 return true;
             }
@@ -427,58 +424,58 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9]
-        let datastart = state.left;
+        let datastart = state.pos;
         let is_sse42 = is_x86_feature_detected!("sse4.2");
-        while state.left < state.right {
-            if is_sse42 && (state.left+16) <= state.right {
+        while state.pos < data.len() {
+            if is_sse42 && (state.pos+16) <= data.len() {
                 unsafe {
-                    let d = _mm_loadu_si128(data.as_ptr().add(state.left) as *const __m128i);
+                    let d = _mm_loadu_si128(data.as_ptr().add(state.pos) as *const __m128i);
                     let s0 = _mm_setr_epi8(0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
                     let r = _mm_cmpestri(s0, 10, d, 16, _SIDD_UBYTE_OPS | _SIDD_LEAST_SIGNIFICANT | _SIDD_CMP_EQUAL_ANY | _SIDD_NEGATIVE_POLARITY);
                     if r < 16 {
-                        state.left += r as usize;
+                        state.pos += r as usize;
                     } else {
-                        state.left += 16;
+                        state.pos += 16;
                         continue;
                     }
                 }
             }
-            else if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+            else if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let total = state.consumed + state.left - datastart;
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::Range1_4;
@@ -488,7 +485,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range1_3;
         return true;
     }
@@ -510,74 +507,74 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
-        let datastart = state.left;
+        let datastart = state.pos;
         let is_avx2 = is_x86_feature_detected!("avx2");
         let is_sse2 = is_x86_feature_detected!("sse2");
-        while state.left < state.right {
-            if is_avx2 && (state.left + 32) <= state.right {
+        while state.pos < data.len() {
+            if is_avx2 && (state.pos + 32) <= data.len() {
                 unsafe {
-                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.left) as *const __m256i);
+                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.pos) as *const __m256i);
                     let mut m = _mm256_cmpeq_epi8(_mm256_set1_epi8(0x9), d);
                     m = _mm256_or_si256(m, _mm256_cmpeq_epi8(_mm256_set1_epi8(0x20), d));
                     let r: u32 = !_mm256_movemask_epi8(m) as u32;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 32;
+                        state.pos += 32;
                         continue;
                     }
                 }
             }
-            else if is_sse2 && (state.left + 16) <= state.right {
+            else if is_sse2 && (state.pos + 16) <= data.len() {
                 unsafe {
-                    let d = _mm_loadu_si128(data.as_ptr().add(state.left) as *const __m128i);
+                    let d = _mm_loadu_si128(data.as_ptr().add(state.pos) as *const __m128i);
                     let mut m = _mm_cmpeq_epi8(_mm_set1_epi8(0x9), d);
                     m = _mm_or_si128(m, _mm_cmpeq_epi8(_mm_set1_epi8(0x20), d));
                     let r: u16 = !_mm_movemask_epi8(m) as u16;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 16;
+                        state.pos += 16;
                         continue;
                     }
                 }
             }
-            else if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+            else if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let total = state.consumed + state.left - datastart;
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::Range1_5;
@@ -587,7 +584,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range1_4;
         return true;
     }
@@ -609,58 +606,58 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9]
-        let datastart = state.left;
+        let datastart = state.pos;
         let is_sse42 = is_x86_feature_detected!("sse4.2");
-        while state.left < state.right {
-            if is_sse42 && (state.left+16) <= state.right {
+        while state.pos < data.len() {
+            if is_sse42 && (state.pos+16) <= data.len() {
                 unsafe {
-                    let d = _mm_loadu_si128(data.as_ptr().add(state.left) as *const __m128i);
+                    let d = _mm_loadu_si128(data.as_ptr().add(state.pos) as *const __m128i);
                     let s0 = _mm_setr_epi8(0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
                     let r = _mm_cmpestri(s0, 10, d, 16, _SIDD_UBYTE_OPS | _SIDD_LEAST_SIGNIFICANT | _SIDD_CMP_EQUAL_ANY | _SIDD_NEGATIVE_POLARITY);
                     if r < 16 {
-                        state.left += r as usize;
+                        state.pos += r as usize;
                     } else {
-                        state.left += 16;
+                        state.pos += 16;
                         continue;
                     }
                 }
             }
-            else if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+            else if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let total = state.consumed + state.left - datastart;
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::Range1_6;
@@ -670,7 +667,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range1_5;
         return true;
     }
@@ -692,58 +689,58 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]; // ^[0xa][0xd]
-        let datastart = state.left;
-        while state.left < state.right {
-            if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+        let datastart = state.pos;
+        while state.pos < data.len() {
+            if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
             state.consumed = 0;
             state.node = NodeT::Text1_7;
             return true;
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range1_6;
         return true;
     }
     fn text1_7(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0D != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0D != data[state.pos] {
                 state.node = NodeT::Text1_8;
                 return true;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Text1_8;
                 return true;
             }
@@ -752,12 +749,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn text1_8(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0A != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0A != data[state.pos] {
                 state.node = NodeT::NoState;
                 return false;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Call1_9;
                 return true;
             }
@@ -784,8 +781,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         state.node = NodeT::NoState;
         self.reset();
         let c = self.vstate.len();
-        self.vstate[c-1].left = state.left;
-        self.vstate[c-1].right = state.right;
+        self.vstate[c-1].pos = state.pos;
         return true;
     }
     fn loop3_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
@@ -796,7 +792,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn loop3_1(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left == state.right {
+        if state.pos == data.len() {
             return true;
         }
         if self.range4_0(state, data) { // case_1
@@ -846,44 +842,44 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
-        let datastart = state.left;
-        while state.left < state.right {
-            if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+        let datastart = state.pos;
+        while state.pos < data.len() {
+            if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let total = state.consumed + state.left - datastart;
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::Range4_1;
@@ -893,7 +889,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range4_0;
         return true;
     }
@@ -915,58 +911,58 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]; // ^[0xa][0xd]
-        let datastart = state.left;
-        while state.left < state.right {
-            if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+        let datastart = state.pos;
+        while state.pos < data.len() {
+            if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
             state.consumed = 0;
             state.node = NodeT::Text4_2;
             return true;
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range4_1;
         return true;
     }
     fn text4_2(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0D != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0D != data[state.pos] {
                 state.node = NodeT::Text4_3;
                 return true;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Text4_3;
                 return true;
             }
@@ -975,12 +971,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn text4_3(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0A != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0A != data[state.pos] {
                 state.node = NodeT::Range18_0;
                 return false;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Loop3_1;
                 return true;
             }
@@ -990,20 +986,20 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
     }
     fn text5_0(&mut self, state: &mut StateT, data: &[u8], is_branch: bool) -> bool {
         static TEXT:[u8;18] = [0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x2d, 0x65, 0x6e, 0x63, 0x6f, 0x64, 0x69, 0x6e, 0x67, 0x3a]; // transfer-encoding:
-        while state.left < state.right {
-            if ((TEXT[state.consumed] ^ data[state.left]) & 0xDF) != 0 {
+        while state.pos < data.len() {
+            if ((TEXT[state.consumed] ^ data[state.pos]) & 0xDF) != 0 {
                 state.node = NodeT::Range18_0;
                 let ret = is_branch && state.consumed != 0;
                 state.consumed = 0;
                 return ret;
             }
             else if {state.consumed += 1; state.consumed >= TEXT.len()} {
-                state.left += 1;
+                state.pos += 1;
                 state.consumed = 0;
                 state.node = NodeT::Range5_1;
                 return true;
             }
-            state.left += 1;
+            state.pos += 1;
         }
         state.node = NodeT::Text5_0;
         return true;
@@ -1026,74 +1022,74 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
-        let datastart = state.left;
+        let datastart = state.pos;
         let is_avx2 = is_x86_feature_detected!("avx2");
         let is_sse2 = is_x86_feature_detected!("sse2");
-        while state.left < state.right {
-            if is_avx2 && (state.left + 32) <= state.right {
+        while state.pos < data.len() {
+            if is_avx2 && (state.pos + 32) <= data.len() {
                 unsafe {
-                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.left) as *const __m256i);
+                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.pos) as *const __m256i);
                     let mut m = _mm256_cmpeq_epi8(_mm256_set1_epi8(0x9), d);
                     m = _mm256_or_si256(m, _mm256_cmpeq_epi8(_mm256_set1_epi8(0x20), d));
                     let r: u32 = !_mm256_movemask_epi8(m) as u32;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 32;
+                        state.pos += 32;
                         continue;
                     }
                 }
             }
-            else if is_sse2 && (state.left + 16) <= state.right {
+            else if is_sse2 && (state.pos + 16) <= data.len() {
                 unsafe {
-                    let d = _mm_loadu_si128(data.as_ptr().add(state.left) as *const __m128i);
+                    let d = _mm_loadu_si128(data.as_ptr().add(state.pos) as *const __m128i);
                     let mut m = _mm_cmpeq_epi8(_mm_set1_epi8(0x9), d);
                     m = _mm_or_si128(m, _mm_cmpeq_epi8(_mm_set1_epi8(0x20), d));
                     let r: u16 = !_mm_movemask_epi8(m) as u16;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 16;
+                        state.pos += 16;
                         continue;
                     }
                 }
             }
-            else if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+            else if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let total = state.consumed + state.left - datastart;
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::String5_2;
@@ -1103,7 +1099,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range5_1;
         return true;
     }
@@ -1132,76 +1128,76 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]; // ^[0xa][0xd]
-        let datastart = state.left;
+        let datastart = state.pos;
         let is_avx2 = is_x86_feature_detected!("avx2");
         let is_sse2 = is_x86_feature_detected!("sse2");
-        while state.left < state.right {
-            if is_avx2 && (state.left + 32) <= state.right {
+        while state.pos < data.len() {
+            if is_avx2 && (state.pos + 32) <= data.len() {
                 unsafe {
-                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.left) as *const __m256i);
+                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.pos) as *const __m256i);
                     let mut m = _mm256_cmpeq_epi8(_mm256_set1_epi8(0xa), d);
                     m = _mm256_or_si256(m, _mm256_cmpeq_epi8(_mm256_set1_epi8(0xd), d));
                     let r: u32 = _mm256_movemask_epi8(m) as u32;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 32;
+                        state.pos += 32;
                         continue;
                     }
                 }
             }
-            else if is_sse2 && (state.left + 16) <= state.right {
+            else if is_sse2 && (state.pos + 16) <= data.len() {
                 unsafe {
-                    let d = _mm_loadu_si128(data.as_ptr().add(state.left) as *const __m128i);
+                    let d = _mm_loadu_si128(data.as_ptr().add(state.pos) as *const __m128i);
                     let mut m = _mm_cmpeq_epi8(_mm_set1_epi8(0xa), d);
                     m = _mm_or_si128(m, _mm_cmpeq_epi8(_mm_set1_epi8(0xd), d));
                     let r: u16 = _mm_movemask_epi8(m) as u16;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 16;
+                        state.pos += 16;
                         continue;
                     }
                 }
             }
-            else if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+            else if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let left = state.left;
-            self._string5_2(state, &data[datastart .. left]);
-            let total = state.consumed + state.left - datastart;
+            let pos = state.pos;
+            self._string5_2(state, &data[datastart .. pos]);
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::Text5_3;
@@ -1211,21 +1207,21 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        if datastart < state.left {
-            let left = state.left;
-            self._string5_2(state, &data[datastart .. left]);
+        if datastart < state.pos {
+            let pos = state.pos;
+            self._string5_2(state, &data[datastart .. pos]);
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::String5_2;
         return true;
     }
     fn text5_3(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0D != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0D != data[state.pos] {
                 state.node = NodeT::Text5_4;
                 return true;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Text5_4;
                 return true;
             }
@@ -1234,12 +1230,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn text5_4(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0A != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0A != data[state.pos] {
                 state.node = NodeT::Range18_0;
                 return false;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Loop3_1;
                 return true;
             }
@@ -1248,7 +1244,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn any6_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left == state.right {
+        if state.pos == data.len() {
             return true;
         }
         // case_1: Text6_0_0_0
@@ -1263,19 +1259,19 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
     }
     fn text6_0_0_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
         static TEXT:[u8;15] = [0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x6c, 0x65, 0x6e, 0x67, 0x74, 0x68, 0x3a]; // content-length:
-        while state.left < state.right {
-            if ((TEXT[state.consumed] ^ data[state.left]) & 0xDF) != 0 {
+        while state.pos < data.len() {
+            if ((TEXT[state.consumed] ^ data[state.pos]) & 0xDF) != 0 {
                 state.node = NodeT::NoState;
                 state.consumed = 0;
                 return false;
             }
             else if {state.consumed += 1; state.consumed >= TEXT.len()} {
-                state.left += 1;
+                state.pos += 1;
                 state.consumed = 0;
                 state.node = NodeT::Bang6_0;
                 return true;
             }
-            state.left += 1;
+            state.pos += 1;
         }
         state.node = NodeT::Text6_0_0_0;
         return true;
@@ -1305,74 +1301,74 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
-        let datastart = state.left;
+        let datastart = state.pos;
         let is_avx2 = is_x86_feature_detected!("avx2");
         let is_sse2 = is_x86_feature_detected!("sse2");
-        while state.left < state.right {
-            if is_avx2 && (state.left + 32) <= state.right {
+        while state.pos < data.len() {
+            if is_avx2 && (state.pos + 32) <= data.len() {
                 unsafe {
-                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.left) as *const __m256i);
+                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.pos) as *const __m256i);
                     let mut m = _mm256_cmpeq_epi8(_mm256_set1_epi8(0x9), d);
                     m = _mm256_or_si256(m, _mm256_cmpeq_epi8(_mm256_set1_epi8(0x20), d));
                     let r: u32 = !_mm256_movemask_epi8(m) as u32;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 32;
+                        state.pos += 32;
                         continue;
                     }
                 }
             }
-            else if is_sse2 && (state.left + 16) <= state.right {
+            else if is_sse2 && (state.pos + 16) <= data.len() {
                 unsafe {
-                    let d = _mm_loadu_si128(data.as_ptr().add(state.left) as *const __m128i);
+                    let d = _mm_loadu_si128(data.as_ptr().add(state.pos) as *const __m128i);
                     let mut m = _mm_cmpeq_epi8(_mm_set1_epi8(0x9), d);
                     m = _mm_or_si128(m, _mm_cmpeq_epi8(_mm_set1_epi8(0x20), d));
                     let r: u16 = !_mm_movemask_epi8(m) as u16;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 16;
+                        state.pos += 16;
                         continue;
                     }
                 }
             }
-            else if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+            else if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let total = state.consumed + state.left - datastart;
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::Uint6_3;
@@ -1382,7 +1378,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range6_2;
         return true;
     }
@@ -1412,46 +1408,46 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9]
-        let datastart = state.left;
-        while state.left < state.right {
-            if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+        let datastart = state.pos;
+        while state.pos < data.len() {
+            if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let left = state.left;
-            self._uint6_3(state, &data[datastart .. left]);
-            let total = state.consumed + state.left - datastart;
+            let pos = state.pos;
+            self._uint6_3(state, &data[datastart .. pos]);
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::Func6_4;
@@ -1461,11 +1457,11 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        if datastart < state.left {
-            let left = state.left;
-            self._uint6_3(state, &data[datastart .. left]);
+        if datastart < state.pos {
+            let pos = state.pos;
+            self._uint6_3(state, &data[datastart .. pos]);
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Uint6_3;
         return true;
     }
@@ -1478,12 +1474,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return false;
     }
     fn text6_5(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0D != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0D != data[state.pos] {
                 state.node = NodeT::Text6_6;
                 return true;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Text6_6;
                 return true;
             }
@@ -1492,12 +1488,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn text6_6(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0A != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0A != data[state.pos] {
                 state.node = NodeT::Range18_0;
                 return false;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Loop3_1;
                 return true;
             }
@@ -1506,7 +1502,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn any7_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left == state.right {
+        if state.pos == data.len() {
             return true;
         }
         // case_1: Text7_0_0_0
@@ -1521,19 +1517,19 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
     }
     fn text7_0_0_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
         static TEXT:[u8;13] = [0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x74, 0x79, 0x70, 0x65, 0x3a]; // content-type:
-        while state.left < state.right {
-            if ((TEXT[state.consumed] ^ data[state.left]) & 0xDF) != 0 {
+        while state.pos < data.len() {
+            if ((TEXT[state.consumed] ^ data[state.pos]) & 0xDF) != 0 {
                 state.node = NodeT::NoState;
                 state.consumed = 0;
                 return false;
             }
             else if {state.consumed += 1; state.consumed >= TEXT.len()} {
-                state.left += 1;
+                state.pos += 1;
                 state.consumed = 0;
                 state.node = NodeT::Bang7_0;
                 return true;
             }
-            state.left += 1;
+            state.pos += 1;
         }
         state.node = NodeT::Text7_0_0_0;
         return true;
@@ -1563,74 +1559,74 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
-        let datastart = state.left;
+        let datastart = state.pos;
         let is_avx2 = is_x86_feature_detected!("avx2");
         let is_sse2 = is_x86_feature_detected!("sse2");
-        while state.left < state.right {
-            if is_avx2 && (state.left + 32) <= state.right {
+        while state.pos < data.len() {
+            if is_avx2 && (state.pos + 32) <= data.len() {
                 unsafe {
-                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.left) as *const __m256i);
+                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.pos) as *const __m256i);
                     let mut m = _mm256_cmpeq_epi8(_mm256_set1_epi8(0x9), d);
                     m = _mm256_or_si256(m, _mm256_cmpeq_epi8(_mm256_set1_epi8(0x20), d));
                     let r: u32 = !_mm256_movemask_epi8(m) as u32;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 32;
+                        state.pos += 32;
                         continue;
                     }
                 }
             }
-            else if is_sse2 && (state.left + 16) <= state.right {
+            else if is_sse2 && (state.pos + 16) <= data.len() {
                 unsafe {
-                    let d = _mm_loadu_si128(data.as_ptr().add(state.left) as *const __m128i);
+                    let d = _mm_loadu_si128(data.as_ptr().add(state.pos) as *const __m128i);
                     let mut m = _mm_cmpeq_epi8(_mm_set1_epi8(0x9), d);
                     m = _mm_or_si128(m, _mm_cmpeq_epi8(_mm_set1_epi8(0x20), d));
                     let r: u16 = !_mm_movemask_epi8(m) as u16;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 16;
+                        state.pos += 16;
                         continue;
                     }
                 }
             }
-            else if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+            else if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let total = state.consumed + state.left - datastart;
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::String7_3;
@@ -1640,7 +1636,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range7_2;
         return true;
     }
@@ -1669,76 +1665,76 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]; // ^[0xa][0xd]
-        let datastart = state.left;
+        let datastart = state.pos;
         let is_avx2 = is_x86_feature_detected!("avx2");
         let is_sse2 = is_x86_feature_detected!("sse2");
-        while state.left < state.right {
-            if is_avx2 && (state.left + 32) <= state.right {
+        while state.pos < data.len() {
+            if is_avx2 && (state.pos + 32) <= data.len() {
                 unsafe {
-                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.left) as *const __m256i);
+                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.pos) as *const __m256i);
                     let mut m = _mm256_cmpeq_epi8(_mm256_set1_epi8(0xa), d);
                     m = _mm256_or_si256(m, _mm256_cmpeq_epi8(_mm256_set1_epi8(0xd), d));
                     let r: u32 = _mm256_movemask_epi8(m) as u32;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 32;
+                        state.pos += 32;
                         continue;
                     }
                 }
             }
-            else if is_sse2 && (state.left + 16) <= state.right {
+            else if is_sse2 && (state.pos + 16) <= data.len() {
                 unsafe {
-                    let d = _mm_loadu_si128(data.as_ptr().add(state.left) as *const __m128i);
+                    let d = _mm_loadu_si128(data.as_ptr().add(state.pos) as *const __m128i);
                     let mut m = _mm_cmpeq_epi8(_mm_set1_epi8(0xa), d);
                     m = _mm_or_si128(m, _mm_cmpeq_epi8(_mm_set1_epi8(0xd), d));
                     let r: u16 = _mm_movemask_epi8(m) as u16;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 16;
+                        state.pos += 16;
                         continue;
                     }
                 }
             }
-            else if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+            else if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let left = state.left;
-            self._string7_3(state, &data[datastart .. left]);
-            let total = state.consumed + state.left - datastart;
+            let pos = state.pos;
+            self._string7_3(state, &data[datastart .. pos]);
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::Func7_4;
@@ -1748,11 +1744,11 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        if datastart < state.left {
-            let left = state.left;
-            self._string7_3(state, &data[datastart .. left]);
+        if datastart < state.pos {
+            let pos = state.pos;
+            self._string7_3(state, &data[datastart .. pos]);
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::String7_3;
         return true;
     }
@@ -1765,12 +1761,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return false;
     }
     fn text7_5(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0D != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0D != data[state.pos] {
                 state.node = NodeT::Text7_6;
                 return true;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Text7_6;
                 return true;
             }
@@ -1779,12 +1775,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn text7_6(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0A != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0A != data[state.pos] {
                 state.node = NodeT::Range18_0;
                 return false;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Loop3_1;
                 return true;
             }
@@ -1793,7 +1789,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn any8_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left == state.right {
+        if state.pos == data.len() {
             return true;
         }
         // case_1: Text8_0_0_0
@@ -1808,19 +1804,19 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
     }
     fn text8_0_0_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
         static TEXT:[u8;17] = [0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2d, 0x65, 0x6e, 0x63, 0x6f, 0x64, 0x69, 0x6e, 0x67, 0x3a]; // content-encoding:
-        while state.left < state.right {
-            if ((TEXT[state.consumed] ^ data[state.left]) & 0xDF) != 0 {
+        while state.pos < data.len() {
+            if ((TEXT[state.consumed] ^ data[state.pos]) & 0xDF) != 0 {
                 state.node = NodeT::NoState;
                 state.consumed = 0;
                 return false;
             }
             else if {state.consumed += 1; state.consumed >= TEXT.len()} {
-                state.left += 1;
+                state.pos += 1;
                 state.consumed = 0;
                 state.node = NodeT::Bang8_0;
                 return true;
             }
-            state.left += 1;
+            state.pos += 1;
         }
         state.node = NodeT::Text8_0_0_0;
         return true;
@@ -1850,74 +1846,74 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
-        let datastart = state.left;
+        let datastart = state.pos;
         let is_avx2 = is_x86_feature_detected!("avx2");
         let is_sse2 = is_x86_feature_detected!("sse2");
-        while state.left < state.right {
-            if is_avx2 && (state.left + 32) <= state.right {
+        while state.pos < data.len() {
+            if is_avx2 && (state.pos + 32) <= data.len() {
                 unsafe {
-                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.left) as *const __m256i);
+                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.pos) as *const __m256i);
                     let mut m = _mm256_cmpeq_epi8(_mm256_set1_epi8(0x9), d);
                     m = _mm256_or_si256(m, _mm256_cmpeq_epi8(_mm256_set1_epi8(0x20), d));
                     let r: u32 = !_mm256_movemask_epi8(m) as u32;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 32;
+                        state.pos += 32;
                         continue;
                     }
                 }
             }
-            else if is_sse2 && (state.left + 16) <= state.right {
+            else if is_sse2 && (state.pos + 16) <= data.len() {
                 unsafe {
-                    let d = _mm_loadu_si128(data.as_ptr().add(state.left) as *const __m128i);
+                    let d = _mm_loadu_si128(data.as_ptr().add(state.pos) as *const __m128i);
                     let mut m = _mm_cmpeq_epi8(_mm_set1_epi8(0x9), d);
                     m = _mm_or_si128(m, _mm_cmpeq_epi8(_mm_set1_epi8(0x20), d));
                     let r: u16 = !_mm_movemask_epi8(m) as u16;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 16;
+                        state.pos += 16;
                         continue;
                     }
                 }
             }
-            else if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+            else if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let total = state.consumed + state.left - datastart;
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::String8_3;
@@ -1927,7 +1923,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range8_2;
         return true;
     }
@@ -1956,76 +1952,76 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]; // ^[0xa][0xd]
-        let datastart = state.left;
+        let datastart = state.pos;
         let is_avx2 = is_x86_feature_detected!("avx2");
         let is_sse2 = is_x86_feature_detected!("sse2");
-        while state.left < state.right {
-            if is_avx2 && (state.left + 32) <= state.right {
+        while state.pos < data.len() {
+            if is_avx2 && (state.pos + 32) <= data.len() {
                 unsafe {
-                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.left) as *const __m256i);
+                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.pos) as *const __m256i);
                     let mut m = _mm256_cmpeq_epi8(_mm256_set1_epi8(0xa), d);
                     m = _mm256_or_si256(m, _mm256_cmpeq_epi8(_mm256_set1_epi8(0xd), d));
                     let r: u32 = _mm256_movemask_epi8(m) as u32;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 32;
+                        state.pos += 32;
                         continue;
                     }
                 }
             }
-            else if is_sse2 && (state.left + 16) <= state.right {
+            else if is_sse2 && (state.pos + 16) <= data.len() {
                 unsafe {
-                    let d = _mm_loadu_si128(data.as_ptr().add(state.left) as *const __m128i);
+                    let d = _mm_loadu_si128(data.as_ptr().add(state.pos) as *const __m128i);
                     let mut m = _mm_cmpeq_epi8(_mm_set1_epi8(0xa), d);
                     m = _mm_or_si128(m, _mm_cmpeq_epi8(_mm_set1_epi8(0xd), d));
                     let r: u16 = _mm_movemask_epi8(m) as u16;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 16;
+                        state.pos += 16;
                         continue;
                     }
                 }
             }
-            else if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+            else if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let left = state.left;
-            self._string8_3(state, &data[datastart .. left]);
-            let total = state.consumed + state.left - datastart;
+            let pos = state.pos;
+            self._string8_3(state, &data[datastart .. pos]);
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::Func8_4;
@@ -2035,11 +2031,11 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        if datastart < state.left {
-            let left = state.left;
-            self._string8_3(state, &data[datastart .. left]);
+        if datastart < state.pos {
+            let pos = state.pos;
+            self._string8_3(state, &data[datastart .. pos]);
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::String8_3;
         return true;
     }
@@ -2052,12 +2048,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return false;
     }
     fn text8_5(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0D != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0D != data[state.pos] {
                 state.node = NodeT::Text8_6;
                 return true;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Text8_6;
                 return true;
             }
@@ -2066,12 +2062,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn text8_6(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0A != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0A != data[state.pos] {
                 state.node = NodeT::Range18_0;
                 return false;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Loop3_1;
                 return true;
             }
@@ -2080,7 +2076,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn any9_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left == state.right {
+        if state.pos == data.len() {
             return true;
         }
         // case_1: Text9_0_0_0
@@ -2095,19 +2091,19 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
     }
     fn text9_0_0_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
         static TEXT:[u8;11] = [0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x3a]; // connection:
-        while state.left < state.right {
-            if ((TEXT[state.consumed] ^ data[state.left]) & 0xDF) != 0 {
+        while state.pos < data.len() {
+            if ((TEXT[state.consumed] ^ data[state.pos]) & 0xDF) != 0 {
                 state.node = NodeT::NoState;
                 state.consumed = 0;
                 return false;
             }
             else if {state.consumed += 1; state.consumed >= TEXT.len()} {
-                state.left += 1;
+                state.pos += 1;
                 state.consumed = 0;
                 state.node = NodeT::Bang9_0;
                 return true;
             }
-            state.left += 1;
+            state.pos += 1;
         }
         state.node = NodeT::Text9_0_0_0;
         return true;
@@ -2137,74 +2133,74 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
-        let datastart = state.left;
+        let datastart = state.pos;
         let is_avx2 = is_x86_feature_detected!("avx2");
         let is_sse2 = is_x86_feature_detected!("sse2");
-        while state.left < state.right {
-            if is_avx2 && (state.left + 32) <= state.right {
+        while state.pos < data.len() {
+            if is_avx2 && (state.pos + 32) <= data.len() {
                 unsafe {
-                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.left) as *const __m256i);
+                    let d = _mm256_lddqu_si256(data.as_ptr().add(state.pos) as *const __m256i);
                     let mut m = _mm256_cmpeq_epi8(_mm256_set1_epi8(0x9), d);
                     m = _mm256_or_si256(m, _mm256_cmpeq_epi8(_mm256_set1_epi8(0x20), d));
                     let r: u32 = !_mm256_movemask_epi8(m) as u32;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 32;
+                        state.pos += 32;
                         continue;
                     }
                 }
             }
-            else if is_sse2 && (state.left + 16) <= state.right {
+            else if is_sse2 && (state.pos + 16) <= data.len() {
                 unsafe {
-                    let d = _mm_loadu_si128(data.as_ptr().add(state.left) as *const __m128i);
+                    let d = _mm_loadu_si128(data.as_ptr().add(state.pos) as *const __m128i);
                     let mut m = _mm_cmpeq_epi8(_mm_set1_epi8(0x9), d);
                     m = _mm_or_si128(m, _mm_cmpeq_epi8(_mm_set1_epi8(0x20), d));
                     let r: u16 = !_mm_movemask_epi8(m) as u16;
                     if r > 0 {
-                        state.left += r.trailing_zeros() as usize;
+                        state.pos += r.trailing_zeros() as usize;
                     } else {
-                        state.left += 16;
+                        state.pos += 16;
                         continue;
                     }
                 }
             }
-            else if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+            else if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let total = state.consumed + state.left - datastart;
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::Text9_3;
@@ -2214,25 +2210,25 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range9_2;
         return true;
     }
     fn text9_3(&mut self, state: &mut StateT, data: &[u8]) -> bool {
         static TEXT:[u8;10] = [0x6b, 0x65, 0x65, 0x70, 0x2d, 0x61, 0x6c, 0x69, 0x76, 0x65]; // keep-alive
-        while state.left < state.right {
-            if ((TEXT[state.consumed] ^ data[state.left]) & 0xDF) != 0 {
+        while state.pos < data.len() {
+            if ((TEXT[state.consumed] ^ data[state.pos]) & 0xDF) != 0 {
                 state.node = NodeT::Range18_0;
                 state.consumed = 0;
                 return false;
             }
             else if {state.consumed += 1; state.consumed >= TEXT.len()} {
-                state.left += 1;
+                state.pos += 1;
                 state.consumed = 0;
                 state.node = NodeT::Func9_4;
                 return true;
             }
-            state.left += 1;
+            state.pos += 1;
         }
         state.node = NodeT::Text9_3;
         return true;
@@ -2246,12 +2242,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return false;
     }
     fn text9_5(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0D != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0D != data[state.pos] {
                 state.node = NodeT::Text9_6;
                 return true;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Text9_6;
                 return true;
             }
@@ -2260,12 +2256,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn text9_6(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0A != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0A != data[state.pos] {
                 state.node = NodeT::Range18_0;
                 return false;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Loop3_1;
                 return true;
             }
@@ -2274,12 +2270,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn text10_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0D != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0D != data[state.pos] {
                 state.node = NodeT::Text10_1;
                 return true;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Text10_1;
                 return true;
             }
@@ -2288,12 +2284,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn text10_1(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0A != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0A != data[state.pos] {
                 state.node = NodeT::Range18_0;
                 return false;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Loop10_2;
                 return true;
             }
@@ -2326,24 +2322,24 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return false;
     }
     fn data11_1(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        let datastart = state.left;
+        let datastart = state.pos;
         if state.consumed == 0 {
             state.node = NodeT::Data11_1;
         }
-        if state.left == state.right {
+        if state.pos == data.len() {
             return true;
         }
-        else if (state.consumed + state.remain()) >= self.output._max_data11_1() {
-            state.left += self.output._max_data11_1() - state.consumed;
-            let left = state.left;
-            self.output.resp(&data[datastart .. left], state.consumed == 0, true);
+        else if (state.consumed + data.len() - state.pos) >= self.output._max_data11_1() {
+            state.pos += self.output._max_data11_1() - state.consumed;
+            let pos = state.pos;
+            self.output.resp(&data[datastart .. pos], state.consumed == 0, true);
             state.consumed = 0;
             state.node = NodeT::Ret11_2;
         } else {
-            state.left = state.right;
-            let left = state.left;
-            self.output.resp(&data[datastart .. left], state.consumed == 0, false);
-            state.consumed += state.left - datastart;
+            state.pos = data.len();
+            let pos = state.pos;
+            self.output.resp(&data[datastart .. pos], state.consumed == 0, false);
+            state.consumed += state.pos - datastart;
         }
         return true;
     }
@@ -2401,46 +2397,46 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9][A-F][a-f]
-        let datastart = state.left;
-        while state.left < state.right {
-            if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+        let datastart = state.pos;
+        while state.pos < data.len() {
+            if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
-            let left = state.left;
-            self._hex13_0(state, &data[datastart .. left]);
-            let total = state.consumed + state.left - datastart;
+            let pos = state.pos;
+            self._hex13_0(state, &data[datastart .. pos]);
+            let total = state.consumed + state.pos - datastart;
             state.consumed = 0;
             if total >= 1 {
                 state.node = NodeT::Range13_1;
@@ -2450,11 +2446,11 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                 return false;
             }
         }
-        if datastart < state.left {
-            let left = state.left;
-            self._hex13_0(state, &data[datastart .. left]);
+        if datastart < state.pos {
+            let pos = state.pos;
+            self._hex13_0(state, &data[datastart .. pos]);
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Hex13_0;
         return true;
     }
@@ -2476,58 +2472,58 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
              true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0x9][0x20]
-        let datastart = state.left;
-        while state.left < state.right {
-            if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+        let datastart = state.pos;
+        while state.pos < data.len() {
+            if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
             state.consumed = 0;
             state.node = NodeT::Text13_2;
             return true;
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range13_1;
         return true;
     }
     fn text13_2(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0D != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0D != data[state.pos] {
                 state.node = NodeT::Text13_3;
                 return true;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Text13_3;
                 return true;
             }
@@ -2536,12 +2532,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn text13_3(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0A != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0A != data[state.pos] {
                 state.node = NodeT::NoState;
                 return false;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Cases13_4;
                 return true;
             }
@@ -2550,7 +2546,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn cases13_4(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left == state.right {
+        if state.pos == data.len() {
             return true;
         }
         if self.if14_0(state, data) { // case_1
@@ -2571,12 +2567,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return false;
     }
     fn text14_1(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0D != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0D != data[state.pos] {
                 state.node = NodeT::Text14_2;
                 return true;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Text14_2;
                 return true;
             }
@@ -2585,12 +2581,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn text14_2(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0A != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0A != data[state.pos] {
                 state.node = NodeT::NoState;
                 return false;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Ret14_3;
                 return true;
             }
@@ -2608,34 +2604,34 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return state.node != NodeT::NoState;
     }
     fn data15_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        let datastart = state.left;
+        let datastart = state.pos;
         if state.consumed == 0 {
             state.node = NodeT::Data15_0;
         }
-        if state.left == state.right {
+        if state.pos == data.len() {
             return true;
         }
-        else if (state.consumed + state.remain()) >= self.output._max_data15_0() {
-            state.left += self.output._max_data15_0() - state.consumed;
-            let left = state.left;
-            self.output.resp(&data[datastart .. left], state.consumed == 0, true);
+        else if (state.consumed + data.len() - state.pos) >= self.output._max_data15_0() {
+            state.pos += self.output._max_data15_0() - state.consumed;
+            let pos = state.pos;
+            self.output.resp(&data[datastart .. pos], state.consumed == 0, true);
             state.consumed = 0;
             state.node = NodeT::Text15_1;
         } else {
-            state.left = state.right;
-            let left = state.left;
-            self.output.resp(&data[datastart .. left], state.consumed == 0, false);
-            state.consumed += state.left - datastart;
+            state.pos = data.len();
+            let pos = state.pos;
+            self.output.resp(&data[datastart .. pos], state.consumed == 0, false);
+            state.consumed += state.pos - datastart;
         }
         return true;
     }
     fn text15_1(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0D != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0D != data[state.pos] {
                 state.node = NodeT::Text15_2;
                 return true;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Text15_2;
                 return true;
             }
@@ -2644,12 +2640,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn text15_2(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0A != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0A != data[state.pos] {
                 state.node = NodeT::NoState;
                 return false;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Loop12_1;
                 return true;
             }
@@ -2666,17 +2662,17 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return false;
     }
     fn data16_1(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        let datastart = state.left;
+        let datastart = state.pos;
         if state.consumed == 0 {
             state.node = NodeT::Data16_1;
         }
-        if state.left == state.right {
+        if state.pos == data.len() {
             return true;
         }
-        state.left = state.right;
-        let left = state.left;
-        self.output.resp(&data[datastart .. left], state.consumed == 0, false);
-        state.consumed += state.left - datastart;
+        state.pos = data.len();
+        let pos = state.pos;
+        self.output.resp(&data[datastart .. pos], state.consumed == 0, false);
+        state.consumed += state.pos - datastart;
         return true;
     }
     fn ret17_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
@@ -2706,58 +2702,58 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]; // ^[0xa][0xd]
-        let datastart = state.left;
-        while state.left < state.right {
-            if (state.left + 8) <= state.right {
-                if TERMINATOR[usize::from(data[state.left])] {
-                    state.left += 0;
+        let datastart = state.pos;
+        while state.pos < data.len() {
+            if (state.pos + 8) <= data.len() {
+                if TERMINATOR[usize::from(data[state.pos])] {
+                    state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 1])] {
-                    state.left += 1;
+                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                    state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 2])] {
-                    state.left += 2;
+                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                    state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 3])] {
-                    state.left += 3;
+                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                    state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 4])] {
-                    state.left += 4;
+                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                    state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 5])] {
-                    state.left += 5;
+                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                    state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 6])] {
-                    state.left += 6;
+                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                    state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.left + 7])] {
-                    state.left += 7;
+                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                    state.pos += 7;
                 }
                 else
                 {
-                    state.left += 8;
+                    state.pos += 8;
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.left])]) {
-                state.left += 1;
+            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+                state.pos += 1;
                 continue;
             }
             state.consumed = 0;
             state.node = NodeT::Text18_1;
             return true;
         }
-        state.consumed += state.left - datastart;
+        state.consumed += state.pos - datastart;
         state.node = NodeT::Range18_0;
         return true;
     }
     fn text18_1(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0D != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0D != data[state.pos] {
                 state.node = NodeT::Text18_2;
                 return true;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Text18_2;
                 return true;
             }
@@ -2766,12 +2762,12 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     fn text18_2(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        if state.left < state.right {
-            if 0x0A != data[state.left] {
+        if state.pos < data.len() {
+            if 0x0A != data[state.pos] {
                 state.node = NodeT::NoState;
                 return false;
             } else {
-                state.left += 1;
+                state.pos += 1;
                 state.node = NodeT::Loop3_1;
                 return true;
             }
@@ -2791,24 +2787,24 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         }
     }
     fn bool20_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        let datastart = state.left;
+        let datastart = state.pos;
         if state.consumed == 0 {
             state.node = NodeT::Bool20_0;
         }
-        if state.left == state.right {
+        if state.pos == data.len() {
             return true;
         }
-        else if (state.consumed + state.remain()) >= 1 {
-            state.left += 1 - state.consumed;
-            let left = state.left;
-            self._bool20_0(state, &data[datastart .. left]);
+        else if (state.consumed + data.len() - state.pos) >= 1 {
+            state.pos += 1 - state.consumed;
+            let pos = state.pos;
+            self._bool20_0(state, &data[datastart .. pos]);
             state.consumed = 0;
             state.node = NodeT::Bool20_1;
         } else {
-            state.left = state.right;
-            let left = state.left;
-            self._bool20_0(state, &data[datastart .. left]);
-            state.consumed += state.left - datastart;
+            state.pos = data.len();
+            let pos = state.pos;
+            self._bool20_0(state, &data[datastart .. pos]);
+            state.consumed += state.pos - datastart;
         }
         return true;
     }
@@ -2821,24 +2817,24 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         }
     }
     fn bool20_1(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        let datastart = state.left;
+        let datastart = state.pos;
         if state.consumed == 0 {
             state.node = NodeT::Bool20_1;
         }
-        if state.left == state.right {
+        if state.pos == data.len() {
             return true;
         }
-        else if (state.consumed + state.remain()) >= 1 {
-            state.left += 1 - state.consumed;
-            let left = state.left;
-            self._bool20_1(state, &data[datastart .. left]);
+        else if (state.consumed + data.len() - state.pos) >= 1 {
+            state.pos += 1 - state.consumed;
+            let pos = state.pos;
+            self._bool20_1(state, &data[datastart .. pos]);
             state.consumed = 0;
             state.node = NodeT::Loop20_0;
         } else {
-            state.left = state.right;
-            let left = state.left;
-            self._bool20_1(state, &data[datastart .. left]);
-            state.consumed += state.left - datastart;
+            state.pos = data.len();
+            let pos = state.pos;
+            self._bool20_1(state, &data[datastart .. pos]);
+            state.consumed += state.pos - datastart;
         }
         return true;
     }
