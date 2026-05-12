@@ -1,6 +1,6 @@
 // ==============================================================
-// Date: 2026-05-10 21:07:38 GMT
-// Generated using vProto(2026.05.10)        https://www.cgen.dev
+// Date: 2026-05-12 19:57:21 GMT
+// Generated using vProto(2026.05.12)        https://www.cgen.dev
 // Author: Sergey Shchekoldin        Email: shchekoldin@gmail.com
 // ==============================================================
 
@@ -77,50 +77,50 @@ pub trait HttpRespRustTrait {
     fn new() -> Self;
 
     // field accessors:
+    fn cencoding(&mut self) -> &mut String;
     fn chunklen(&mut self) -> &mut u32;
-    fn contentLength(&mut self) -> &mut u64;
+    fn clength(&mut self) -> &mut u64;
     fn ctype(&mut self) -> &mut String;
-    fn encoding(&mut self) -> &mut String;
-    fn isContentLen(&mut self) -> &mut bool;
-    fn isKeepAlive(&mut self) -> &mut bool;
-    fn transferEncoding(&mut self) -> &mut String;
+    fn is_clength(&mut self) -> &mut bool;
+    fn is_keepalive(&mut self) -> &mut bool;
+    fn tencoding(&mut self) -> &mut String;
 
     // callbacks to be implemented by the user:
     fn resp(&mut self, data: &[u8], is_first: bool, is_last: bool) { println!("resp({}:{})={:X?}", is_first, is_last, data); }
 
     // private functions:
-    #[inline(always)] fn _func6_4(&mut self) -> bool {  *self.isContentLen() = true;  return true; }
+    #[inline(always)] fn _func6_4(&mut self) -> bool {  *self.is_clength() = true;  return true; }
     #[inline(always)] fn _func7_4(&mut self) -> bool {  println!("CType: {}\n", self.ctype());  return true; }
-    #[inline(always)] fn _func8_4(&mut self) -> bool {  println!("Encoding: {}\n", self.encoding());  return true; }
-    #[inline(always)] fn _func9_4(&mut self) -> bool {  *self.isKeepAlive() = true;  return true; }
-    #[inline(always)] fn _if11_0(&mut self) -> bool { *self.isContentLen() }
-    #[inline(always)] fn _if12_0(&mut self) -> bool { self.transferEncoding().contains("chunked") }
+    #[inline(always)] fn _func8_4(&mut self) -> bool {  println!("Encoding: {}\n", self.cencoding());  return true; }
+    #[inline(always)] fn _func9_4(&mut self) -> bool {  *self.is_keepalive() = true;  return true; }
+    #[inline(always)] fn _if11_0(&mut self) -> bool { *self.is_clength() }
+    #[inline(always)] fn _if12_0(&mut self) -> bool { self.tencoding().contains("chunked") }
     #[inline(always)] fn _if14_0(&mut self) -> bool { *self.chunklen() == 0 }
-    #[inline(always)] fn _if16_0(&mut self) -> bool { *self.isKeepAlive() == false }
-    #[inline(always)] fn _max_data11_1(&mut self) -> usize { (*self.contentLength()) as usize }
+    #[inline(always)] fn _if16_0(&mut self) -> bool { *self.is_keepalive() == false }
+    #[inline(always)] fn _max_data11_1(&mut self) -> usize { (*self.clength()) as usize }
     #[inline(always)] fn _max_data15_0(&mut self) -> usize { (*self.chunklen()) as usize }
 }
 
 pub struct HttpRespRustExample
 {
+    cencoding: String,
     ctype: String,
-    encoding: String,
-    transferEncoding: String,
-    contentLength: u64,
+    tencoding: String,
+    clength: u64,
     chunklen: u32,
-    isContentLen: bool,
-    isKeepAlive: bool
+    is_clength: bool,
+    is_keepalive: bool
 }
 #[allow(dead_code)]
 impl HttpRespRustTrait for HttpRespRustExample {
-    fn new() -> Self { Self{ctype: String::new(), encoding: String::new(), transferEncoding: String::new(), contentLength: 0, chunklen: 0, isContentLen: false, isKeepAlive: false} }
+    fn new() -> Self { Self{cencoding: String::new(), ctype: String::new(), tencoding: String::new(), clength: 0, chunklen: 0, is_clength: false, is_keepalive: false} }
+    fn cencoding(&mut self) -> &mut String { &mut self.cencoding }
     fn chunklen(&mut self) -> &mut u32 { &mut self.chunklen }
-    fn contentLength(&mut self) -> &mut u64 { &mut self.contentLength }
+    fn clength(&mut self) -> &mut u64 { &mut self.clength }
     fn ctype(&mut self) -> &mut String { &mut self.ctype }
-    fn encoding(&mut self) -> &mut String { &mut self.encoding }
-    fn isContentLen(&mut self) -> &mut bool { &mut self.isContentLen }
-    fn isKeepAlive(&mut self) -> &mut bool { &mut self.isKeepAlive }
-    fn transferEncoding(&mut self) -> &mut String { &mut self.transferEncoding }
+    fn is_clength(&mut self) -> &mut bool { &mut self.is_clength }
+    fn is_keepalive(&mut self) -> &mut bool { &mut self.is_keepalive }
+    fn tencoding(&mut self) -> &mut String { &mut self.tencoding }
 }
 
 pub struct HttpRespRust <T> {
@@ -133,13 +133,13 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
     pub fn new() -> Self { Self{ output: T::new(), vstate: vec![StateT::new()] } }
     pub fn empty(&self) -> bool { self.vstate.is_empty() }
     pub fn reset(&mut self) {
+        *self.output.cencoding()= String::new();
         *self.output.chunklen() = 0;
-        *self.output.contentLength() = 0;
+        *self.output.clength() = 0;
         *self.output.ctype()= String::new();
-        *self.output.encoding()= String::new();
-        *self.output.isContentLen() = false;
-        *self.output.isKeepAlive() = false;
-        *self.output.transferEncoding()= String::new();
+        *self.output.is_clength() = false;
+        *self.output.is_keepalive() = false;
+        *self.output.tencoding()= String::new();
         for v in & mut self.vstate {
             v.node = NodeT::NoState;
         }
@@ -473,23 +473,6 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     #[inline(always)] fn range1_1(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        static TERMINATOR:[bool;256] = [
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-            false, false, false, false, false, false, false, false, false, false,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9]
         let datastart = state.pos;
         if is_x86_feature_detected!("sse4.2") {
             while (state.pos+16) <= data.len() {
@@ -515,28 +498,28 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         }
         while state.pos < data.len() {
             if (state.pos + 8) <= data.len() {
-                if TERMINATOR[usize::from(data[state.pos])] {
+                if !((data[state.pos] >= 0x30 && data[state.pos] < 0x3a)) {
                     state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                else if !((data[state.pos + 1] >= 0x30 && data[state.pos + 1] < 0x3a)) {
                     state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                else if !((data[state.pos + 2] >= 0x30 && data[state.pos + 2] < 0x3a)) {
                     state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                else if !((data[state.pos + 3] >= 0x30 && data[state.pos + 3] < 0x3a)) {
                     state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                else if !((data[state.pos + 4] >= 0x30 && data[state.pos + 4] < 0x3a)) {
                     state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                else if !((data[state.pos + 5] >= 0x30 && data[state.pos + 5] < 0x3a)) {
                     state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                else if !((data[state.pos + 6] >= 0x30 && data[state.pos + 6] < 0x3a)) {
                     state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                else if !((data[state.pos + 7] >= 0x30 && data[state.pos + 7] < 0x3a)) {
                     state.pos += 7;
                 }
                 else
@@ -545,7 +528,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+            else if !(!((data[state.pos] >= 0x30 && data[state.pos] < 0x3a))) {
                 state.pos += 1;
                 continue;
             }
@@ -577,23 +560,6 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     #[inline(always)] fn range1_3(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        static TERMINATOR:[bool;256] = [
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-            false, false, false, false, false, false, false, false, false, false,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9]
         let datastart = state.pos;
         if is_x86_feature_detected!("sse4.2") {
             while (state.pos+16) <= data.len() {
@@ -619,28 +585,28 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         }
         while state.pos < data.len() {
             if (state.pos + 8) <= data.len() {
-                if TERMINATOR[usize::from(data[state.pos])] {
+                if !((data[state.pos] >= 0x30 && data[state.pos] < 0x3a)) {
                     state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                else if !((data[state.pos + 1] >= 0x30 && data[state.pos + 1] < 0x3a)) {
                     state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                else if !((data[state.pos + 2] >= 0x30 && data[state.pos + 2] < 0x3a)) {
                     state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                else if !((data[state.pos + 3] >= 0x30 && data[state.pos + 3] < 0x3a)) {
                     state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                else if !((data[state.pos + 4] >= 0x30 && data[state.pos + 4] < 0x3a)) {
                     state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                else if !((data[state.pos + 5] >= 0x30 && data[state.pos + 5] < 0x3a)) {
                     state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                else if !((data[state.pos + 6] >= 0x30 && data[state.pos + 6] < 0x3a)) {
                     state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                else if !((data[state.pos + 7] >= 0x30 && data[state.pos + 7] < 0x3a)) {
                     state.pos += 7;
                 }
                 else
@@ -649,7 +615,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+            else if !(!((data[state.pos] >= 0x30 && data[state.pos] < 0x3a))) {
                 state.pos += 1;
                 continue;
             }
@@ -764,23 +730,6 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         return true;
     }
     #[inline(always)] fn range1_5(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        static TERMINATOR:[bool;256] = [
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-            false, false, false, false, false, false, false, false, false, false,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9]
         let datastart = state.pos;
         if is_x86_feature_detected!("sse4.2") {
             while (state.pos+16) <= data.len() {
@@ -806,28 +755,28 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
         }
         while state.pos < data.len() {
             if (state.pos + 8) <= data.len() {
-                if TERMINATOR[usize::from(data[state.pos])] {
+                if !((data[state.pos] >= 0x30 && data[state.pos] < 0x3a)) {
                     state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                else if !((data[state.pos + 1] >= 0x30 && data[state.pos + 1] < 0x3a)) {
                     state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                else if !((data[state.pos + 2] >= 0x30 && data[state.pos + 2] < 0x3a)) {
                     state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                else if !((data[state.pos + 3] >= 0x30 && data[state.pos + 3] < 0x3a)) {
                     state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                else if !((data[state.pos + 4] >= 0x30 && data[state.pos + 4] < 0x3a)) {
                     state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                else if !((data[state.pos + 5] >= 0x30 && data[state.pos + 5] < 0x3a)) {
                     state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                else if !((data[state.pos + 6] >= 0x30 && data[state.pos + 6] < 0x3a)) {
                     state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                else if !((data[state.pos + 7] >= 0x30 && data[state.pos + 7] < 0x3a)) {
                     state.pos += 7;
                 }
                 else
@@ -836,7 +785,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+            else if !(!((data[state.pos] >= 0x30 && data[state.pos] < 0x3a))) {
                 state.pos += 1;
                 continue;
             }
@@ -1233,10 +1182,10 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
     }
     #[inline(always)] fn _string5_2(&mut self, state: &mut StateT, data: &[u8]) {
         if state.consumed == 0 {
-            self.output.transferEncoding().clear();
+            self.output.tencoding().clear();
         }
-        let len = if (self.output.transferEncoding().len() + data.len()) > 256 { 256 - self.output.transferEncoding().len() } else { data.len() };
-        self.output.transferEncoding().push_str(&String::from_utf8_lossy(&data[0 .. len]));
+        let len = if (self.output.tencoding().len() + data.len()) > 256 { 256 - self.output.tencoding().len() } else { data.len() };
+        self.output.tencoding().push_str(&String::from_utf8_lossy(&data[0 .. len]));
     }
     #[inline(always)] fn string5_2(&mut self, state: &mut StateT, data: &[u8]) -> bool {
         let datastart = state.pos;
@@ -1512,55 +1461,38 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
     }
     #[inline(always)] fn _uint6_3(&mut self, state: &mut StateT, data: &[u8]) {
         if state.consumed == 0 {
-            *self.output.contentLength() = 0;
+            *self.output.clength() = 0;
         }
         for x in data {
-            *self.output.contentLength() = *self.output.contentLength()*10 + u64::from(*x - b'0');
+            *self.output.clength() = *self.output.clength()*10 + u64::from(*x - b'0');
         }
     }
     #[inline(always)] fn uint6_3(&mut self, state: &mut StateT, data: &[u8]) -> bool {
-        static TERMINATOR:[bool;256] = [
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-            false, false, false, false, false, false, false, false, false, false,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, 
-             true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true,  true]; // [0-9]
         let datastart = state.pos;
         while state.pos < data.len() {
             if (state.pos + 8) <= data.len() {
-                if TERMINATOR[usize::from(data[state.pos])] {
+                if !((data[state.pos] >= 0x30 && data[state.pos] < 0x3a)) {
                     state.pos += 0;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 1])] {
+                else if !((data[state.pos + 1] >= 0x30 && data[state.pos + 1] < 0x3a)) {
                     state.pos += 1;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 2])] {
+                else if !((data[state.pos + 2] >= 0x30 && data[state.pos + 2] < 0x3a)) {
                     state.pos += 2;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 3])] {
+                else if !((data[state.pos + 3] >= 0x30 && data[state.pos + 3] < 0x3a)) {
                     state.pos += 3;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 4])] {
+                else if !((data[state.pos + 4] >= 0x30 && data[state.pos + 4] < 0x3a)) {
                     state.pos += 4;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 5])] {
+                else if !((data[state.pos + 5] >= 0x30 && data[state.pos + 5] < 0x3a)) {
                     state.pos += 5;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 6])] {
+                else if !((data[state.pos + 6] >= 0x30 && data[state.pos + 6] < 0x3a)) {
                     state.pos += 6;
                 }
-                else if TERMINATOR[usize::from(data[state.pos + 7])] {
+                else if !((data[state.pos + 7] >= 0x30 && data[state.pos + 7] < 0x3a)) {
                     state.pos += 7;
                 }
                 else
@@ -1569,7 +1501,7 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
                     continue;
                 }
             }
-            else if !(TERMINATOR[usize::from(data[state.pos])]) {
+            else if !(!((data[state.pos] >= 0x30 && data[state.pos] < 0x3a))) {
                 state.pos += 1;
                 continue;
             }
@@ -2054,10 +1986,10 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
     }
     #[inline(always)] fn _string8_3(&mut self, state: &mut StateT, data: &[u8]) {
         if state.consumed == 0 {
-            self.output.encoding().clear();
+            self.output.cencoding().clear();
         }
-        let len = if (self.output.encoding().len() + data.len()) > 256 { 256 - self.output.encoding().len() } else { data.len() };
-        self.output.encoding().push_str(&String::from_utf8_lossy(&data[0 .. len]));
+        let len = if (self.output.cencoding().len() + data.len()) > 256 { 256 - self.output.cencoding().len() } else { data.len() };
+        self.output.cencoding().push_str(&String::from_utf8_lossy(&data[0 .. len]));
     }
     #[inline(always)] fn string8_3(&mut self, state: &mut StateT, data: &[u8]) -> bool {
         let datastart = state.pos;
@@ -2870,10 +2802,10 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
     }
     #[inline(always)] fn _bool20_0(&mut self, state: &mut StateT, data: &[u8]) {
         if data.len() > 0 {
-            *self.output.isContentLen() = data[0] != 0;
+            *self.output.is_clength() = data[0] != 0;
         }
         else if state.consumed == 0 {
-            *self.output.isContentLen() = false;
+            *self.output.is_clength() = false;
         }
     }
     #[inline(always)] fn bool20_0(&mut self, state: &mut StateT, data: &[u8]) -> bool {
@@ -2900,10 +2832,10 @@ impl <T: HttpRespRustTrait> HttpRespRust<T> {
     }
     #[inline(always)] fn _bool20_1(&mut self, state: &mut StateT, data: &[u8]) {
         if data.len() > 0 {
-            *self.output.isKeepAlive() = data[0] != 0;
+            *self.output.is_keepalive() = data[0] != 0;
         }
         else if state.consumed == 0 {
-            *self.output.isKeepAlive() = false;
+            *self.output.is_keepalive() = false;
         }
     }
     #[inline(always)] fn bool20_1(&mut self, state: &mut StateT, data: &[u8]) -> bool {
